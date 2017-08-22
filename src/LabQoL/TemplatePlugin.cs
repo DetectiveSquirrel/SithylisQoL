@@ -70,6 +70,7 @@ namespace LabQoL
         {
             "elavator",
             "Hideoutdoodad",
+            "worlditem",
         };
 
         private void ShowAllPathObjects()
