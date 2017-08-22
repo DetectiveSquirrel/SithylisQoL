@@ -34,6 +34,7 @@ namespace LabQoL
         {
             var File1 = $"{PluginDirectory}\\images\\shrines.png";
             var File1MoveTo = $"{PluginDirectory}\\..\\..\\textures\\shrines.png";
+
             var File2 = $"{PluginDirectory}\\images\\hidden_door.png";
             var File2MoveTo = $"{PluginDirectory}\\..\\..\\textures\\hidden_door.png";
 

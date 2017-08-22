@@ -14,15 +14,18 @@ namespace LabQoL
         public LabQoLSettings()
         {
             Enable = true;
-
+            #region Labyrinth
+            #region Chests
             LabyrinthChest = true;
             LabyrinthChestIcon = new RangeNode<int>(18, 1, 50);
             LabyrinthChestColor = new ColorBGRA(0, 128, 255, 255);
-
+            #endregion
+            #region DarkShrines
             Darkshrines = true;
             DarkshrinesIcon = new RangeNode<int>(18, 1, 50);
             DarkshrinesColor = new ColorBGRA(0, 128, 255, 255);
-
+            #endregion
+            #region Traps
             Roombas = true;
             RoombasColor = new ColorBGRA(255, 255, 255, 255);
             Spinners = true;
@@ -40,10 +43,13 @@ namespace LabQoL
             HiddenDoorway = true;
             HiddenDoorwayIcon = new RangeNode<int>(18, 1, 50);
             HiddenDoorwayColor = new ColorBGRA(255, 255, 255, 255);
-
+            #endregion 
+            #endregion
+            #region Atziri
             Atziri = true;
-            AtziriMirrorSize = new RangeNode<int>(100, 1, 200);
-
+            AtziriMirrorSize = new RangeNode<int>(100, 1, 200); 
+            #endregion
+            #region Shrines
             NormalShrines = true;
             NormalShrineOnFloor = true;
             NormalShrineOnFloorSize = new RangeNode<int>(100, 1, 200);
@@ -55,8 +61,8 @@ namespace LabQoL
             LesserShrineOnFloorSize = new RangeNode<int>(100, 1, 200);
             LesserShrineOnMap = true;
             LesserShrinesIcon = new RangeNode<int>(18, 1, 50);
-            LesserShrinesColor = new ColorBGRA(0, 128, 255, 255);
-
+            LesserShrinesColor = new ColorBGRA(0, 128, 255, 255); 
+            #endregion
             Debug = false;
             DebugTextSize = new RangeNode<int>(12, 1, 50);
         }
@@ -131,15 +137,15 @@ namespace LabQoL
         [Menu("Color", 11551, 1155)]
         public ColorNode PressurePlatesColor { get; set; }
         #endregion
-
+        #region Atziri
         [Menu("Atziri", 22)]
         public EmptyNode AtziriEmpty { get; set; }
         [Menu("Show Reflection", 221, 22)]
         public ToggleNode Atziri { get; set; }
         [Menu("Atziri Mirror Size", 2211, 221)]
-        public RangeNode<int> AtziriMirrorSize { get; set; }
-
-
+        public RangeNode<int> AtziriMirrorSize { get; set; } 
+        #endregion
+        #region Shrines
         [Menu("Shrines", 33)]
         public EmptyNode Shrines { get; set; }
 
@@ -167,9 +173,8 @@ namespace LabQoL
         [Menu("Size", 33221, 3322)]
         public RangeNode<int> LesserShrinesIcon { get; set; }
         [Menu("Color", 3323, 332)]
-        public ColorNode LesserShrinesColor { get; set; }
-
-
+        public ColorNode LesserShrinesColor { get; set; } 
+        #endregion
         [Menu("Debug-ish", 99)]
         public ToggleNode Debug { get; set; }
         [Menu("Text Size", 991, 99)]
