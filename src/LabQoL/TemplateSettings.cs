@@ -42,9 +42,15 @@ namespace LabQoL
             AtziriMirrorSize = new RangeNode<int>(100, 1, 200);
 
             NormalShrines = true;
+            NormalShrineOnFloor = true;
+            NormalShrineOnFloorSize = new RangeNode<int>(100, 1, 200);
+            NormalShrineOnMap = true;
             NormalShrinesIcon = new RangeNode<int>(18, 1, 28);
             NormalShrinesColor = new ColorBGRA(0, 128, 255, 255);
             LesserShrines = true;
+            LesserShrineOnFloor = true;
+            LesserShrineOnFloorSize = new RangeNode<int>(100, 1, 200);
+            LesserShrineOnMap = true;
             LesserShrinesIcon = new RangeNode<int>(18, 1, 28);
             LesserShrinesColor = new ColorBGRA(0, 128, 255, 255);
 
@@ -71,7 +77,7 @@ namespace LabQoL
         [Menu("Shrine Size", 1121, 112)]
         public RangeNode<int> DarkshrinesIcon { get; set; }
         [Menu("Shrine Color", 1122, 112)]
-        public ColorNode DarkshrinesColor { get; set; } 
+        public ColorNode DarkshrinesColor { get; set; }
 
         // 11-3
         [Menu("Secret Switch", 113, 11)]
@@ -128,16 +134,28 @@ namespace LabQoL
 
         [Menu("Normal Shrines", 331, 33)]
         public ToggleNode NormalShrines { get; set; }
-        [Menu("Size", 3311, 331)]
+        [Menu("Draw on Floor", 3311, 331)]
+        public ToggleNode NormalShrineOnFloor { get; set; }
+        [Menu("Size", 33111, 3311)]
+        public RangeNode<int> NormalShrineOnFloorSize { get; set; }
+        [Menu("Draw on Map", 3312, 331)]
+        public ToggleNode NormalShrineOnMap { get; set; }
+        [Menu("Size", 33121, 3312)]
         public RangeNode<int> NormalShrinesIcon { get; set; }
-        [Menu("Color", 3312, 331)]
+        [Menu("Color", 3313, 331)]
         public ColorNode NormalShrinesColor { get; set; }
 
         [Menu("Lesser Shrines", 332, 33)]
         public ToggleNode LesserShrines { get; set; }
-        [Menu("Size", 3321, 332)]
+        [Menu("Draw on Floor", 3321, 332)]
+        public ToggleNode LesserShrineOnFloor { get; set; }
+        [Menu("Size", 33211, 3321)]
+        public RangeNode<int> LesserShrineOnFloorSize { get; set; }
+        [Menu("Draw on Map", 3322, 332)]
+        public ToggleNode LesserShrineOnMap { get; set; }
+        [Menu("Size", 33221, 3322)]
         public RangeNode<int> LesserShrinesIcon { get; set; }
-        [Menu("Color", 3322, 332)]
+        [Menu("Color", 3323, 332)]
         public ColorNode LesserShrinesColor { get; set; }
 
 
