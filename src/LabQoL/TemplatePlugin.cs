@@ -48,18 +48,25 @@ namespace LabQoL
 
             if (Settings.SecretSwitch)
                 DrawTextLabel(Settings.SecretSwitchColor.Value, "Switch", "HiddenDoor_Switch");
+
             if (Settings.Spinners)
                 DrawTextLabel(Settings.SpinnersColor.Value, "Spinner", "LabyrinthSpinner");
+
             if (Settings.Saws)
                 DrawTextLabel(Settings.SawsColor.Value, "Saw Blade", "Labyrinthsawblade");
+
             if (Settings.Roombas)
                 DrawTextLabel(Settings.RoombasColor.Value, "Roomba", "LabyrinthRoomba", -67);
+
             if (Settings.Roombas)
                 DrawTextLabel(Settings.RoombasColor.Value, "Roomba", "LabyrinthflyingRoomba", -180);
+
             if (Settings.Delivery)
                 DrawTextLabel(Settings.DeliveryColor.Value, "Deliver", "labyrinthtrapkeydelivery");
+
             if (Settings.PressurePlates)
                 DrawTextLabel(Settings.PressurePlatesColor.Value, "Pressure Plate", "pressureplate_reset");
+
             if (Settings.Arrows)
                 DrawTextLabel(Settings.ArrowColor.Value, "Arrows", "Labyrintharrowtrap");
 
