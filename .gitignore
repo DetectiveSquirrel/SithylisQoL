@@ -49,3 +49,5 @@ Temporary Items
 # Cusom
 config.ini
 %PluginUpdate%
+SithylisQoLPlugin.dll.config
+SithylisQoLPlugin.pdb
