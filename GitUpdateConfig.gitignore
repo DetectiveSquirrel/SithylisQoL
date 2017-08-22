@@ -1,0 +1,10 @@
+Owner: DetectiveSquirrel
+Name: SithylisQoL
+Repository
+
+Ignore:
+src
+.gitignore
+README.md
+LICENSE
+config.ini
