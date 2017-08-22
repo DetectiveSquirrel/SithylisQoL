@@ -8,3 +8,4 @@ src
 README.md
 LICENSE
 config.ini
+.gitattributes
