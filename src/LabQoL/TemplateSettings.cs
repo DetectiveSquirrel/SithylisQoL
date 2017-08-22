@@ -47,7 +47,7 @@ namespace LabQoL
             #endregion
             #region Atziri
             Atziri = true;
-            AtziriMirrorSize = new RangeNode<int>(100, 1, 200); 
+            AtziriMirrorSize = new RangeNode<int>(100, 1, 200);
             #endregion
             #region Shrines
             NormalShrines = true;
@@ -61,10 +61,12 @@ namespace LabQoL
             LesserShrineOnFloorSize = new RangeNode<int>(100, 1, 200);
             LesserShrineOnMap = true;
             LesserShrinesIcon = new RangeNode<int>(18, 1, 50);
-            LesserShrinesColor = new ColorBGRA(0, 128, 255, 255); 
+            LesserShrinesColor = new ColorBGRA(0, 128, 255, 255);
             #endregion
+            #region Debug-ish
             Debug = false;
             DebugTextSize = new RangeNode<int>(12, 1, 50);
+            #endregion
         }
 
         #region Labyrinth
@@ -143,7 +145,7 @@ namespace LabQoL
         [Menu("Show Reflection", 221, 22)]
         public ToggleNode Atziri { get; set; }
         [Menu("Atziri Mirror Size", 2211, 221)]
-        public RangeNode<int> AtziriMirrorSize { get; set; } 
+        public RangeNode<int> AtziriMirrorSize { get; set; }
         #endregion
         #region Shrines
         [Menu("Shrines", 33)]
@@ -173,11 +175,13 @@ namespace LabQoL
         [Menu("Size", 33221, 3322)]
         public RangeNode<int> LesserShrinesIcon { get; set; }
         [Menu("Color", 3323, 332)]
-        public ColorNode LesserShrinesColor { get; set; } 
+        public ColorNode LesserShrinesColor { get; set; }
         #endregion
+        #region Debug-ish
         [Menu("Debug-ish", 99)]
         public ToggleNode Debug { get; set; }
         [Menu("Text Size", 991, 99)]
         public RangeNode<int> DebugTextSize { get; set; }
+        #endregion
     }
 }

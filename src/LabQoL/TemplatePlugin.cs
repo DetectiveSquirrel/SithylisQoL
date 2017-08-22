@@ -65,11 +65,14 @@ namespace LabQoL
                 DrawTextLabel(Settings.PressurePlatesColor.Value, "Pressure Plate", "pressureplate_reset");
             if (Settings.Arrows)
                 DrawTextLabel(Settings.ArrowColor.Value, "Arrows", "Labyrintharrowtrap");
+
             // Debug-ish, shows entity path
             if (Settings.Debug)
                 ShowAllPathObjects();
 
         }
+
+        // Hides unwanted garbage strings
         private static List<string> DebugDoodads = new List<string>
         {
             "elavator",
@@ -334,8 +337,7 @@ namespace LabQoL
             "Metadata/Chests/Labyrinth/LabyrinthRewardSilverCurrencyQuality",
             "Metadata/Chests/Labyrinth/LabyrinthRewardSilverJewelryUnique",
             "Metadata/Chests/Labyrinth/LabyrinthRewardSilverDivination",
-
-
+            
             "Metadata/Chests/Labyrinth/LabyrinthRewardSilverUnique1",
             "Metadata/Chests/Labyrinth/LabyrinthRewardSilverUnique2",
             "Metadata/Chests/Labyrinth/LabyrinthRewardSilverUnique3",
