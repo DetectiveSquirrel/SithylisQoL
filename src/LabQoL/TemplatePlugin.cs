@@ -276,15 +276,12 @@ namespace LabQoL
                 Element smallMinimap = GameController.Game.IngameState.IngameUi.Map.SmallMinimap;
                 Vector2 playerPos = GameController.Player.GetComponent<Positioned>().GridPos;
                 float posZ = GameController.Player.GetComponent<Render>().Z;
-
                 const float SCALE = 240f;
                 RectangleF mapRect = smallMinimap.GetClientRect();
                 var mapCenter = new Vector2(mapRect.X + mapRect.Width / 2, mapRect.Y + mapRect.Height / 2).Translate(0, 0);
                 double diag = Math.Sqrt(mapRect.Width * mapRect.Width + mapRect.Height * mapRect.Height) / 2.0;
                 float iconZ = icon.EntityWrapper.GetComponent<Render>().Z;
-                Vector2 point = mapCenter
-                    + MapIcon.DeltaInWorldToMinimapDelta(icon.WorldPosition - playerPos, diag, SCALE, (iconZ - posZ) / 20);
-
+                Vector2 point = mapCenter + MapIcon.DeltaInWorldToMinimapDelta(icon.WorldPosition - playerPos, diag, SCALE, (iconZ - posZ) / 20);
                 HudTexture texture = icon.TextureIcon;
                 int size = icon.Size;
                 var rect = new RectangleF(point.X - size / 2f, point.Y - size / 2f, size, size);
@@ -306,17 +303,14 @@ namespace LabQoL
                 Camera camera = GameController.Game.IngameState.Camera;
                 Map mapWindow = GameController.Game.IngameState.IngameUi.Map;
                 RectangleF mapRect = mapWindow.GetClientRect();
-
                 Vector2 playerPos = GameController.Player.GetComponent<Positioned>().GridPos;
                 float posZ = GameController.Player.GetComponent<Render>().Z;
                 Vector2 screenCenter = new Vector2(mapRect.Width / 2, mapRect.Height / 2).Translate(0, -20) + new Vector2(mapRect.X, mapRect.Y) + new Vector2(mapWindow.ShiftX, mapWindow.ShiftY);
                 var diag = (float)Math.Sqrt(camera.Width * camera.Width + camera.Height * camera.Height);
                 float k = camera.Width < 1024f ? 1120f : 1024f;
                 float scale = k / camera.Height * camera.Width * 3 / 4;
-
                 float iconZ = icon.EntityWrapper.GetComponent<Render>().Z;
-                Vector2 point = screenCenter
-                    + MapIcon.DeltaInWorldToMinimapDelta(icon.WorldPosition - playerPos, diag, scale, (iconZ - posZ) / 20);
+                Vector2 point = screenCenter + MapIcon.DeltaInWorldToMinimapDelta(icon.WorldPosition - playerPos, diag, scale, (iconZ - posZ) / 20);
 
                 HudTexture texture = icon.TextureIcon;
                 int size = icon.SizeOfLargeIcon.GetValueOrDefault(icon.Size * 2);
@@ -325,7 +319,7 @@ namespace LabQoL
         }
 
 
-        private static readonly List<string> LabyrinthRewrdChests = new List<string>
+        private static readonly List<string> LabyrinthRewardChests = new List<string>
         {
             "Metadata/Chests/Labyrinth/LabyrinthTreasureKey",
             "Metadata/Chests/Labyrinth/LabyrinthSpecificUnique",
@@ -349,7 +343,7 @@ namespace LabQoL
 
         private MapIcon GetMapIcon(EntityWrapper e)
         {
-            if (LabyrinthRewrdChests.Contains(e.Path) && Settings.LabyrinthChest)
+            if (LabyrinthRewardChests.Contains(e.Path) && Settings.LabyrinthChest)
                 return new MapIcon(e, new HudTexture("strongbox.png", Settings.LabyrinthChestColor), () => Settings.LabyrinthChest, Settings.LabyrinthChestIcon);
 
             if (e.Path.Contains("Metadata/Terrain/Labyrinth/Objects/LabyrinthDarkshrineHidden") && Settings.Darkshrines)
