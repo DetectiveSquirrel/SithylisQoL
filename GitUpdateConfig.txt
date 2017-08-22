@@ -8,3 +8,5 @@ src
 README.md
 LICENSE
 config.ini
+.config
+.pdb
