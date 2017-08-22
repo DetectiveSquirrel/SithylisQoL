@@ -34,8 +34,11 @@ namespace LabQoL
         {
             var File1 = $"{PluginDirectory}\\images\\shrines.png";
             var File1MoveTo = $"{PluginDirectory}\\..\\..\\textures\\shrines.png";
+            var File2 = $"{PluginDirectory}\\images\\hidden_door.png";
+            var File2MoveTo = $"{PluginDirectory}\\..\\..\\textures\\hidden_door.png";
 
             File.Copy(File1, File1MoveTo, true);
+            File.Copy(File2, File2MoveTo, true);
         }
 
         public override void Render()
@@ -69,6 +72,7 @@ namespace LabQoL
         private static List<string> DebugDoodads = new List<string>
         {
             "elavator",
+            "elevator",
             "Hideoutdoodad",
             "worlditem",
         };
@@ -190,6 +194,7 @@ namespace LabQoL
 
         private void DrawShrinesOnFloor()
         {
+            // "Metadata/Terrain/Labyrinth/Objects/HiddenDoor_Long"
             if (Settings.LesserShrines && Settings.LesserShrineOnFloor)
             {
                 foreach (EntityWrapper entity in entities)
@@ -338,11 +343,11 @@ namespace LabQoL
 
         private MapIcon GetMapIcon(EntityWrapper e)
         {
-            if (LabyrinthRewrdChests.Contains(e.Path))
+            if (LabyrinthRewrdChests.Contains(e.Path) && Settings.LabyrinthChest)
             {
                 return new MapIcon(e, new HudTexture("strongbox.png", Settings.LabyrinthChestColor), () => Settings.LabyrinthChest, Settings.LabyrinthChestIcon);
             }
-            if (e.Path.Contains("Metadata/Terrain/Labyrinth/Objects/LabyrinthDarkshrineHidden"))
+            if (e.Path.Contains("Metadata/Terrain/Labyrinth/Objects/LabyrinthDarkshrineHidden") && Settings.Darkshrines)
             {
                 return new MapIcon(e, new HudTexture("shrines.png", Settings.DarkshrinesColor), () => Settings.Darkshrines, Settings.DarkshrinesIcon);
             }
@@ -353,6 +358,14 @@ namespace LabQoL
             if (e.Path.Contains("Metadata/Shrines/LesserShrine") && Settings.LesserShrines && Settings.LesserShrineOnMap)
             {
                 return new MapIcon(e, new HudTexture("shrines.png", Settings.LesserShrinesColor), () => Settings.LesserShrineOnMap, Settings.LesserShrinesIcon);
+            }
+            if (e.Path.Contains("Metadata/Terrain/Labyrinth/Objects/HiddenDoor_Short") && Settings.HiddenDoorway)
+            {
+                return new MapIcon(e, new HudTexture("hidden_door.png", Settings.HiddenDoorwayColor), () => Settings.HiddenDoorway, Settings.HiddenDoorwayIcon);
+            }
+            if (e.Path.Contains("Metadata/Terrain/Labyrinth/Objects/HiddenDoor_Long") && Settings.HiddenDoorway)
+            {
+                return new MapIcon(e, new HudTexture("hidden_door.png", Settings.HiddenDoorwayColor), () => Settings.HiddenDoorway, Settings.HiddenDoorwayIcon);
             }
             return null;
         }

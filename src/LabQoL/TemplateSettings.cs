@@ -16,11 +16,11 @@ namespace LabQoL
             Enable = true;
 
             LabyrinthChest = true;
-            LabyrinthChestIcon = new RangeNode<int>(18, 1, 28);
+            LabyrinthChestIcon = new RangeNode<int>(18, 1, 50);
             LabyrinthChestColor = new ColorBGRA(0, 128, 255, 255);
 
             Darkshrines = true;
-            DarkshrinesIcon = new RangeNode<int>(18, 1, 28);
+            DarkshrinesIcon = new RangeNode<int>(18, 1, 50);
             DarkshrinesColor = new ColorBGRA(0, 128, 255, 255);
 
             Roombas = true;
@@ -37,6 +37,9 @@ namespace LabQoL
             PressurePlatesColor = new ColorBGRA(255, 255, 255, 255);
             Arrows = true;
             ArrowColor = new ColorBGRA(255, 255, 255, 255);
+            HiddenDoorway = true;
+            HiddenDoorwayIcon = new RangeNode<int>(18, 1, 50);
+            HiddenDoorwayColor = new ColorBGRA(255, 255, 255, 255);
 
             Atziri = true;
             AtziriMirrorSize = new RangeNode<int>(100, 1, 200);
@@ -45,13 +48,13 @@ namespace LabQoL
             NormalShrineOnFloor = true;
             NormalShrineOnFloorSize = new RangeNode<int>(100, 1, 200);
             NormalShrineOnMap = true;
-            NormalShrinesIcon = new RangeNode<int>(18, 1, 28);
+            NormalShrinesIcon = new RangeNode<int>(18, 1, 50);
             NormalShrinesColor = new ColorBGRA(0, 128, 255, 255);
             LesserShrines = true;
             LesserShrineOnFloor = true;
             LesserShrineOnFloorSize = new RangeNode<int>(100, 1, 200);
             LesserShrineOnMap = true;
-            LesserShrinesIcon = new RangeNode<int>(18, 1, 28);
+            LesserShrinesIcon = new RangeNode<int>(18, 1, 50);
             LesserShrinesColor = new ColorBGRA(0, 128, 255, 255);
 
             Debug = false;
@@ -90,6 +93,14 @@ namespace LabQoL
         public ToggleNode Delivery { get; set; }
         [Menu("Color", 1141, 114)]
         public ColorNode DeliveryColor { get; set; }
+
+        // 11-6
+        [Menu("Hidden Doorway", 116, 11)]
+        public ToggleNode HiddenDoorway { get; set; }
+        [Menu("Size", 1161, 116)]
+        public RangeNode<int> HiddenDoorwayIcon { get; set; }
+        [Menu("Color", 1162, 116)]
+        public ColorNode HiddenDoorwayColor { get; set; }
 
         // 11-5
         [Menu("Traps", 115, 11)]
