@@ -1,21 +1,18 @@
 ﻿using PoeHUD.Controllers;
+using PoeHUD.Framework.Helpers;
 using PoeHUD.Hud;
+using PoeHUD.Hud.UI;
 using PoeHUD.Models;
 using PoeHUD.Plugins;
+using PoeHUD.Poe;
+using PoeHUD.Poe.Components;
+using PoeHUD.Poe.RemoteMemoryObjects;
+using SharpDX;
+using SharpDX.Direct3D9;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using PoeHUD.Hud.UI;
-using PoeHUD.Poe.Components;
-using SharpDX;
-using Map = PoeHUD.Poe.Elements.Map;
-using PoeHUD.Poe.RemoteMemoryObjects;
-using PoeHUD.Framework.Helpers;
-using PoeHUD.Poe;
-using SharpDX.Direct3D9;
 using System.IO;
+using Map = PoeHUD.Poe.Elements.Map;
 
 namespace LabQoL
 {
@@ -29,17 +26,17 @@ namespace LabQoL
             entities = new HashSet<EntityWrapper>();
         }
 
-        // Move image file every time just to make sure its there
+        /* Move image file every time just to make sure its there, what could go wrong? */
+        /* Also keeps them up to date */
         private void MoveAssets()
         {
-            var File1 = $"{PluginDirectory}\\images\\shrines.png";
-            var File1MoveTo = $"{PluginDirectory}\\..\\..\\textures\\shrines.png";
+            File.Copy($"{PluginDirectory}\\images\\shrines.png", 
+                $"{PluginDirectory}\\..\\..\\textures\\shrines.png", 
+                true);
 
-            var File2 = $"{PluginDirectory}\\images\\hidden_door.png";
-            var File2MoveTo = $"{PluginDirectory}\\..\\..\\textures\\hidden_door.png";
-
-            File.Copy(File1, File1MoveTo, true);
-            File.Copy(File2, File2MoveTo, true);
+            File.Copy($"{PluginDirectory}\\images\\hidden_door.png", 
+                $"{PluginDirectory}\\..\\..\\textures\\hidden_door.png", 
+                true);
         }
 
         public override void Render()
