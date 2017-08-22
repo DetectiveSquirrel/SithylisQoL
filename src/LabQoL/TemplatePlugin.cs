@@ -194,7 +194,6 @@ namespace LabQoL
 
         private void DrawShrinesOnFloor()
         {
-            // "Metadata/Terrain/Labyrinth/Objects/HiddenDoor_Long"
             if (Settings.LesserShrines && Settings.LesserShrineOnFloor)
             {
                 foreach (EntityWrapper entity in entities)
