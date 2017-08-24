@@ -23,6 +23,13 @@ namespace LabQoL
             DarkshrinesIcon = new RangeNode<int>(18, 1, 50);
             DarkshrinesColor = new ColorBGRA(0, 128, 255, 255);
             #endregion
+            #region Doors
+            HiddenDoorway = true;
+            HiddenDoorwayIcon = new RangeNode<int>(18, 1, 50);
+            HiddenDoorwayColor = new ColorBGRA(255, 255, 255, 255);
+            SmashableDoor = true;
+            SmashableDoorColor = new ColorBGRA(255, 255, 255, 255);
+            #endregion
             #region Traps
             Roombas = true;
             RoombasColor = new ColorBGRA(255, 255, 255, 255);
@@ -38,9 +45,6 @@ namespace LabQoL
             PressurePlatesColor = new ColorBGRA(255, 255, 255, 255);
             Arrows = true;
             ArrowColor = new ColorBGRA(255, 255, 255, 255);
-            HiddenDoorway = true;
-            HiddenDoorwayIcon = new RangeNode<int>(18, 1, 50);
-            HiddenDoorwayColor = new ColorBGRA(255, 255, 255, 255);
             #endregion
             #region Lieutenant of Rage, Has Thorns
             LieutenantofRage = true;
@@ -117,6 +121,11 @@ namespace LabQoL
         public RangeNode<int> HiddenDoorwayIcon { get; set; }
         [Menu("Color", 1162, 116)]
         public ColorNode HiddenDoorwayColor { get; set; }
+
+        [Menu("Smashable Door", 118, 11)]
+        public ToggleNode SmashableDoor { get; set; }
+        [Menu("Color", 1181, 118)]
+        public ColorNode SmashableDoorColor { get; set; }
 
         [Menu("Lieutenant With Thorns", 117, 11)]
         public ToggleNode LieutenantofRage { get; set; }

@@ -66,10 +66,13 @@ namespace LabQoL
                 DrawTextLabel(Settings.DeliveryColor.Value, "Deliver", "labyrinthtrapkeydelivery");
 
             if (Settings.PressurePlates)
-                DrawTextLabel(Settings.PressurePlatesColor.Value, "Pressure Plate", "pressureplate_reset");
+                DrawTextLabel(Settings.PressurePlatesColor.Value, "Pressure" + Environment.NewLine + "Plate", "pressureplate_reset");
 
             if (Settings.Arrows)
                 DrawTextLabel(Settings.ArrowColor.Value, "Arrows", "Labyrintharrowtrap");
+
+            if (Settings.SmashableDoor)
+                DrawTextLabel(Settings.SmashableDoorColor.Value, "Smashable" + Environment.NewLine + "Door", "Objects/LabyrinthSmashableDoor");
 
             // Debug-ish, shows entity path
             if (Settings.Debug)
@@ -347,7 +350,7 @@ namespace LabQoL
                 texture.Draw(Graphics, new RectangleF(point.X - size / 2f, point.Y - size / 2f, size, size));
             }
         }
-        
+
         private static readonly List<string> LabyrinthRewardChests = new List<string>
         {
             "Metadata/Chests/Labyrinth/LabyrinthTreasureKey",
@@ -368,6 +371,8 @@ namespace LabQoL
             "Metadata/Chests/Labyrinth/LabyrinthRewardSilverUnique1",
             "Metadata/Chests/Labyrinth/LabyrinthRewardSilverUnique2",
             "Metadata/Chests/Labyrinth/LabyrinthRewardSilverUnique3",
+
+            "Metadata/Chests/Labyrinth/LabyrinthTrinketChest"
         };
 
         private MapIcon GetMapIcon(EntityWrapper e)
