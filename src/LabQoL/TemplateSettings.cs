@@ -12,23 +12,50 @@ namespace LabQoL
             #region Labyrinth
             #region Chests
             LabyrinthChest = true;
-            LabyrinthChestIcon = new RangeNode<int>(18, 1, 50);
-            LabyrinthChestColor = new ColorBGRA(0, 128, 255, 255);
+            LabyrinthChestSize = new RangeNode<int>(18, 1, 50);
+
+
+
+
+
+
+            TreasureKeyChestColor = new ColorBGRA(0, 255, 0, 255);
+            TrinketChestColor = new ColorBGRA(0, 97, 201, 255);
+            SpecificUniqueChestColor = new ColorBGRA(175, 96, 37, 255);
+            RewardCurrencyColor = new ColorBGRA(255, 0, 255, 255);
+            RewardCurrencyQualityColor = new ColorBGRA(210, 210, 210, 255);
+            RewardDangerCurrencyColor = new ColorBGRA(255, 0, 255, 255);
+            RewardDangerCurrencyQualityColor = new ColorBGRA(210, 210, 210, 255);
+            RewardDangerUniqueColor = new ColorBGRA(175, 96, 37, 255);
+            RewardDangerDivinationColor = new ColorBGRA(250, 250, 0, 255);
+            RewardSilverCurrencyColor = new ColorBGRA(255, 0, 255, 255);
+            RewardSilverCurrencyQualityColor = new ColorBGRA(210, 210, 210, 255);
+            RewardSilverJewelryUniqueColor = new ColorBGRA(175, 96, 37, 255);
+            RewardSilverDivinationColor = new ColorBGRA(250, 250, 0, 255);
+            RewardSilverUniqueOneColor = new ColorBGRA(175, 96, 37, 255);
+            RewardSilverUniqueTwoColor = new ColorBGRA(175, 96, 37, 255);
+            RewardSilverUniqueThreeColor = new ColorBGRA(175, 96, 37, 255);
+
+
+
+
+
+
             #endregion
             #region DarkShrines
             Darkshrines = true;
             DarkshrinesOnFloor = true;
             DarkshrinesOnFloorSize = new RangeNode<int>(100, 1, 200);
             DarkshrinesOnMap = true;
-            DarkshrinesIcon = new RangeNode<int>(18, 1, 50);
+            DarkshrinesIcon = new RangeNode<int>(25, 1, 50);
             DarkshrinesColor = new ColorBGRA(0, 128, 255, 255);
             #endregion
             #region Doors
             HiddenDoorway = true;
             HiddenDoorwayIcon = new RangeNode<int>(18, 1, 50);
-            HiddenDoorwayColor = new ColorBGRA(255, 255, 255, 255);
+            HiddenDoorwayColor = new ColorBGRA(119, 213, 108, 255);
             SmashableDoor = true;
-            SmashableDoorColor = new ColorBGRA(255, 255, 255, 255);
+            SmashableDoorColor = new ColorBGRA(251, 97, 4, 255);
             #endregion
             #region Traps
             Roombas = true;
@@ -38,9 +65,9 @@ namespace LabQoL
             Saws = true;
             SawsColor = new ColorBGRA(255, 255, 255, 255);
             SecretSwitch = true;
-            SecretSwitchColor = new ColorBGRA(255, 255, 255, 255);
+            SecretSwitchColor = new ColorBGRA(0, 128, 255, 255);
             Delivery = true;
-            DeliveryColor = new ColorBGRA(255, 255, 255, 255);
+            DeliveryColor = new ColorBGRA(0, 255, 0, 255);
             PressurePlates = true;
             PressurePlatesColor = new ColorBGRA(255, 255, 255, 255);
             Arrows = true;
@@ -60,13 +87,13 @@ namespace LabQoL
             NormalShrineOnFloor = true;
             NormalShrineOnFloorSize = new RangeNode<int>(100, 1, 200);
             NormalShrineOnMap = true;
-            NormalShrinesIcon = new RangeNode<int>(18, 1, 50);
+            NormalShrinesIcon = new RangeNode<int>(25, 1, 50);
             NormalShrinesColor = new ColorBGRA(0, 128, 255, 255);
             LesserShrines = true;
             LesserShrineOnFloor = true;
             LesserShrineOnFloorSize = new RangeNode<int>(100, 1, 200);
             LesserShrineOnMap = true;
-            LesserShrinesIcon = new RangeNode<int>(18, 1, 50);
+            LesserShrinesIcon = new RangeNode<int>(25, 1, 50);
             LesserShrinesColor = new ColorBGRA(0, 128, 255, 255);
             #endregion
             #region Debug-ish
@@ -83,10 +110,40 @@ namespace LabQoL
         // 11-1
         [Menu("Chests", 111, 11)]
         public ToggleNode LabyrinthChest { get; set; }
-        [Menu("Chest Size", 1111, 111)]
-        public RangeNode<int> LabyrinthChestIcon { get; set; }
-        [Menu("Chest Color", 1112, 111)]
-        public ColorNode LabyrinthChestColor { get; set; }
+        [Menu("Size", 156811, 111)]
+        public RangeNode<int> LabyrinthChestSize { get; set; }
+        [Menu("Treasure Key", 9256, 111)]
+        public ColorNode TreasureKeyChestColor { get; set; }
+        [Menu("Trinkets", 4793, 111)]
+        public ColorNode TrinketChestColor { get; set; }
+        [Menu("Specific Unique", 48567, 111)]
+        public ColorNode SpecificUniqueChestColor { get; set; }
+        [Menu("Currency", 4385, 111)]
+        public ColorNode RewardCurrencyColor { get; set; }
+        [Menu("Currency Quality", 453, 111)]
+        public ColorNode RewardCurrencyQualityColor { get; set; }
+        [Menu("Danger Cur", 9987, 111)]
+        public ColorNode RewardDangerCurrencyColor { get; set; }
+        [Menu("Danger Cur Quality", 4536, 111)]
+        public ColorNode RewardDangerCurrencyQualityColor { get; set; }
+        [Menu("Danger Unique", 3654, 111)]
+        public ColorNode RewardDangerUniqueColor { get; set; }
+        [Menu("Danger Divination", 45337, 111)]
+        public ColorNode RewardDangerDivinationColor { get; set; }
+        [Menu("Silver Cur", 78963, 111)]
+        public ColorNode RewardSilverCurrencyColor { get; set; }
+        [Menu("Silver Cur Quality", 215487, 111)]
+        public ColorNode RewardSilverCurrencyQualityColor { get; set; }
+        [Menu("Silver Jewelry Unique", 5487, 111)]
+        public ColorNode RewardSilverJewelryUniqueColor { get; set; }
+        [Menu("Silver Divination", 4144, 111)]
+        public ColorNode RewardSilverDivinationColor { get; set; }
+        [Menu("Silver Unique 1", 401586, 111)]
+        public ColorNode RewardSilverUniqueOneColor { get; set; }
+        [Menu("Silver Unique 2", 43949, 111)]
+        public ColorNode RewardSilverUniqueTwoColor { get; set; }
+        [Menu("Silver Unique 3", 34877, 111)]
+        public ColorNode RewardSilverUniqueThreeColor { get; set; }
 
         // 11-2
         [Menu("Dark Shrines", 112, 11)]

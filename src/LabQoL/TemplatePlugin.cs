@@ -257,7 +257,7 @@ namespace LabQoL
 
                 if (Settings.Darkshrines && Settings.DarkshrinesOnFloor)
                 {
-                    if (entity.GetComponent<Shrine>().IsAvailable && entity.Path.Contains("Metadata/Terrain/Labyrinth/Objects/LabyrinthDarkshrineHidden"))
+                    if (entity.Path.Contains("Metadata/Terrain/Labyrinth/Objects/LabyrinthDarkshrineHidden"))
                     {
                         Camera camera = GameController.Game.IngameState.Camera;
                         Vector2 Coords = camera.WorldToScreen(entity.Pos.Translate(0, 0, 0), entity);
@@ -351,41 +351,63 @@ namespace LabQoL
             }
         }
 
-        private static readonly List<string> LabyrinthRewardChests = new List<string>
-        {
-            "Metadata/Chests/Labyrinth/LabyrinthTreasureKey",
-            "Metadata/Chests/Labyrinth/LabyrinthSpecificUnique",
-            "Metadata/Chests/Labyrinth/LabyrinthReward0Currency",
-            "Metadata/Chests/Labyrinth/LabyrinthReward0CurrencyQuality",
-
-            "Metadata/Chests/Labyrinth/LabyrinthRewardDangerCurrency",
-            "Metadata/Chests/Labyrinth/LabyrinthRewardDangerCurrencyQuality",
-            "Metadata/Chests/Labyrinth/LabyrinthRewardDangerUnique",
-            "Metadata/Chests/Labyrinth/LabyrinthRewardDangerDivination",
-
-            "Metadata/Chests/Labyrinth/LabyrinthRewardSilverCurrency",
-            "Metadata/Chests/Labyrinth/LabyrinthRewardSilverCurrencyQuality",
-            "Metadata/Chests/Labyrinth/LabyrinthRewardSilverJewelryUnique",
-            "Metadata/Chests/Labyrinth/LabyrinthRewardSilverDivination",
-
-            "Metadata/Chests/Labyrinth/LabyrinthRewardSilverUnique1",
-            "Metadata/Chests/Labyrinth/LabyrinthRewardSilverUnique2",
-            "Metadata/Chests/Labyrinth/LabyrinthRewardSilverUnique3",
-
-            "Metadata/Chests/Labyrinth/LabyrinthTrinketChest"
-        };
-
         private MapIcon GetMapIcon(EntityWrapper e)
         {
-            if (Settings.LabyrinthChest)
-                if (LabyrinthRewardChests.Contains(e.Path))
-                    return new MapIcon(e, new HudTexture("strongbox.png", Settings.LabyrinthChestColor), () => Settings.LabyrinthChest, Settings.LabyrinthChestIcon);
+            if (Settings.LabyrinthChest && !e.GetComponent<Chest>().IsOpened)
+            {
+                if (e.Path.Contains("Metadata/Chests/Labyrinth/LabyrinthTreasureKey"))
+                    return new MapIcon(e, new HudTexture("strongbox.png", Settings.TreasureKeyChestColor), () => Settings.LabyrinthChest, Settings.LabyrinthChestSize);
+
+                if (e.Path.Contains("Metadata/Chests/Labyrinth/LabyrinthTrinketChest"))
+                    return new MapIcon(e, new HudTexture("strongbox.png", Settings.TrinketChestColor), () => Settings.LabyrinthChest, Settings.LabyrinthChestSize);
+
+                if (e.Path.Contains("Metadata/Chests/Labyrinth/LabyrinthSpecificUnique"))
+                    return new MapIcon(e, new HudTexture("strongbox.png", Settings.SpecificUniqueChestColor), () => Settings.LabyrinthChest, Settings.LabyrinthChestSize);
+
+                if (e.Path.Contains("Metadata/Chests/Labyrinth/LabyrinthReward0Currency"))
+                    return new MapIcon(e, new HudTexture("strongbox.png", Settings.RewardCurrencyColor), () => Settings.LabyrinthChest, Settings.LabyrinthChestSize);
+
+                if (e.Path.Contains("Metadata/Chests/Labyrinth/LabyrinthReward0CurrencyQuality"))
+                    return new MapIcon(e, new HudTexture("strongbox.png", Settings.RewardCurrencyQualityColor), () => Settings.LabyrinthChest, Settings.LabyrinthChestSize);
+
+                if (e.Path.Contains("Metadata/Chests/Labyrinth/LabyrinthRewardDangerCurrency"))
+                    return new MapIcon(e, new HudTexture("strongbox.png", Settings.RewardDangerCurrencyColor), () => Settings.LabyrinthChest, Settings.LabyrinthChestSize);
+
+                if (e.Path.Contains("Metadata/Chests/Labyrinth/LabyrinthRewardDangerCurrencyQuality"))
+                    return new MapIcon(e, new HudTexture("strongbox.png", Settings.RewardDangerCurrencyQualityColor), () => Settings.LabyrinthChest, Settings.LabyrinthChestSize);
+
+                if (e.Path.Contains("Metadata/Chests/Labyrinth/LabyrinthRewardDangerUnique"))
+                    return new MapIcon(e, new HudTexture("strongbox.png", Settings.RewardDangerUniqueColor), () => Settings.LabyrinthChest, Settings.LabyrinthChestSize);
+
+                if (e.Path.Contains("Metadata/Chests/Labyrinth/LabyrinthRewardDangerDivination"))
+                    return new MapIcon(e, new HudTexture("strongbox.png", Settings.RewardDangerDivinationColor), () => Settings.LabyrinthChest, Settings.LabyrinthChestSize);
+
+                if (e.Path.Contains("Metadata/Chests/Labyrinth/LabyrinthRewardSilverCurrency"))
+                    return new MapIcon(e, new HudTexture("strongbox.png", Settings.RewardSilverCurrencyColor), () => Settings.LabyrinthChest, Settings.LabyrinthChestSize);
+
+                if (e.Path.Contains("Metadata/Chests/Labyrinth/LabyrinthRewardSilverCurrencyQuality"))
+                    return new MapIcon(e, new HudTexture("strongbox.png", Settings.RewardSilverCurrencyQualityColor), () => Settings.LabyrinthChest, Settings.LabyrinthChestSize);
+
+                if (e.Path.Contains("Metadata/Chests/Labyrinth/LabyrinthRewardSilverJewelryUnique"))
+                    return new MapIcon(e, new HudTexture("strongbox.png", Settings.RewardSilverJewelryUniqueColor), () => Settings.LabyrinthChest, Settings.LabyrinthChestSize);
+
+                if (e.Path.Contains("Metadata/Chests/Labyrinth/LabyrinthRewardSilverDivination"))
+                    return new MapIcon(e, new HudTexture("strongbox.png", Settings.RewardSilverDivinationColor), () => Settings.LabyrinthChest, Settings.LabyrinthChestSize);
+
+                if (e.Path.Contains("Metadata/Chests/Labyrinth/LabyrinthRewardSilverUnique1"))
+                    return new MapIcon(e, new HudTexture("strongbox.png", Settings.RewardSilverUniqueOneColor), () => Settings.LabyrinthChest, Settings.LabyrinthChestSize);
+
+                if (e.Path.Contains("Metadata/Chests/Labyrinth/LabyrinthRewardSilverUnique3"))
+                    return new MapIcon(e, new HudTexture("strongbox.png", Settings.RewardSilverUniqueTwoColor), () => Settings.LabyrinthChest, Settings.LabyrinthChestSize);
+
+                if (e.Path.Contains("Metadata/Chests/Labyrinth/LabyrinthRewardSilverUnique2"))
+                    return new MapIcon(e, new HudTexture("strongbox.png", Settings.RewardSilverUniqueThreeColor), () => Settings.LabyrinthChest, Settings.LabyrinthChestSize);
+            }
 
             if (Settings.Darkshrines)
                 if (Settings.DarkshrinesOnMap)
                     if (e.Path.Contains("Metadata/Terrain/Labyrinth/Objects/LabyrinthDarkshrineHidden"))
-                        if (e.GetComponent<Shrine>().IsAvailable)
-                            return new MapIcon(e, new HudTexture("shrines.png", Settings.DarkshrinesColor), () => Settings.DarkshrinesOnMap, Settings.DarkshrinesIcon);
+                        return new MapIcon(e, new HudTexture("shrines.png", Settings.DarkshrinesColor), () => Settings.DarkshrinesOnMap, Settings.DarkshrinesIcon);
 
             if (Settings.NormalShrines)
                 if (Settings.NormalShrineOnMap)
