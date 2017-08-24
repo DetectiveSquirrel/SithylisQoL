@@ -44,6 +44,7 @@ namespace LabQoL
             base.Render();
             DrawToMap();
             DrawAtziriMirrorReflect();
+            DrawLieutenantSkeletonThorns();
             DrawShrinesOnFloor();
 
             if (Settings.SecretSwitch)
@@ -130,7 +131,6 @@ namespace LabQoL
                     Camera camera = GameController.Game.IngameState.Camera;
                     Vector2 chestScreenCoords = camera.WorldToScreen(entity.Pos.Translate(0, 0, 0), entity);
                     if (chestScreenCoords != new Vector2())
-
                     {
                         var iconRect = new Vector2(chestScreenCoords.X, chestScreenCoords.Y);
 
@@ -144,7 +144,6 @@ namespace LabQoL
 
                         var background = new RectangleF(chestScreenCoords.X - (maxWidth / 2) - 3, chestScreenCoords.Y - maxheight, maxWidth + 6, maxheight);
                         Graphics.DrawBox(background, Color.Black);
-
                     }
                 }
             }
@@ -158,7 +157,6 @@ namespace LabQoL
                     Camera camera = GameController.Game.IngameState.Camera;
                     Vector2 chestScreenCoords = camera.WorldToScreen(entity.Pos.Translate(0, 0, zOffset), entity);
                     if (chestScreenCoords != new Vector2())
-
                     {
                         var iconRect = new Vector2(chestScreenCoords.X, chestScreenCoords.Y);
 
@@ -173,7 +171,6 @@ namespace LabQoL
                         var background = new RectangleF(chestScreenCoords.X - (maxWidth / 2) - 3, chestScreenCoords.Y - maxheight, maxWidth + 6, maxheight);
 
                         Graphics.DrawBox(background, Color.Black);
-
                     }
                 }
             }
@@ -200,13 +197,34 @@ namespace LabQoL
             }
         }
 
+        private void DrawLieutenantSkeletonThorns()
+        {
+            if (!Settings.LieutenantofRage)
+                return;
+
+            foreach (EntityWrapper entity in entities)
+            {
+                if (entity.Path.Contains("Metadata/Monsters/Labyrinth/LabyrinthLieutenantSkeletonMeleeIce") || entity.Path.Contains("Metadata/Monsters/Labyrinth/LabyrinthLieutenantSkeletonMeleeIce2"))
+                {
+                    Camera camera = GameController.Game.IngameState.Camera;
+                    Vector2 chestScreenCoords = camera.WorldToScreen(entity.Pos.Translate(0, 0, -90), entity);
+                    if (chestScreenCoords != new Vector2())
+                    {
+                        // create rect at chest location to draw icon
+                        var iconRect = new RectangleF(chestScreenCoords.X - Settings.LieutenantofRageSize / 2, chestScreenCoords.Y - Settings.LieutenantofRageSize / 2, Settings.AtziriMirrorSize, Settings.LieutenantofRageSize);
+                        Graphics.DrawPluginImage(PluginDirectory + @"\images\mirror.png", iconRect);
+                    }
+                }
+            }
+        }
+
         private void DrawShrinesOnFloor()
         {
-            if (Settings.LesserShrines && Settings.LesserShrineOnFloor)
+            foreach (EntityWrapper entity in entities)
             {
-                foreach (EntityWrapper entity in entities)
+                if (Settings.LesserShrines && Settings.LesserShrineOnFloor)
                 {
-                    if (entity.Path.Contains("Metadata/Shrines/LesserShrine"))
+                    if (entity.GetComponent<Shrine>().IsAvailable && entity.Path.Contains("Metadata/Shrines/LesserShrine"))
                     {
                         Camera camera = GameController.Game.IngameState.Camera;
                         Vector2 Coords = camera.WorldToScreen(entity.Pos.Translate(0, 0, -90), entity);
@@ -218,13 +236,10 @@ namespace LabQoL
                         }
                     }
                 }
-            }
 
-            if (Settings.NormalShrines && Settings.NormalShrineOnFloor)
-            {
-                foreach (EntityWrapper entity in entities)
+                if (Settings.NormalShrines && Settings.NormalShrineOnFloor)
                 {
-                    if (entity.Path.Contains("Metadata/Shrines/Shrine"))
+                    if (entity.GetComponent<Shrine>().IsAvailable && entity.Path.Contains("Metadata/Shrines/Shrine"))
                     {
                         Camera camera = GameController.Game.IngameState.Camera;
                         Vector2 Coords = camera.WorldToScreen(entity.Pos.Translate(0, 0, 0), entity);
@@ -233,6 +248,21 @@ namespace LabQoL
                             // create rect at chest location to draw icon
                             var iconRect = new RectangleF(Coords.X - Settings.NormalShrineOnFloorSize / 2, Coords.Y - Settings.NormalShrineOnFloorSize / 2, Settings.NormalShrineOnFloorSize, Settings.NormalShrineOnFloorSize);
                             Graphics.DrawImage("shrines.png", iconRect, Settings.NormalShrinesColor);
+                        }
+                    }
+                }
+
+                if (Settings.Darkshrines && Settings.DarkshrinesOnFloor)
+                {
+                    if (entity.GetComponent<Shrine>().IsAvailable && entity.Path.Contains("Metadata/Terrain/Labyrinth/Objects/LabyrinthDarkshrineHidden"))
+                    {
+                        Camera camera = GameController.Game.IngameState.Camera;
+                        Vector2 Coords = camera.WorldToScreen(entity.Pos.Translate(0, 0, 0), entity);
+                        if (Coords != new Vector2())
+                        {
+                            // create rect at chest location to draw icon
+                            var iconRect = new RectangleF(Coords.X - Settings.DarkshrinesOnFloorSize / 2, Coords.Y - Settings.DarkshrinesOnFloorSize / 2, Settings.DarkshrinesOnFloorSize, Settings.DarkshrinesOnFloorSize);
+                            Graphics.DrawImage("shrines.png", iconRect, Settings.DarkshrinesColor);
                         }
                     }
                 }
@@ -317,8 +347,7 @@ namespace LabQoL
                 texture.Draw(Graphics, new RectangleF(point.X - size / 2f, point.Y - size / 2f, size, size));
             }
         }
-
-
+        
         private static readonly List<string> LabyrinthRewardChests = new List<string>
         {
             "Metadata/Chests/Labyrinth/LabyrinthTreasureKey",
@@ -343,23 +372,31 @@ namespace LabQoL
 
         private MapIcon GetMapIcon(EntityWrapper e)
         {
-            if (LabyrinthRewardChests.Contains(e.Path) && Settings.LabyrinthChest)
-                return new MapIcon(e, new HudTexture("strongbox.png", Settings.LabyrinthChestColor), () => Settings.LabyrinthChest, Settings.LabyrinthChestIcon);
+            if (Settings.LabyrinthChest)
+                if (LabyrinthRewardChests.Contains(e.Path))
+                    return new MapIcon(e, new HudTexture("strongbox.png", Settings.LabyrinthChestColor), () => Settings.LabyrinthChest, Settings.LabyrinthChestIcon);
 
-            if (e.Path.Contains("Metadata/Terrain/Labyrinth/Objects/LabyrinthDarkshrineHidden") && Settings.Darkshrines)
-                return new MapIcon(e, new HudTexture("shrines.png", Settings.DarkshrinesColor), () => Settings.Darkshrines, Settings.DarkshrinesIcon);
+            if (Settings.Darkshrines)
+                if (Settings.DarkshrinesOnMap)
+                    if (e.Path.Contains("Metadata/Terrain/Labyrinth/Objects/LabyrinthDarkshrineHidden"))
+                        if (e.GetComponent<Shrine>().IsAvailable)
+                            return new MapIcon(e, new HudTexture("shrines.png", Settings.DarkshrinesColor), () => Settings.DarkshrinesOnMap, Settings.DarkshrinesIcon);
 
-            if (e.Path.Contains("Metadata/Shrines/Shrine") && Settings.NormalShrines && Settings.NormalShrineOnMap)
-                return new MapIcon(e, new HudTexture("shrines.png", Settings.NormalShrinesColor), () => Settings.NormalShrineOnMap, Settings.NormalShrinesIcon);
+            if (Settings.NormalShrines)
+                if (Settings.NormalShrineOnMap)
+                    if (e.Path.Contains("Metadata/Shrines/Shrine"))
+                        if (e.GetComponent<Shrine>().IsAvailable)
+                            return new MapIcon(e, new HudTexture("shrines.png", Settings.NormalShrinesColor), () => Settings.NormalShrineOnMap, Settings.NormalShrinesIcon);
 
-            if (e.Path.Contains("Metadata/Shrines/LesserShrine") && Settings.LesserShrines && Settings.LesserShrineOnMap)
-                return new MapIcon(e, new HudTexture("shrines.png", Settings.LesserShrinesColor), () => Settings.LesserShrineOnMap, Settings.LesserShrinesIcon);
+            if (Settings.LesserShrines)
+                if (Settings.LesserShrineOnMap)
+                    if (e.Path.Contains("Metadata/Shrines/LesserShrine"))
+                        if (e.GetComponent<Shrine>().IsAvailable)
+                            return new MapIcon(e, new HudTexture("shrines.png", Settings.LesserShrinesColor), () => Settings.LesserShrineOnMap, Settings.LesserShrinesIcon);
 
-            if (e.Path.Contains("Metadata/Terrain/Labyrinth/Objects/HiddenDoor_Short") && Settings.HiddenDoorway)
-                return new MapIcon(e, new HudTexture("hidden_door.png", Settings.HiddenDoorwayColor), () => Settings.HiddenDoorway, Settings.HiddenDoorwayIcon);
-
-            if (e.Path.Contains("Metadata/Terrain/Labyrinth/Objects/HiddenDoor_Long") && Settings.HiddenDoorway)
-                return new MapIcon(e, new HudTexture("hidden_door.png", Settings.HiddenDoorwayColor), () => Settings.HiddenDoorway, Settings.HiddenDoorwayIcon);
+            if (Settings.HiddenDoorway)
+                if (e.Path.Contains("Metadata/Terrain/Labyrinth/Objects/HiddenDoor_Short") || e.Path.Contains("Metadata/Terrain/Labyrinth/Objects/HiddenDoor_Long"))
+                    return new MapIcon(e, new HudTexture("hidden_door.png", Settings.HiddenDoorwayColor), () => Settings.HiddenDoorway, Settings.HiddenDoorwayIcon);
 
             return null;
         }

@@ -17,6 +17,9 @@ namespace LabQoL
             #endregion
             #region DarkShrines
             Darkshrines = true;
+            DarkshrinesOnFloor = true;
+            DarkshrinesOnFloorSize = new RangeNode<int>(100, 1, 200);
+            DarkshrinesOnMap = true;
             DarkshrinesIcon = new RangeNode<int>(18, 1, 50);
             DarkshrinesColor = new ColorBGRA(0, 128, 255, 255);
             #endregion
@@ -38,7 +41,11 @@ namespace LabQoL
             HiddenDoorway = true;
             HiddenDoorwayIcon = new RangeNode<int>(18, 1, 50);
             HiddenDoorwayColor = new ColorBGRA(255, 255, 255, 255);
-            #endregion 
+            #endregion
+            #region Lieutenant of Rage, Has Thorns
+            LieutenantofRage = true;
+            LieutenantofRageSize = new RangeNode<int>(100, 1, 200); 
+            #endregion
             #endregion
             #region Atziri
             Atziri = true;
@@ -80,9 +87,15 @@ namespace LabQoL
         // 11-2
         [Menu("Dark Shrines", 112, 11)]
         public ToggleNode Darkshrines { get; set; }
-        [Menu("Shrine Size", 1121, 112)]
+        [Menu("Draw on Floor", 1121, 112)]
+        public ToggleNode DarkshrinesOnFloor { get; set; }
+        [Menu("Size", 11211, 1121)]
+        public RangeNode<int> DarkshrinesOnFloorSize { get; set; }
+        [Menu("Draw on Map", 1122, 112)]
+        public ToggleNode DarkshrinesOnMap { get; set; }
+        [Menu("Shrine Size", 11221, 1122)]
         public RangeNode<int> DarkshrinesIcon { get; set; }
-        [Menu("Shrine Color", 1122, 112)]
+        [Menu("Shrine Color", 1123, 112)]
         public ColorNode DarkshrinesColor { get; set; }
 
         // 11-3
@@ -104,6 +117,11 @@ namespace LabQoL
         public RangeNode<int> HiddenDoorwayIcon { get; set; }
         [Menu("Color", 1162, 116)]
         public ColorNode HiddenDoorwayColor { get; set; }
+
+        [Menu("Lieutenant With Thorns", 117, 11)]
+        public ToggleNode LieutenantofRage { get; set; }
+        [Menu("Size", 1171, 117)]
+        public RangeNode<int> LieutenantofRageSize { get; set; }
 
         // 11-5
         [Menu("Traps", 115, 11)]
