@@ -74,6 +74,9 @@ namespace LabQoL
             if (Settings.SmashableDoor)
                 DrawTextLabel(Settings.SmashableDoorColor.Value, "Smashable" + Environment.NewLine + "Door", "Objects/LabyrinthSmashableDoor");
 
+            if (Settings.SecretPassage)
+                DrawTextLabelEquals(Settings.SecretPassageColor.Value, "Secret" + Environment.NewLine + "Passage", "Metadata/Terrain/Labyrinth/Objects/SecretPassage");
+
             // Debug-ish, shows entity path
             if (Settings.Debug)
                 ShowAllPathObjects();
@@ -156,6 +159,60 @@ namespace LabQoL
             foreach (EntityWrapper entity in entities)
             {
                 if (entity.Path.ToLower().Contains(path.ToLower()))
+                {
+                    Camera camera = GameController.Game.IngameState.Camera;
+                    Vector2 chestScreenCoords = camera.WorldToScreen(entity.Pos.Translate(0, 0, zOffset), entity);
+                    if (chestScreenCoords != new Vector2())
+                    {
+                        var iconRect = new Vector2(chestScreenCoords.X, chestScreenCoords.Y);
+
+                        float maxWidth = 0;
+                        float maxheight = 0;
+
+                        var size = Graphics.DrawText(text, 16, iconRect, color, FontDrawFlags.Center);
+                        chestScreenCoords.Y += size.Height;
+                        maxheight += size.Height;
+                        maxWidth = Math.Max(maxWidth, size.Width);
+
+                        var background = new RectangleF(chestScreenCoords.X - (maxWidth / 2) - 3, chestScreenCoords.Y - maxheight, maxWidth + 6, maxheight);
+
+                        Graphics.DrawBox(background, Color.Black);
+                    }
+                }
+            }
+        }
+
+        private void DrawTextLabelEquals(ColorBGRA color, string text, string path)
+        {
+            foreach (EntityWrapper entity in entities)
+            {
+                if (entity.Path.ToLower().Equals(path.ToLower()))
+                {
+                    Camera camera = GameController.Game.IngameState.Camera;
+                    Vector2 chestScreenCoords = camera.WorldToScreen(entity.Pos.Translate(0, 0, 0), entity);
+                    if (chestScreenCoords != new Vector2())
+                    {
+                        var iconRect = new Vector2(chestScreenCoords.X, chestScreenCoords.Y);
+
+                        float maxWidth = 0;
+                        float maxheight = 0;
+
+                        var size = Graphics.DrawText(text, 16, iconRect, color, FontDrawFlags.Center);
+                        chestScreenCoords.Y += size.Height;
+                        maxheight += size.Height;
+                        maxWidth = Math.Max(maxWidth, size.Width);
+
+                        var background = new RectangleF(chestScreenCoords.X - (maxWidth / 2) - 3, chestScreenCoords.Y - maxheight, maxWidth + 6, maxheight);
+                        Graphics.DrawBox(background, Color.Black);
+                    }
+                }
+            }
+        }
+        private void DrawTextLabelEquals(ColorBGRA color, string text, string path, int zOffset)
+        {
+            foreach (EntityWrapper entity in entities)
+            {
+                if (entity.Path.ToLower().Equals(path.ToLower()))
                 {
                     Camera camera = GameController.Game.IngameState.Camera;
                     Vector2 chestScreenCoords = camera.WorldToScreen(entity.Pos.Translate(0, 0, zOffset), entity);
@@ -424,6 +481,10 @@ namespace LabQoL
             if (Settings.HiddenDoorway)
                 if (e.Path.Contains("Metadata/Terrain/Labyrinth/Objects/HiddenDoor_Short") || e.Path.Contains("Metadata/Terrain/Labyrinth/Objects/HiddenDoor_Long"))
                     return new MapIcon(e, new HudTexture("hidden_door.png", Settings.HiddenDoorwayColor), () => Settings.HiddenDoorway, Settings.HiddenDoorwayIcon);
+
+            if (Settings.SecretPassage)
+                if (e.Path.Equals("Metadata/Terrain/Labyrinth/Objects/SecretPassage"))
+                    return new MapIcon(e, new HudTexture("hidden_door.png", Settings.SecretPassageColor), () => Settings.SecretPassage, Settings.SecretPassageIcon);
 
             return null;
         }

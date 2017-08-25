@@ -54,6 +54,9 @@ namespace LabQoL
             HiddenDoorway = true;
             HiddenDoorwayIcon = new RangeNode<int>(18, 1, 50);
             HiddenDoorwayColor = new ColorBGRA(119, 213, 108, 255);
+            SecretPassage = true;
+            SecretPassageIcon = new RangeNode<int>(18, 1, 50);
+            SecretPassageColor = new ColorBGRA(0, 255, 255, 255);
             SmashableDoor = true;
             SmashableDoorColor = new ColorBGRA(251, 97, 4, 255);
             #endregion
@@ -178,6 +181,14 @@ namespace LabQoL
         public RangeNode<int> HiddenDoorwayIcon { get; set; }
         [Menu("Color", 1162, 116)]
         public ColorNode HiddenDoorwayColor { get; set; }
+
+
+        [Menu("Secret Passage", 35476, 11)]
+        public ToggleNode SecretPassage { get; set; }
+        [Menu("Size", 354761, 35476)]
+        public RangeNode<int> SecretPassageIcon { get; set; }
+        [Menu("Color", 354762, 35476)]
+        public ColorNode SecretPassageColor { get; set; }
 
         [Menu("Smashable Door", 118, 11)]
         public ToggleNode SmashableDoor { get; set; }
