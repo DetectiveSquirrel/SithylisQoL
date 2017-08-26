@@ -19,12 +19,14 @@ namespace LabQoL
     public class Sithylis_QoL : BaseSettingsPlugin<LabQoLSettings>
     {
         private HashSet<EntityWrapper> entities;
-        public string imagePath;
+        public string CustomImagePath;
+        public string PoeHUDImageLocation;
 
         public override void Initialise()
         {
             entities = new HashSet<EntityWrapper>();
-            imagePath = PluginDirectory + @"\images\";
+            CustomImagePath = PluginDirectory + @"\images\";
+            PoeHUDImageLocation = PluginDirectory + @"\..\..\textures\";
         }
 
         public override void Render()
@@ -317,7 +319,7 @@ namespace LabQoL
                     {
                         // create rect at chest location to draw icon
                         var iconRect = new RectangleF(chestScreenCoords.X - Settings.LieutenantofRageSize / 2, chestScreenCoords.Y - Settings.LieutenantofRageSize / 2, Settings.AtziriMirrorSize, Settings.LieutenantofRageSize);
-                        Graphics.DrawPluginImage(imagePath + "mirror.png", iconRect);
+                        Graphics.DrawPluginImage(CustomImagePath + "mirror.png", iconRect);
                     }
                 }
             }
@@ -337,7 +339,7 @@ namespace LabQoL
                         {
                             // create rect at chest location to draw icon
                             var iconRect = new RectangleF(Coords.X - Settings.LesserShrineOnFloorSize / 2, Coords.Y - Settings.LesserShrineOnFloorSize / 2, Settings.LesserShrineOnFloorSize, Settings.LesserShrineOnFloorSize);
-                            Graphics.DrawPluginImage(imagePath + "shrines.png", iconRect, Settings.LesserShrinesColor);
+                            Graphics.DrawPluginImage(CustomImagePath + "shrines.png", iconRect, Settings.LesserShrinesColor);
                         }
                     }
                 }
@@ -352,7 +354,7 @@ namespace LabQoL
                         {
                             // create rect at chest location to draw icon
                             var iconRect = new RectangleF(Coords.X - Settings.NormalShrineOnFloorSize / 2, Coords.Y - Settings.NormalShrineOnFloorSize / 2, Settings.NormalShrineOnFloorSize, Settings.NormalShrineOnFloorSize);
-                            Graphics.DrawPluginImage(imagePath + "shrines.png", iconRect, Settings.NormalShrinesColor);
+                            Graphics.DrawPluginImage(CustomImagePath + "shrines.png", iconRect, Settings.NormalShrinesColor);
                         }
                     }
                 }
@@ -367,7 +369,7 @@ namespace LabQoL
                         {
                             // create rect at chest location to draw icon
                             var iconRect = new RectangleF(Coords.X - Settings.DarkshrinesOnFloorSize / 2, Coords.Y - Settings.DarkshrinesOnFloorSize / 2, Settings.DarkshrinesOnFloorSize, Settings.DarkshrinesOnFloorSize);
-                            Graphics.DrawPluginImage(imagePath + "shrines.png", iconRect, Settings.DarkshrinesColor);
+                            Graphics.DrawPluginImage(CustomImagePath + "shrines.png", iconRect, Settings.DarkshrinesColor);
                         }
                     }
                 }
@@ -458,81 +460,81 @@ namespace LabQoL
             if (Settings.LabyrinthChest && !e.GetComponent<Chest>().IsOpened)
             {
                 if (e.Path.Contains("Metadata/Chests/Labyrinth/LabyrinthTreasureKey"))
-                    return new MapIcon(e, new HudTexture("strongbox.png", Settings.TreasureKeyChestColor), () => Settings.LabyrinthChest, Settings.LabyrinthChestSize);
+                    return new MapIcon(e, new HudTexture(PoeHUDImageLocation + "strongbox.png", Settings.TreasureKeyChestColor), () => Settings.LabyrinthChest, Settings.LabyrinthChestSize);
 
                 if (e.Path.Contains("Metadata/Chests/Labyrinth/LabyrinthTrinketChest"))
-                    return new MapIcon(e, new HudTexture("strongbox.png", Settings.TrinketChestColor), () => Settings.LabyrinthChest, Settings.LabyrinthChestSize);
+                    return new MapIcon(e, new HudTexture(PoeHUDImageLocation + "strongbox.png", Settings.TrinketChestColor), () => Settings.LabyrinthChest, Settings.LabyrinthChestSize);
 
                 if (e.Path.Contains("Metadata/Chests/Labyrinth/LabyrinthSpecificUnique"))
-                    return new MapIcon(e, new HudTexture("strongbox.png", Settings.SpecificUniqueChestColor), () => Settings.LabyrinthChest, Settings.LabyrinthChestSize);
+                    return new MapIcon(e, new HudTexture(PoeHUDImageLocation + "strongbox.png", Settings.SpecificUniqueChestColor), () => Settings.LabyrinthChest, Settings.LabyrinthChestSize);
 
                 if (e.Path.Contains("Metadata/Chests/Labyrinth/LabyrinthReward0Currency"))
-                    return new MapIcon(e, new HudTexture("strongbox.png", Settings.RewardCurrencyColor), () => Settings.LabyrinthChest, Settings.LabyrinthChestSize);
+                    return new MapIcon(e, new HudTexture(PoeHUDImageLocation + "strongbox.png", Settings.RewardCurrencyColor), () => Settings.LabyrinthChest, Settings.LabyrinthChestSize);
 
                 if (e.Path.Contains("Metadata/Chests/Labyrinth/LabyrinthReward0CurrencyQuality"))
-                    return new MapIcon(e, new HudTexture("strongbox.png", Settings.RewardCurrencyQualityColor), () => Settings.LabyrinthChest, Settings.LabyrinthChestSize);
+                    return new MapIcon(e, new HudTexture(PoeHUDImageLocation + "strongbox.png", Settings.RewardCurrencyQualityColor), () => Settings.LabyrinthChest, Settings.LabyrinthChestSize);
 
                 if (e.Path.Contains("Metadata/Chests/Labyrinth/LabyrinthRewardDangerCurrency"))
-                    return new MapIcon(e, new HudTexture("strongbox.png", Settings.RewardDangerCurrencyColor), () => Settings.LabyrinthChest, Settings.LabyrinthChestSize);
+                    return new MapIcon(e, new HudTexture(PoeHUDImageLocation + "strongbox.png", Settings.RewardDangerCurrencyColor), () => Settings.LabyrinthChest, Settings.LabyrinthChestSize);
 
                 if (e.Path.Contains("Metadata/Chests/Labyrinth/LabyrinthRewardDangerCurrencyQuality"))
-                    return new MapIcon(e, new HudTexture("strongbox.png", Settings.RewardDangerCurrencyQualityColor), () => Settings.LabyrinthChest, Settings.LabyrinthChestSize);
+                    return new MapIcon(e, new HudTexture(PoeHUDImageLocation + "strongbox.png", Settings.RewardDangerCurrencyQualityColor), () => Settings.LabyrinthChest, Settings.LabyrinthChestSize);
 
                 if (e.Path.Contains("Metadata/Chests/Labyrinth/LabyrinthRewardDangerUnique"))
-                    return new MapIcon(e, new HudTexture("strongbox.png", Settings.RewardDangerUniqueColor), () => Settings.LabyrinthChest, Settings.LabyrinthChestSize);
+                    return new MapIcon(e, new HudTexture(PoeHUDImageLocation + "strongbox.png", Settings.RewardDangerUniqueColor), () => Settings.LabyrinthChest, Settings.LabyrinthChestSize);
 
                 if (e.Path.Contains("Metadata/Chests/Labyrinth/LabyrinthRewardDangerDivination"))
-                    return new MapIcon(e, new HudTexture("strongbox.png", Settings.RewardDangerDivinationColor), () => Settings.LabyrinthChest, Settings.LabyrinthChestSize);
+                    return new MapIcon(e, new HudTexture(PoeHUDImageLocation + "strongbox.png", Settings.RewardDangerDivinationColor), () => Settings.LabyrinthChest, Settings.LabyrinthChestSize);
 
                 if (e.Path.Contains("Metadata/Chests/Labyrinth/LabyrinthRewardSilverCurrency"))
-                    return new MapIcon(e, new HudTexture("strongbox.png", Settings.RewardSilverCurrencyColor), () => Settings.LabyrinthChest, Settings.LabyrinthChestSize);
+                    return new MapIcon(e, new HudTexture(PoeHUDImageLocation + "strongbox.png", Settings.RewardSilverCurrencyColor), () => Settings.LabyrinthChest, Settings.LabyrinthChestSize);
 
                 if (e.Path.Contains("Metadata/Chests/Labyrinth/LabyrinthRewardSilverCurrencyQuality"))
-                    return new MapIcon(e, new HudTexture("strongbox.png", Settings.RewardSilverCurrencyQualityColor), () => Settings.LabyrinthChest, Settings.LabyrinthChestSize);
+                    return new MapIcon(e, new HudTexture(PoeHUDImageLocation + "strongbox.png", Settings.RewardSilverCurrencyQualityColor), () => Settings.LabyrinthChest, Settings.LabyrinthChestSize);
 
                 if (e.Path.Contains("Metadata/Chests/Labyrinth/LabyrinthRewardSilverJewelryUnique"))
-                    return new MapIcon(e, new HudTexture("strongbox.png", Settings.RewardSilverJewelryUniqueColor), () => Settings.LabyrinthChest, Settings.LabyrinthChestSize);
+                    return new MapIcon(e, new HudTexture(PoeHUDImageLocation + "strongbox.png", Settings.RewardSilverJewelryUniqueColor), () => Settings.LabyrinthChest, Settings.LabyrinthChestSize);
 
                 if (e.Path.Contains("Metadata/Chests/Labyrinth/LabyrinthRewardSilverDivination"))
-                    return new MapIcon(e, new HudTexture("strongbox.png", Settings.RewardSilverDivinationColor), () => Settings.LabyrinthChest, Settings.LabyrinthChestSize);
+                    return new MapIcon(e, new HudTexture(PoeHUDImageLocation + "strongbox.png", Settings.RewardSilverDivinationColor), () => Settings.LabyrinthChest, Settings.LabyrinthChestSize);
 
                 if (e.Path.Contains("Metadata/Chests/Labyrinth/LabyrinthRewardSilverUnique1"))
-                    return new MapIcon(e, new HudTexture("strongbox.png", Settings.RewardSilverUniqueOneColor), () => Settings.LabyrinthChest, Settings.LabyrinthChestSize);
+                    return new MapIcon(e, new HudTexture(PoeHUDImageLocation + "strongbox.png", Settings.RewardSilverUniqueOneColor), () => Settings.LabyrinthChest, Settings.LabyrinthChestSize);
 
                 if (e.Path.Contains("Metadata/Chests/Labyrinth/LabyrinthRewardSilverUnique3"))
-                    return new MapIcon(e, new HudTexture("strongbox.png", Settings.RewardSilverUniqueTwoColor), () => Settings.LabyrinthChest, Settings.LabyrinthChestSize);
+                    return new MapIcon(e, new HudTexture(PoeHUDImageLocation + "strongbox.png", Settings.RewardSilverUniqueTwoColor), () => Settings.LabyrinthChest, Settings.LabyrinthChestSize);
 
                 if (e.Path.Contains("Metadata/Chests/Labyrinth/LabyrinthRewardSilverUnique2"))
-                    return new MapIcon(e, new HudTexture("strongbox.png", Settings.RewardSilverUniqueThreeColor), () => Settings.LabyrinthChest, Settings.LabyrinthChestSize);
+                    return new MapIcon(e, new HudTexture(PoeHUDImageLocation + "strongbox.png", Settings.RewardSilverUniqueThreeColor), () => Settings.LabyrinthChest, Settings.LabyrinthChestSize);
             }
 
             if (Settings.Darkshrines)
                 if (Settings.DarkshrinesOnMap)
                     if (e.Path.Contains("Metadata/Terrain/Labyrinth/Objects/LabyrinthDarkshrineHidden"))
-                        return new MapIcon(e, new HudTexture(imagePath + "shrines.png", Settings.DarkshrinesColor), () => Settings.DarkshrinesOnMap, Settings.DarkshrinesIcon);
+                        return new MapIcon(e, new HudTexture(CustomImagePath + "shrines.png", Settings.DarkshrinesColor), () => Settings.DarkshrinesOnMap, Settings.DarkshrinesIcon);
 
             if (Settings.NormalShrines)
                 if (Settings.NormalShrineOnMap)
                     if (e.Path.Contains("Metadata/Shrines/Shrine"))
                         if (e.GetComponent<Shrine>().IsAvailable)
-                            return new MapIcon(e, new HudTexture(imagePath + "shrines.png", Settings.NormalShrinesColor), () => Settings.NormalShrineOnMap, Settings.NormalShrinesIcon);
+                            return new MapIcon(e, new HudTexture(CustomImagePath + "shrines.png", Settings.NormalShrinesColor), () => Settings.NormalShrineOnMap, Settings.NormalShrinesIcon);
 
             if (Settings.LesserShrines)
                 if (Settings.LesserShrineOnMap)
                     if (e.Path.Contains("Metadata/Shrines/LesserShrine"))
                         if (e.GetComponent<Shrine>().IsAvailable)
-                            return new MapIcon(e, new HudTexture(imagePath + "shrines.png", Settings.LesserShrinesColor), () => Settings.LesserShrineOnMap, Settings.LesserShrinesIcon);
+                            return new MapIcon(e, new HudTexture(CustomImagePath + "shrines.png", Settings.LesserShrinesColor), () => Settings.LesserShrineOnMap, Settings.LesserShrinesIcon);
 
             if (Settings.HiddenDoorway)
                 if (e.Path.Contains("Metadata/Terrain/Labyrinth/Objects/HiddenDoor_Short") || e.Path.Contains("Metadata/Terrain/Labyrinth/Objects/HiddenDoor_Long"))
-                    return new MapIcon(e, new HudTexture(imagePath + "hidden_door.png", Settings.HiddenDoorwayColor), () => Settings.HiddenDoorway, Settings.HiddenDoorwayIcon);
+                    return new MapIcon(e, new HudTexture(CustomImagePath + "hidden_door.png", Settings.HiddenDoorwayColor), () => Settings.HiddenDoorway, Settings.HiddenDoorwayIcon);
 
             if (Settings.SecretPassage)
                 if (e.Path.Equals("Metadata/Terrain/Labyrinth/Objects/SecretPassage"))
-                    return new MapIcon(e, new HudTexture(imagePath + "hidden_door.png", Settings.SecretPassageColor), () => Settings.SecretPassage, Settings.SecretPassageIcon);
+                    return new MapIcon(e, new HudTexture(CustomImagePath + "hidden_door.png", Settings.SecretPassageColor), () => Settings.SecretPassage, Settings.SecretPassageIcon);
 
             if (e.Path.Contains("Transition"))
-                return new MapIcon(e, new HudTexture(imagePath + "hidden_door.png", Color.Orange), () => true, Settings.SecretPassageIcon);
+                return new MapIcon(e, new HudTexture(CustomImagePath + "hidden_door.png", Color.Orange), () => true, Settings.SecretPassageIcon);
 
             return null;
         }
