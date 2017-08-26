@@ -62,7 +62,7 @@ namespace LabQoL
                 DrawTextLabel(Settings.ArrowColor.Value, "Arrows", "Labyrintharrowtrap");
 
             if (Settings.SmashableDoor)
-                DrawTextLabel(Settings.SmashableDoorColor.Value, "Smashable" + Environment.NewLine + "Door", "Objects/LabyrinthSmashableDoor");
+                DrawTextLabel(Settings.SmashableDoorColor.Value, "Smash Door", "Objects/LabyrinthSmashableDoor");
 
             if (Settings.SecretPassage)
                 DrawTextLabelEquals(Settings.SecretPassageColor.Value, "Secret" + Environment.NewLine + "Passage", "Metadata/Terrain/Labyrinth/Objects/SecretPassage");
@@ -106,7 +106,7 @@ namespace LabQoL
                             MonsterCount++;
                             textColor = Color.Green;
                         }
-                        Vector2 chestScreenCoords = camera.WorldToScreen(entity.Pos.Translate(0, 0, 0), entity);
+                        Vector2 chestScreenCoords = camera.WorldToScreen(entity.Pos.Translate(0, 0, +20), entity);
                         if (chestScreenCoords != new Vector2())
                         {
                             var iconRect = new Vector2(chestScreenCoords.X, chestScreenCoords.Y);
@@ -114,7 +114,7 @@ namespace LabQoL
                             float maxWidth = 0;
                             float maxheight = 0;
 
-                            var size = Graphics.DrawText(GetEntityDistance(entity).ToString(), 16, iconRect, textColor, FontDrawFlags.Center);
+                            var size = Graphics.DrawText("Distance[" + GetEntityDistance(entity).ToString() + "]", 16, iconRect, textColor, FontDrawFlags.Center);
                             chestScreenCoords.Y += size.Height;
                             maxheight += size.Height;
                             maxWidth = Math.Max(maxWidth, size.Width);
