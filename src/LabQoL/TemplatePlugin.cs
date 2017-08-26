@@ -19,24 +19,12 @@ namespace LabQoL
     public class Sithylis_QoL : BaseSettingsPlugin<LabQoLSettings>
     {
         private HashSet<EntityWrapper> entities;
+        public string imagePath;
 
         public override void Initialise()
         {
-            MoveAssets();
             entities = new HashSet<EntityWrapper>();
-        }
-
-        /* Move image file every time just to make sure its there, what could go wrong? */
-        /* Also keeps them up to date */
-        private void MoveAssets()
-        {
-            File.Copy($"{PluginDirectory}\\images\\shrines.png",
-                $"{PluginDirectory}\\..\\..\\textures\\shrines.png",
-                true);
-
-            File.Copy($"{PluginDirectory}\\images\\hidden_door.png",
-                $"{PluginDirectory}\\..\\..\\textures\\hidden_door.png",
-                true);
+            imagePath = PluginDirectory + @"\images\";
         }
 
         public override void Render()
@@ -76,11 +64,68 @@ namespace LabQoL
 
             if (Settings.SecretPassage)
                 DrawTextLabelEquals(Settings.SecretPassageColor.Value, "Secret" + Environment.NewLine + "Passage", "Metadata/Terrain/Labyrinth/Objects/SecretPassage");
-
-            // Debug-ish, shows entity path
+            
+            // Debug-ish things
             if (Settings.Debug)
+            {
+                CountMonstersAroundMe(400);
                 ShowAllPathObjects();
+            }
 
+        }
+
+        private int GetEntityDistance(EntityWrapper entity)
+        {
+            Positioned PlayerPosition = GameController.Player.GetComponent<Positioned>();
+            Positioned MonsterPosition = entity.GetComponent<Positioned>();
+            double distanceToEntity = Math.Sqrt(Math.Pow(PlayerPosition.X - MonsterPosition.X, 2) + Math.Pow(PlayerPosition.Y - MonsterPosition.Y, 2));
+
+            return (int)distanceToEntity;
+        }
+
+        private void CountMonstersAroundMe(int distance)
+        {
+            Camera camera = GameController.Game.IngameState.Camera;
+            int halfW = camera.Width / 2;
+            Vector2 textPos = new Vector2(halfW, 40);
+
+            Color textColor = Color.White;
+
+            var MonsterCount = 0;
+
+            foreach (EntityWrapper entity in entities)
+            {
+                if (entity.HasComponent<Monster>())
+                {
+                    if (entity.IsHostile && entity.IsAlive)
+                    {
+                        if (GetEntityDistance(entity) <= distance)
+                        {
+                            MonsterCount++;
+                            textColor = Color.Green;
+                        }
+                        Vector2 chestScreenCoords = camera.WorldToScreen(entity.Pos.Translate(0, 0, 0), entity);
+                        if (chestScreenCoords != new Vector2())
+                        {
+                            var iconRect = new Vector2(chestScreenCoords.X, chestScreenCoords.Y);
+
+                            float maxWidth = 0;
+                            float maxheight = 0;
+
+                            var size = Graphics.DrawText(GetEntityDistance(entity).ToString(), 16, iconRect, textColor, FontDrawFlags.Center);
+                            chestScreenCoords.Y += size.Height;
+                            maxheight += size.Height;
+                            maxWidth = Math.Max(maxWidth, size.Width);
+
+                            var background = new RectangleF(chestScreenCoords.X - (maxWidth / 2) - 3, chestScreenCoords.Y - maxheight, maxWidth + 6, maxheight);
+                            Graphics.DrawBox(background, Color.Black);
+                        }
+                    }
+                }
+                textColor = Color.White;
+            }
+
+            Graphics.DrawText("Hostile Monster Count Within [" + distance + "] Units: " + MonsterCount, 20, textPos, FontDrawFlags.Center);
         }
 
         // Hides unwanted garbage strings
@@ -272,7 +317,7 @@ namespace LabQoL
                     {
                         // create rect at chest location to draw icon
                         var iconRect = new RectangleF(chestScreenCoords.X - Settings.LieutenantofRageSize / 2, chestScreenCoords.Y - Settings.LieutenantofRageSize / 2, Settings.AtziriMirrorSize, Settings.LieutenantofRageSize);
-                        Graphics.DrawPluginImage(PluginDirectory + @"\images\mirror.png", iconRect);
+                        Graphics.DrawPluginImage(imagePath + "mirror.png", iconRect);
                     }
                 }
             }
@@ -292,7 +337,7 @@ namespace LabQoL
                         {
                             // create rect at chest location to draw icon
                             var iconRect = new RectangleF(Coords.X - Settings.LesserShrineOnFloorSize / 2, Coords.Y - Settings.LesserShrineOnFloorSize / 2, Settings.LesserShrineOnFloorSize, Settings.LesserShrineOnFloorSize);
-                            Graphics.DrawImage("shrines.png", iconRect, Settings.LesserShrinesColor);
+                            Graphics.DrawPluginImage(imagePath + "shrines.png", iconRect, Settings.LesserShrinesColor);
                         }
                     }
                 }
@@ -307,7 +352,7 @@ namespace LabQoL
                         {
                             // create rect at chest location to draw icon
                             var iconRect = new RectangleF(Coords.X - Settings.NormalShrineOnFloorSize / 2, Coords.Y - Settings.NormalShrineOnFloorSize / 2, Settings.NormalShrineOnFloorSize, Settings.NormalShrineOnFloorSize);
-                            Graphics.DrawImage("shrines.png", iconRect, Settings.NormalShrinesColor);
+                            Graphics.DrawPluginImage(imagePath + "shrines.png", iconRect, Settings.NormalShrinesColor);
                         }
                     }
                 }
@@ -322,7 +367,7 @@ namespace LabQoL
                         {
                             // create rect at chest location to draw icon
                             var iconRect = new RectangleF(Coords.X - Settings.DarkshrinesOnFloorSize / 2, Coords.Y - Settings.DarkshrinesOnFloorSize / 2, Settings.DarkshrinesOnFloorSize, Settings.DarkshrinesOnFloorSize);
-                            Graphics.DrawImage("shrines.png", iconRect, Settings.DarkshrinesColor);
+                            Graphics.DrawPluginImage(imagePath + "shrines.png", iconRect, Settings.DarkshrinesColor);
                         }
                     }
                 }
@@ -379,7 +424,7 @@ namespace LabQoL
                 mapRect.Contains(ref rect, out isContain);
                 if (isContain)
                 {
-                    texture.Draw(Graphics, rect);
+                    texture.DrawPluginImage(Graphics, rect);
                 }
             }
         }
@@ -404,7 +449,7 @@ namespace LabQoL
 
                 HudTexture texture = icon.TextureIcon;
                 int size = icon.SizeOfLargeIcon.GetValueOrDefault(icon.Size * 2);
-                texture.Draw(Graphics, new RectangleF(point.X - size / 2f, point.Y - size / 2f, size, size));
+                texture.DrawPluginImage(Graphics, new RectangleF(point.X - size / 2f, point.Y - size / 2f, size, size));
             }
         }
 
@@ -464,27 +509,30 @@ namespace LabQoL
             if (Settings.Darkshrines)
                 if (Settings.DarkshrinesOnMap)
                     if (e.Path.Contains("Metadata/Terrain/Labyrinth/Objects/LabyrinthDarkshrineHidden"))
-                        return new MapIcon(e, new HudTexture("shrines.png", Settings.DarkshrinesColor), () => Settings.DarkshrinesOnMap, Settings.DarkshrinesIcon);
+                        return new MapIcon(e, new HudTexture(imagePath + "shrines.png", Settings.DarkshrinesColor), () => Settings.DarkshrinesOnMap, Settings.DarkshrinesIcon);
 
             if (Settings.NormalShrines)
                 if (Settings.NormalShrineOnMap)
                     if (e.Path.Contains("Metadata/Shrines/Shrine"))
                         if (e.GetComponent<Shrine>().IsAvailable)
-                            return new MapIcon(e, new HudTexture("shrines.png", Settings.NormalShrinesColor), () => Settings.NormalShrineOnMap, Settings.NormalShrinesIcon);
+                            return new MapIcon(e, new HudTexture(imagePath + "shrines.png", Settings.NormalShrinesColor), () => Settings.NormalShrineOnMap, Settings.NormalShrinesIcon);
 
             if (Settings.LesserShrines)
                 if (Settings.LesserShrineOnMap)
                     if (e.Path.Contains("Metadata/Shrines/LesserShrine"))
                         if (e.GetComponent<Shrine>().IsAvailable)
-                            return new MapIcon(e, new HudTexture("shrines.png", Settings.LesserShrinesColor), () => Settings.LesserShrineOnMap, Settings.LesserShrinesIcon);
+                            return new MapIcon(e, new HudTexture(imagePath + "shrines.png", Settings.LesserShrinesColor), () => Settings.LesserShrineOnMap, Settings.LesserShrinesIcon);
 
             if (Settings.HiddenDoorway)
                 if (e.Path.Contains("Metadata/Terrain/Labyrinth/Objects/HiddenDoor_Short") || e.Path.Contains("Metadata/Terrain/Labyrinth/Objects/HiddenDoor_Long"))
-                    return new MapIcon(e, new HudTexture("hidden_door.png", Settings.HiddenDoorwayColor), () => Settings.HiddenDoorway, Settings.HiddenDoorwayIcon);
+                    return new MapIcon(e, new HudTexture(imagePath + "hidden_door.png", Settings.HiddenDoorwayColor), () => Settings.HiddenDoorway, Settings.HiddenDoorwayIcon);
 
             if (Settings.SecretPassage)
                 if (e.Path.Equals("Metadata/Terrain/Labyrinth/Objects/SecretPassage"))
-                    return new MapIcon(e, new HudTexture("hidden_door.png", Settings.SecretPassageColor), () => Settings.SecretPassage, Settings.SecretPassageIcon);
+                    return new MapIcon(e, new HudTexture(imagePath + "hidden_door.png", Settings.SecretPassageColor), () => Settings.SecretPassage, Settings.SecretPassageIcon);
+
+            if (e.Path.Contains("Transition"))
+                return new MapIcon(e, new HudTexture(imagePath + "hidden_door.png", Color.Orange), () => true, Settings.SecretPassageIcon);
 
             return null;
         }

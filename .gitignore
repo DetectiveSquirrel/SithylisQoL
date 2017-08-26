@@ -51,3 +51,4 @@ config.ini
 %PluginUpdate%
 SithylisQoLPlugin.dll.config
 SithylisQoLPlugin.pdb
+ErrorLog.txt
