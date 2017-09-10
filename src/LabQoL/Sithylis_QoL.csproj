@@ -37,7 +37,8 @@
       <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="PoeHUD">
+    <Reference Include="PoeHUD, Version=6.3.9600.0, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\PoeHUD.exe</HintPath>
       <Private>False</Private>
     </Reference>

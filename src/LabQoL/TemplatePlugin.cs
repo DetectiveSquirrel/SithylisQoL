@@ -66,7 +66,7 @@ namespace LabQoL
 
             if (Settings.SecretPassage)
                 DrawTextLabelEquals(Settings.SecretPassageColor.Value, "Secret" + Environment.NewLine + "Passage", "Metadata/Terrain/Labyrinth/Objects/SecretPassage");
-            
+
             // Debug-ish things
             if (Settings.Debug)
             {
@@ -445,13 +445,14 @@ namespace LabQoL
                 Vector2 screenCenter = new Vector2(mapRect.Width / 2, mapRect.Height / 2).Translate(0, -20) + new Vector2(mapRect.X, mapRect.Y) + new Vector2(mapWindow.ShiftX, mapWindow.ShiftY);
                 var diag = (float)Math.Sqrt(camera.Width * camera.Width + camera.Height * camera.Height);
                 float k = camera.Width < 1024f ? 1120f : 1024f;
-                float scale = k / camera.Height * camera.Width * 3 / 4;
+                float MiniMapZoomScale = (float)((decimal)Settings.LargeMinimapScale.Value / 100);
+                float scale = k / camera.Height * camera.Width * 3 / 4 / MiniMapZoomScale;
                 float iconZ = icon.EntityWrapper.GetComponent<Render>().Z;
                 Vector2 point = screenCenter + MapIcon.DeltaInWorldToMinimapDelta(icon.WorldPosition - playerPos, diag, scale, (iconZ - posZ) / 20);
 
                 HudTexture texture = icon.TextureIcon;
                 int size = icon.SizeOfLargeIcon.GetValueOrDefault(icon.Size * 2);
-                texture.DrawPluginImage(Graphics, new RectangleF(point.X - size / 2f, point.Y - size / 2f, size, size));
+                texture.DrawPluginImage(Graphics, new RectangleF(point.X - size / 2f, point.Y - size / 2f, size* MiniMapZoomScale, size* MiniMapZoomScale));
             }
         }
 
@@ -532,7 +533,7 @@ namespace LabQoL
             if (Settings.SecretPassage)
                 if (e.Path.Equals("Metadata/Terrain/Labyrinth/Objects/SecretPassage"))
                     return new MapIcon(e, new HudTexture(CustomImagePath + "hidden_door.png", Settings.SecretPassageColor), () => Settings.SecretPassage, Settings.SecretPassageIcon);
-
+            
             if (e.Path.Contains("Transition"))
                 return new MapIcon(e, new HudTexture(CustomImagePath + "hidden_door.png", Color.Orange), () => true, Settings.SecretPassageIcon);
 
