@@ -9,7 +9,6 @@ namespace LabQoL
         public LabQoLSettings()
         {
             Enable = true;
-            LargeMinimapScale = new RangeNode<int>(100, 50, 150);
             #region Labyrinth
             #region Chests
             LabyrinthChest = true;
@@ -110,9 +109,6 @@ namespace LabQoL
             DebugTextSize = new RangeNode<int>(12, 1, 50);
             #endregion
         }
-
-        [Menu("Minimap Zoom %", 9)]
-        public RangeNode<int> LargeMinimapScale { get; set; }
 
         #region Labyrinth
 
