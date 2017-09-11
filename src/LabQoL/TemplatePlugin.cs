@@ -533,9 +533,10 @@ namespace LabQoL
             if (Settings.SecretPassage)
                 if (e.Path.Equals("Metadata/Terrain/Labyrinth/Objects/SecretPassage"))
                     return new MapIcon(e, new HudTexture(CustomImagePath + "hidden_door.png", Settings.SecretPassageColor), () => Settings.SecretPassage, Settings.SecretPassageIcon);
-            
-            if (e.Path.Contains("Transition"))
-                return new MapIcon(e, new HudTexture(CustomImagePath + "hidden_door.png", Color.Orange), () => true, Settings.SecretPassageIcon);
+
+            if (Settings.AreaTransition)
+                if (e.Path.Contains("Transition"))
+                    return new MapIcon(e, new HudTexture(CustomImagePath + "hidden_door.png", Settings.AreaTransitionColor), () => true, Settings.AreaTransitionIcon);
 
             return null;
         }

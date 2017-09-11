@@ -100,6 +100,11 @@ namespace LabQoL
             LesserShrinesIcon = new RangeNode<int>(25, 1, 50);
             LesserShrinesColor = new ColorBGRA(0, 128, 255, 255);
             #endregion
+            #region Area Transitions
+            AreaTransition = true;
+            AreaTransitionIcon = new RangeNode<int>(18, 1, 50);
+            AreaTransitionColor = new ColorBGRA(0, 255, 255, 255);
+            #endregion
             #region Debug-ish
             Debug = false;
             DebugTextSize = new RangeNode<int>(12, 1, 50);
@@ -271,6 +276,14 @@ namespace LabQoL
         public RangeNode<int> LesserShrinesIcon { get; set; }
         [Menu("Color", 3323, 332)]
         public ColorNode LesserShrinesColor { get; set; }
+        #endregion
+        #region Area Transitions
+        [Menu("Area Transitions", 5468)]
+        public ToggleNode AreaTransition { get; set; }
+        [Menu("Size", 54681, 5468)]
+        public RangeNode<int> AreaTransitionIcon { get; set; }
+        [Menu("Color", 54682, 5468)]
+        public ColorNode AreaTransitionColor { get; set; }
         #endregion
         #region Debug-ish
         [Menu("Debug-ish", 99)]
