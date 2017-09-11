@@ -103,7 +103,7 @@ namespace LabQoL
             #region Area Transitions
             AreaTransition = true;
             AreaTransitionIcon = new RangeNode<int>(18, 1, 50);
-            AreaTransitionColor = new ColorBGRA(255, 106, 0, 255);
+            AreaTransitionColor = new ColorBGRA(255, 150, 72, 255);
             #endregion
             #region Debug-ish
             Debug = false;
