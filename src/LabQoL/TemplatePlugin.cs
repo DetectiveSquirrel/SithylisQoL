@@ -67,11 +67,72 @@ namespace LabQoL
             if (Settings.SecretPassage)
                 DrawTextLabelEquals(Settings.SecretPassageColor.Value, "Secret" + Environment.NewLine + "Passage", "Metadata/Terrain/Labyrinth/Objects/SecretPassage");
 
+            if (Settings.Specters)
+            {
+                if (Settings.Tukohamas_Vanguard)
+                    DrawTextLabelSpecter(Color.Yellow, "Tukohama's" + Environment.NewLine + "Vanguard", "Metadata/Monsters/KaomWarrior/KaomWarrior7", 120);
+                if (Settings.WickerMan)
+                    DrawTextLabelSpecter(Color.Yellow, "WickerMan", "Metadata/Monsters/WickerMan/WickerMan", 120);
+            }
+
+            if (Settings.Sentinels)
+            {
+                if (Settings.UnendingLethargy)
+                    DrawTextLabel(Settings.UnendingLethargyColor.Value, "Slowing", "LabyrinthPopUpTotemSlow");
+
+                if (Settings.EndlessDrought)
+                    DrawTextLabel(Settings.EndlessDroughtColor.Value, $"Flask Charge{Environment.NewLine}Removal", "LabyrinthPopUpTotemFlaskChargeNova");
+
+                if (Settings.EndlessHazard)
+                    DrawTextLabel(Settings.EndlessHazardColor.Value, "Movement Damage", "LabyrinthPopUpTotemDamageTakenOnMovementSkillUse");
+
+                if (Settings.EndlessPain)
+                    DrawTextLabel(Settings.EndlessPainColor.Value, "Inc Damage Taken", "LabyrinthPopUpTotemIncreasedDamageTaken");
+
+                if (Settings.EndlessSting)
+                    DrawTextLabel(Settings.EndlessStingColor.Value, "Bleeding", "LabyrinthPopUpTotemBleedNova");
+
+                if (Settings.UnendingFire)
+                    DrawTextLabel(Settings.UnendingFireColor.Value, "Fire Nova", "LabyrinthPopUpTotemMonsterFire");
+
+                if (Settings.UnendingFrost)
+                    DrawTextLabel(Settings.UnendingFrostColor.Value, "Ice Nova", "LabyrinthPopUpTotemMonsterIceNova");
+
+                if (Settings.UnendingStorm)
+                    DrawTextLabel(Settings.UnendingStormColor.Value, "Shock Nova", "LabyrinthPopUpTotemMonsterLightning");
+            }
+
             // Debug-ish things
             if (Settings.Debug)
             {
                 CountMonstersAroundMe(400);
                 ShowAllPathObjects();
+                
+                Element buffBar = GameController.Game.IngameState.UIRoot.GetChildAtIndex(1).GetChildAtIndex(8);
+                int i = 0;
+                int i2 = 0;
+                // Graphics.DrawFrame(buffBar.GetClientRect(), 2, Color.Gold);
+                foreach (Element ui in buffBar.Children)
+                {
+                    foreach (Element ui2 in ui.Children)
+                    {
+                        if (ui2.IsVisible)
+                        {
+                            foreach (Element ui3 in ui2.Children)
+                            {
+                                if (ui3.IsVisible)
+                                {
+                                    Graphics.DrawFrame(ui3.GetClientRect(), 2, Color.Red);
+                                    //Graphics.DrawText(ui3.vTable.ToString(), 15, ui3.GetClientRect().Center, FontDrawFlags.Center);
+                                }
+                                i2 += 15;
+                            }
+                            //Graphics.DrawFrame(ui2.GetClientRect(), 2, Color.Orange);
+                            //Graphics.DrawText(i.ToString() + "-" + i2.ToString(), 15, ui.GetClientRect().Center, FontDrawFlags.Center);
+                        }
+                        //i2++;
+                    }
+                }
             }
 
         }
@@ -237,6 +298,33 @@ namespace LabQoL
                 {
                     Camera camera = GameController.Game.IngameState.Camera;
                     Vector2 chestScreenCoords = camera.WorldToScreen(entity.Pos.Translate(0, 0, 0), entity);
+                    if (chestScreenCoords != new Vector2())
+                    {
+                        var iconRect = new Vector2(chestScreenCoords.X, chestScreenCoords.Y);
+
+                        float maxWidth = 0;
+                        float maxheight = 0;
+
+                        var size = Graphics.DrawText(text, 16, iconRect, color, FontDrawFlags.Center);
+                        chestScreenCoords.Y += size.Height;
+                        maxheight += size.Height;
+                        maxWidth = Math.Max(maxWidth, size.Width);
+
+                        var background = new RectangleF(chestScreenCoords.X - (maxWidth / 2) - 3, chestScreenCoords.Y - maxheight, maxWidth + 6, maxheight);
+                        Graphics.DrawBox(background, Color.Black);
+                    }
+                }
+            }
+        }
+
+        private void DrawTextLabelSpecter(ColorBGRA color, string text, string path, int zOffset = 0)
+        {
+            foreach (EntityWrapper entity in entities)
+            {
+                if (entity.Path.ToLower().Contains(path.ToLower()) && !entity.IsAlive)
+                {
+                    Camera camera = GameController.Game.IngameState.Camera;
+                    Vector2 chestScreenCoords = camera.WorldToScreen(entity.Pos.Translate(0, 0, zOffset), entity);
                     if (chestScreenCoords != new Vector2())
                     {
                         var iconRect = new Vector2(chestScreenCoords.X, chestScreenCoords.Y);
@@ -467,6 +555,7 @@ namespace LabQoL
         {
             if (Settings.LabyrinthChest && !e.GetComponent<Chest>().IsOpened)
             {
+                #region Normal Chests
                 if (e.Path.Contains("Metadata/Chests/Labyrinth/LabyrinthTreasureKey"))
                     return new MapIcon(e, new HudTexture(PoeHUDImageLocation + "strongbox.png", Settings.TreasureKeyChestColor), () => Settings.LabyrinthChest, Settings.LabyrinthChestSize);
 
@@ -480,8 +569,9 @@ namespace LabQoL
                     return new MapIcon(e, new HudTexture(PoeHUDImageLocation + "strongbox.png", Settings.RewardCurrencyColor), () => Settings.LabyrinthChest, Settings.LabyrinthChestSize);
 
                 if (e.Path.Contains("Metadata/Chests/Labyrinth/LabyrinthReward0CurrencyQuality"))
-                    return new MapIcon(e, new HudTexture(PoeHUDImageLocation + "strongbox.png", Settings.RewardCurrencyQualityColor), () => Settings.LabyrinthChest, Settings.LabyrinthChestSize);
-
+                    return new MapIcon(e, new HudTexture(PoeHUDImageLocation + "strongbox.png", Settings.RewardCurrencyQualityColor), () => Settings.LabyrinthChest, Settings.LabyrinthChestSize); 
+                #endregion
+                #region Danger Chests
                 if (e.Path.Contains("Metadata/Chests/Labyrinth/LabyrinthRewardDangerCurrency"))
                     return new MapIcon(e, new HudTexture(PoeHUDImageLocation + "strongbox.png", Settings.RewardDangerCurrencyColor), () => Settings.LabyrinthChest, Settings.LabyrinthChestSize);
 
@@ -494,6 +584,19 @@ namespace LabQoL
                 if (e.Path.Contains("Metadata/Chests/Labyrinth/LabyrinthRewardDangerDivination"))
                     return new MapIcon(e, new HudTexture(PoeHUDImageLocation + "strongbox.png", Settings.RewardDangerDivinationColor), () => Settings.LabyrinthChest, Settings.LabyrinthChestSize);
 
+                if (e.Path.Contains("Metadata/Chests/Labyrinth/LabyrinthRewardDangerSkillGems"))
+                    return new MapIcon(e, new HudTexture(PoeHUDImageLocation + "strongbox.png", Settings.RewardDangerLowGemColor), () => Settings.LabyrinthChest, Settings.LabyrinthChestSize);
+
+                if (e.Path.Contains("Metadata/Chests/Labyrinth/LabyrinthRewardDangerCorruptedVaal"))
+                    return new MapIcon(e, new HudTexture(PoeHUDImageLocation + "strongbox.png", Settings.RewardDangerCorVaalColor), () => Settings.LabyrinthChest, Settings.LabyrinthChestSize);
+
+                if (e.Path.Contains("Metadata/Chests/Labyrinth/LabyrinthRewardDangerJewelry"))
+                    return new MapIcon(e, new HudTexture(PoeHUDImageLocation + "strongbox.png", Settings.RewardDangerJewelleryColor), () => Settings.LabyrinthChest, Settings.LabyrinthChestSize);
+
+                if (e.Path.Contains("Metadata/Chests/Labyrinth/LabyrinthRewardDangerGeneric"))
+                    return new MapIcon(e, new HudTexture(PoeHUDImageLocation + "strongbox.png", Settings.RewardDangerGenericColor), () => Settings.LabyrinthChest, Settings.LabyrinthChestSize);
+                #endregion
+                #region Silver Chests
                 if (e.Path.Contains("Metadata/Chests/Labyrinth/LabyrinthRewardSilverCurrency"))
                     return new MapIcon(e, new HudTexture(PoeHUDImageLocation + "strongbox.png", Settings.RewardSilverCurrencyColor), () => Settings.LabyrinthChest, Settings.LabyrinthChestSize);
 
@@ -514,8 +617,12 @@ namespace LabQoL
 
                 if (e.Path.Contains("Metadata/Chests/Labyrinth/LabyrinthRewardSilverUnique2"))
                     return new MapIcon(e, new HudTexture(PoeHUDImageLocation + "strongbox.png", Settings.RewardSilverUniqueThreeColor), () => Settings.LabyrinthChest, Settings.LabyrinthChestSize);
-            }
 
+                if (e.Path.Contains("Metadata/Chests/Labyrinth/LabyrinthRewardSilverSkillGems"))
+                    return new MapIcon(e, new HudTexture(PoeHUDImageLocation + "strongbox.png", Settings.RewardSilverSkillGemColor), () => Settings.LabyrinthChest, Settings.LabyrinthChestSize); 
+                #endregion
+            }
+            #region Shrines
             if (Settings.Darkshrines)
                 if (Settings.DarkshrinesOnMap)
                     if (e.Path.Contains("Metadata/Terrain/Labyrinth/Objects/LabyrinthDarkshrineHidden"))
@@ -532,7 +639,8 @@ namespace LabQoL
                     if (e.Path.Contains("Metadata/Shrines/LesserShrine"))
                         if (e.GetComponent<Shrine>().IsAvailable)
                             return new MapIcon(e, new HudTexture(CustomImagePath + "shrines.png", Settings.LesserShrinesColor), () => Settings.LesserShrineOnMap, Settings.LesserShrinesIcon);
-
+            #endregion
+            #region Doorways
             if (Settings.HiddenDoorway)
                 if (e.Path.Contains("Metadata/Terrain/Labyrinth/Objects/HiddenDoor_Short") || e.Path.Contains("Metadata/Terrain/Labyrinth/Objects/HiddenDoor_Long"))
                     return new MapIcon(e, new HudTexture(CustomImagePath + "hidden_door.png", Settings.HiddenDoorwayColor), () => Settings.HiddenDoorway, Settings.HiddenDoorwayIcon);
@@ -543,8 +651,8 @@ namespace LabQoL
 
             if (Settings.AreaTransition)
                 if (e.Path.Contains("Transition"))
-                    return new MapIcon(e, new HudTexture(CustomImagePath + "hidden_door.png", Settings.AreaTransitionColor), () => true, Settings.AreaTransitionIcon);
-
+                    return new MapIcon(e, new HudTexture(CustomImagePath + "hidden_door.png", Settings.AreaTransitionColor), () => true, Settings.AreaTransitionIcon); 
+            #endregion
             return null;
         }
     }
