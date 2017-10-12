@@ -12,6 +12,7 @@ using SharpDX.Direct3D9;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using Map = PoeHUD.Poe.Elements.Map;
 
 namespace LabQoL
@@ -107,7 +108,7 @@ namespace LabQoL
             {
                 CountMonstersAroundMe(400);
                 ShowAllPathObjects();
-                
+
                 Element buffBar = GameController.Game.IngameState.UIRoot.GetChildAtIndex(1).GetChildAtIndex(8);
                 int i = 0;
                 int i2 = 0;
@@ -133,6 +134,11 @@ namespace LabQoL
                         //i2++;
                     }
                 }
+            }
+
+            if (Settings.LimitPoeHudFPS && Settings.fps.Value >= 1)
+            {
+                Thread.Sleep(1000 / Settings.fps.Value);
             }
 
         }
@@ -569,7 +575,7 @@ namespace LabQoL
                     return new MapIcon(e, new HudTexture(PoeHUDImageLocation + "strongbox.png", Settings.RewardCurrencyColor), () => Settings.LabyrinthChest, Settings.LabyrinthChestSize);
 
                 if (e.Path.Contains("Metadata/Chests/Labyrinth/LabyrinthReward0CurrencyQuality"))
-                    return new MapIcon(e, new HudTexture(PoeHUDImageLocation + "strongbox.png", Settings.RewardCurrencyQualityColor), () => Settings.LabyrinthChest, Settings.LabyrinthChestSize); 
+                    return new MapIcon(e, new HudTexture(PoeHUDImageLocation + "strongbox.png", Settings.RewardCurrencyQualityColor), () => Settings.LabyrinthChest, Settings.LabyrinthChestSize);
                 #endregion
                 #region Danger Chests
                 if (e.Path.Contains("Metadata/Chests/Labyrinth/LabyrinthRewardDangerCurrency"))
@@ -619,7 +625,7 @@ namespace LabQoL
                     return new MapIcon(e, new HudTexture(PoeHUDImageLocation + "strongbox.png", Settings.RewardSilverUniqueThreeColor), () => Settings.LabyrinthChest, Settings.LabyrinthChestSize);
 
                 if (e.Path.Contains("Metadata/Chests/Labyrinth/LabyrinthRewardSilverSkillGems"))
-                    return new MapIcon(e, new HudTexture(PoeHUDImageLocation + "strongbox.png", Settings.RewardSilverSkillGemColor), () => Settings.LabyrinthChest, Settings.LabyrinthChestSize); 
+                    return new MapIcon(e, new HudTexture(PoeHUDImageLocation + "strongbox.png", Settings.RewardSilverSkillGemColor), () => Settings.LabyrinthChest, Settings.LabyrinthChestSize);
                 #endregion
             }
             #region Shrines
@@ -651,7 +657,7 @@ namespace LabQoL
 
             if (Settings.AreaTransition)
                 if (e.Path.Contains("Transition"))
-                    return new MapIcon(e, new HudTexture(CustomImagePath + "hidden_door.png", Settings.AreaTransitionColor), () => true, Settings.AreaTransitionIcon); 
+                    return new MapIcon(e, new HudTexture(CustomImagePath + "hidden_door.png", Settings.AreaTransitionColor), () => true, Settings.AreaTransitionIcon);
             #endregion
             return null;
         }

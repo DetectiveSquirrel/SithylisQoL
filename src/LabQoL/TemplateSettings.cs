@@ -9,11 +9,13 @@ namespace LabQoL
         public LabQoLSettings()
         {
             Enable = true;
+            LimitPoeHudFPS = true;
+            fps = new RangeNode<int>(60, 1, 144);
             #region Labyrinth
             #region Chests
             LabyrinthChest = true;
             LabyrinthChestSize = new RangeNode<int>(18, 1, 50);
-            
+
             TreasureKeyChestColor = new ColorBGRA(0, 255, 0, 255);
             TrinketChestColor = new ColorBGRA(0, 97, 201, 255);
             SpecificUniqueChestColor = new ColorBGRA(175, 96, 37, 255);
@@ -137,6 +139,11 @@ namespace LabQoL
             DebugTextSize = new RangeNode<int>(12, 1, 50);
             #endregion
         }
+
+        [Menu("PoeHUD limiter", 7983)]
+        public ToggleNode LimitPoeHudFPS { get; set; }
+        [Menu("Frame Per Second", 79831, 7983)]
+        public RangeNode<int> fps { get; set; }
 
         #region Labyrinth
 
