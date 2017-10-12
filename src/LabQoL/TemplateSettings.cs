@@ -133,6 +133,7 @@ namespace LabQoL
             Specters = true;
             Tukohamas_Vanguard = true;
             WickerMan = true;
+            Solar_Guard = true;
             #endregion
             #region Debug-ish
             Debug = false;
@@ -389,6 +390,8 @@ namespace LabQoL
         public ToggleNode Tukohamas_Vanguard { get; set; }
         [Menu("WickerMan", 70012, 7001)]
         public ToggleNode WickerMan { get; set; }
+        [Menu("Solar Guard", 70013, 7001)]
+        public ToggleNode Solar_Guard { get; set; }
         #endregion
         #region Debug-ish
         [Menu("Debug-ish", 99)]
