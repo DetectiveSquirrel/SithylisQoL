@@ -143,11 +143,15 @@ namespace SithylisQoL
                 ToggleDebug();
 
             // Graphics.DrawText(Class_Memory.ReadFloat(API.GameController.Game.IngameState.Camera.Address + 0x204).ToString(), 40, new Vector2(500, 500));
-            RenderMapImages();
-            RenderVaultPiles();
-            RenderAtziriMirrorClone();
-            RenderLieutenantSkeletonThorns();
-            RenderShrines();
+            if (!GameController.Game.IngameState.IngameUi.AtlasPanel.IsVisible &&
+                !GameController.Game.IngameState.IngameUi.TreePanel.IsVisible)
+            {
+                RenderMapImages();
+                RenderVaultPiles();
+                RenderAtziriMirrorClone();
+                RenderLieutenantSkeletonThorns();
+                RenderShrines();
+            }
 
             if (Settings.SecretSwitch)
                 RenderTextLabel(Settings.SecretSwitchColor.Value, "Switch", "HiddenDoor_Switch");
