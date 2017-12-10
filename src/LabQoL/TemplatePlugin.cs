@@ -415,7 +415,7 @@ namespace SithylisQoL
 
             if (Settings.Saws && Settings.SawsOnMap)
             {
-                if (e.Path.Contains("Labyrinthsawblade"))
+                if (e.Path.Contains("LabyrinthSawblade"))
                 {
                     return new MapIcon(
                         e,
