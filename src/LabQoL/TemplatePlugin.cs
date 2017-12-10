@@ -389,6 +389,42 @@ namespace SithylisQoL
 
         private MapIcon GetMapIcon(EntityWrapper e)
         {
+            if (Settings.Roombas && Settings.RoombasOnMap)
+            {
+                if (e.Path.Contains("LabyrinthFlyingRoomba") || e.Path.Contains("LabyrinthRoomba"))
+                {
+                    return new MapIcon(
+                        e,
+                        new HudTexture(CustomImagePath + "roomba.png", Settings.RoombasOnMapColor),
+                        () => Settings.RoombasOnMap,
+                        Settings.RoombasOnMapSize);
+                }
+            }
+
+            if (Settings.Spinners && Settings.SpinnersOnMap)
+            {
+                if (e.Path.Contains("LabyrinthSpinner"))
+                {
+                    return new MapIcon(
+                        e,
+                        new HudTexture(CustomImagePath + "roomba.png", Settings.SpinnersOnMapColor),
+                        () => Settings.SpinnersOnMap,
+                        Settings.SpinnersOnMapSize);
+                }
+            }
+
+            if (Settings.Saws && Settings.SawsOnMap)
+            {
+                if (e.Path.Contains("Labyrinthsawblade"))
+                {
+                    return new MapIcon(
+                        e,
+                        new HudTexture(CustomImagePath + "roomba.png", Settings.SawsOnMapColor),
+                        () => Settings.SawsOnMap,
+                        Settings.SawsOnMapSize);
+                }
+            }
+
             if (Settings.LabyrinthChest && !e.GetComponent<Chest>().IsOpened)
             {
                 if (e.Path.Contains("Metadata/Chests/Labyrinth/LabyrinthTreasureKey"))

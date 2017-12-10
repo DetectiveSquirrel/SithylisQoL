@@ -50,7 +50,7 @@ namespace SithylisQoL
             DarkshrinesOnFloor = true;
             DarkshrinesOnFloorSize = new RangeNode<int>(100, 1, 200);
             DarkshrinesOnMap = true;
-            DarkshrinesIcon = new RangeNode<int>(25, 1, 50);
+            DarkshrinesIcon = new RangeNode<int>(25, 1, 200);
             DarkshrinesColor = new ColorBGRA(0, 128, 255, 255);
 
             #endregion
@@ -71,11 +71,23 @@ namespace SithylisQoL
             #region Traps
 
             Roombas = true;
+            RoombasOnMap = true;
+            RoombasOnMapColor = new ColorBGRA(255, 255, 255, 255);
+            RoombasOnMapSize = new RangeNode<int>(25, 1, 200);
             RoombasColor = new ColorBGRA(255, 255, 255, 255);
+
             Spinners = true;
+            SpinnersOnMap = true;
+            SpinnersOnMapColor = new ColorBGRA(255, 255, 255, 255);
+            SpinnersOnMapSize = new RangeNode<int>(25, 1, 200);
             SpinnersColor = new ColorBGRA(255, 255, 255, 255);
+
             Saws = true;
+            SawsOnMap = true;
+            SawsOnMapColor = new ColorBGRA(255, 255, 255, 255);
+            SawsOnMapSize = new RangeNode<int>(25, 1, 200);
             SawsColor = new ColorBGRA(255, 255, 255, 255);
+
             SecretSwitch = true;
             SecretSwitchColor = new ColorBGRA(0, 128, 255, 255);
             Delivery = true;
@@ -134,13 +146,13 @@ namespace SithylisQoL
             NormalShrineOnFloor = true;
             NormalShrineOnFloorSize = new RangeNode<int>(100, 1, 200);
             NormalShrineOnMap = true;
-            NormalShrinesIcon = new RangeNode<int>(25, 1, 50);
+            NormalShrinesIcon = new RangeNode<int>(25, 1, 200);
             NormalShrinesColor = new ColorBGRA(0, 128, 255, 255);
             LesserShrines = true;
             LesserShrineOnFloor = true;
             LesserShrineOnFloorSize = new RangeNode<int>(100, 1, 200);
             LesserShrineOnMap = true;
-            LesserShrinesIcon = new RangeNode<int>(25, 1, 50);
+            LesserShrinesIcon = new RangeNode<int>(25, 1, 200);
             LesserShrinesColor = new ColorBGRA(0, 128, 255, 255);
 
             #endregion
@@ -175,7 +187,7 @@ namespace SithylisQoL
             VaultPilesOnFloor = true;
             VaultPilesOnFloorSize = new RangeNode<int>(100, 1, 200);
             VaultPilesOnMap = true;
-            VaultPilesIcon = new RangeNode<int>(25, 1, 50);
+            VaultPilesIcon = new RangeNode<int>(25, 1, 200);
 
             #endregion
 
@@ -348,17 +360,38 @@ namespace SithylisQoL
         [Menu("Roombas", 1151, 115)]
         public ToggleNode Roombas { get; set; }
 
+        [Menu("On Map", 123412, 1151)]
+        public ToggleNode RoombasOnMap { get; set; }
+        [Menu("Size", 1234121, 123412)]
+        public RangeNode<int> RoombasOnMapSize { get; set; }
+        [Menu("Color", 1234122, 123412)]
+        public ColorNode RoombasOnMapColor { get; set; }
+
         [Menu("Color", 11511, 1151)]
         public ColorNode RoombasColor { get; set; }
 
         [Menu("Spinners", 1152, 115)]
         public ToggleNode Spinners { get; set; }
 
+        [Menu("On Map", 853456, 1152)]
+        public ToggleNode SpinnersOnMap { get; set; }
+        [Menu("Size", 8534561, 853456)]
+        public RangeNode<int> SpinnersOnMapSize { get; set; }
+        [Menu("Color", 8534562, 853456)]
+        public ColorNode SpinnersOnMapColor { get; set; }
+
         [Menu("Color", 11521, 1152)]
         public ColorNode SpinnersColor { get; set; }
 
         [Menu("Saws", 1153, 115)]
         public ToggleNode Saws { get; set; }
+
+        [Menu("On Map", 6378, 1153)]
+        public ToggleNode SawsOnMap { get; set; }
+        [Menu("Size", 63781, 6378)]
+        public RangeNode<int> SawsOnMapSize { get; set; }
+        [Menu("Color", 63782, 6378)]
+        public ColorNode SawsOnMapColor { get; set; }
 
         [Menu("Color", 11531, 1153)]
         public ColorNode SawsColor { get; set; }
