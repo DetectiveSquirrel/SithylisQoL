@@ -282,7 +282,7 @@ namespace SithylisQoL
                     float maxWidth = 0;
                     float maxheight = 0;
 
-                    var size = Graphics.DrawText(text, 16, iconRect, color, FontDrawFlags.Center);
+                    var size = Graphics.DrawText(text, Settings.PluginTextSize, iconRect, color, FontDrawFlags.Center);
                     chestScreenCoords.Y += size.Height;
                     maxheight += size.Height;
                     maxWidth = Math.Max(maxWidth, size.Width);
@@ -311,7 +311,7 @@ namespace SithylisQoL
                         float maxWidth = 0;
                         float maxheight = 0;
 
-                        var size = Graphics.DrawText(text, 16, iconRect, color, FontDrawFlags.Center);
+                        var size = Graphics.DrawText(text, Settings.PluginTextSize, iconRect, color, FontDrawFlags.Center);
                         chestScreenCoords.Y += size.Height;
                         maxheight += size.Height;
                         maxWidth = Math.Max(maxWidth, size.Width);
@@ -795,7 +795,7 @@ namespace SithylisQoL
                     float maxWidth = 0;
                     float maxheight = 0;
 
-                    var size = Graphics.DrawText(text, 16, iconRect, color, FontDrawFlags.Center);
+                    var size = Graphics.DrawText(text, Settings.PluginTextSize, iconRect, color, FontDrawFlags.Center);
                     chestScreenCoords.Y += size.Height;
                     maxheight += size.Height;
                     maxWidth = Math.Max(maxWidth, size.Width);
@@ -823,7 +823,7 @@ namespace SithylisQoL
                     float maxWidth = 0;
                     float maxheight = 0;
 
-                    var size = Graphics.DrawText(text, 16, iconRect, color, FontDrawFlags.Center);
+                    var size = Graphics.DrawText(text, Settings.PluginTextSize, iconRect, color, FontDrawFlags.Center);
                     chestScreenCoords.Y += size.Height;
                     maxheight += size.Height;
                     maxWidth = Math.Max(maxWidth, size.Width);

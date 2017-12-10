@@ -13,6 +13,8 @@ namespace SithylisQoL
             LimitPoeHudFps = true;
             Fps = new RangeNode<int>(60, 1, 144);
 
+            PluginTextSize = new RangeNode<int>(16, 1, 200);
+
             
 
             LabyrinthChest = true;
@@ -199,6 +201,10 @@ namespace SithylisQoL
 
         [Menu("Frame Per Second", 79831, 7983)]
         public RangeNode<int> Fps { get; set; }
+
+
+        [Menu("Text Size")]
+        public RangeNode<int> PluginTextSize { get; set; }
 
         #region Labyrinth
 
