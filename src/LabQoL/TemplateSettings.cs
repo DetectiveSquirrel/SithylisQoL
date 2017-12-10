@@ -10,12 +10,7 @@ namespace SithylisQoL
         public LabQoLSettings()
         {
             Enable = true;
-            LimitPoeHudFps = true;
-            Fps = new RangeNode<int>(60, 1, 144);
-
             PluginTextSize = new RangeNode<int>(16, 1, 200);
-
-            
 
             LabyrinthChest = true;
             LabyrinthChestSize = new RangeNode<int>(18, 1, 50);
@@ -195,14 +190,6 @@ namespace SithylisQoL
 
             #endregion
         }
-
-        [Menu("PoeHUD limiter", 7983)]
-        public ToggleNode LimitPoeHudFps { get; set; }
-
-        [Menu("Frame Per Second", 79831, 7983)]
-        public RangeNode<int> Fps { get; set; }
-
-
         [Menu("Text Size")]
         public RangeNode<int> PluginTextSize { get; set; }
 

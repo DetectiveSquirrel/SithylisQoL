@@ -264,9 +264,6 @@ namespace SithylisQoL
 
             // Debug-ish things
             if (Settings.Debug) ShowAllPathObjects();
-
-            if (Settings.LimitPoeHudFps && Settings.Fps.Value >= 1)
-                Thread.Sleep(1000 / Settings.Fps.Value);
         }
 
         private void DrawTextLabelEquals(ColorBGRA color, string text, string path)
