@@ -24,6 +24,11 @@ namespace SithylisQoL
 
         public string PoeHudImageLocation;
 
+        public SithylisQoL()
+        {
+            PluginName = "Random Features";
+        }
+
         public override void Initialise()
         {
             _entityCollection = new HashSet<EntityWrapper>();
@@ -667,22 +672,34 @@ namespace SithylisQoL
                         Settings.AreaTransitionIcon);
             }
 
-            if (e.Path.Contains("Metadata/MiscellaneousObjects/Abyss/AbyssCrackSpawners/AbyssCrackSkeletonSpawner"))
-                return new MapIcon(
-                    e,
-                    new HudTexture(CustomImagePath + "abyss-crack.png"),
-                    () => true,
-                    5);
+            if (Settings.AbyssCracks)
+            {
+                if (e.Path.Contains("Metadata/MiscellaneousObjects/Abyss/AbyssCrackSpawners/AbyssCrackSkeletonSpawner"))
+                    return new MapIcon(
+                        e,
+                        new HudTexture(CustomImagePath + "abyss-crack.png"),
+                        () => true,
+                        5);
 
-            if (e.Path.Contains("Metadata/MiscellaneousObjects/Abyss/AbyssNodeLarge") ||
-                e.Path.Contains("Metadata/MiscellaneousObjects/Abyss/AbyssNodeSmall") ||
-                e.Path.Contains("Metadata/MiscellaneousObjects/Abyss/AbyssNodeSmallMortarSpawned") ||
-                e.Path.Contains("Metadata/Chests/Abyss/AbyssFinal"))
-                return new MapIcon(
-                    e,
-                    new HudTexture(CustomImagePath + "abyss-node-small.png"),
-                    () => true,
-                    8);
+                if (e.Path.Contains("Metadata/MiscellaneousObjects/Abyss/AbyssNodeLarge") ||
+                    e.Path.Contains("Metadata/MiscellaneousObjects/Abyss/AbyssNodeSmall") ||
+                    e.Path.Contains("Metadata/MiscellaneousObjects/Abyss/AbyssNodeSmallMortarSpawned") ||
+                    e.Path.Contains("Metadata/Chests/Abyss/AbyssFinal"))
+                    return new MapIcon(
+                        e,
+                        new HudTexture(CustomImagePath + "abyss-node-small.png"),
+                        () => true,
+                        8);
+            }
+            if (Settings.AbysshoardChestToggleNode)
+            {
+                if (e.Path.Contains("Metadata/Chests/AbyssChest") && !e.GetComponent<Chest>().IsOpened)
+                    return new MapIcon(
+                        e,
+                        new HudTexture(CustomImagePath + "exclamationmark.png", Settings.AbysshoardChestColor),
+                        () => Settings.AbysshoardChestToggleNode,
+                        Settings.AbysshoardChestSize);
+            }
 
             return null;
         }

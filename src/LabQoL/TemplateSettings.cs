@@ -171,9 +171,14 @@ namespace SithylisQoL
 
             #endregion
 
-            #region Debug-ish
+            AbyssCracks = true;
+            AbysshoardChestToggleNode = true;
+            AbysshoardChestSize = new RangeNode<int>(15, 1, 200);
+            AbysshoardChestColor = new ColorBGRA(251, 177, 96, 255);
 
-            Debug = false;
+        #region Debug-ish
+
+        Debug = false;
             DebugIshToggleButton = Keys.PageDown;
             DebugMonstersOnly = false;
             DebugTextSize = new RangeNode<int>(12, 1, 50);
@@ -511,9 +516,32 @@ namespace SithylisQoL
 
         #endregion
 
+
+        [Menu("Others", 928465)]
+        public EmptyNode OthersEmptyNode { get; set; }
+
+        [Menu("Abyss", 74237, 928465)]
+        public EmptyNode AbyssNode { get; set; }
+
+        [Menu("Abyss Cracks", 742371, 74237)]
+        public ToggleNode AbyssCracks { get; set; }
+
+        [Menu("Chests", 742372, 74237)]
+        public EmptyNode AbysschestsEmptyNode { get; set; }
+
+        [Menu("Hoard (Good Loot)", 7423721, 742372)]
+        public ToggleNode AbysshoardChestToggleNode { get; set; }
+
+        [Menu("Size", 74237211, 7423721)]
+        public RangeNode<int> AbysshoardChestSize { get; set; }
+
+        [Menu("Color", 74237212, 7423721)]
+        public ColorNode AbysshoardChestColor { get; set; }
+
+
         #region Area Transitions
 
-        [Menu("Area Transitions", 5468)]
+        [Menu("Area Transitions", 5468, 928465)]
         public ToggleNode AreaTransition { get; set; }
 
         [Menu("Size", 54681, 5468)]
@@ -526,7 +554,7 @@ namespace SithylisQoL
 
         #region Specter Bodies
 
-        [Menu("Specter Bodies", 7001)]
+        [Menu("Specter Bodies", 7001, 928465)]
         public ToggleNode Specters { get; set; }
 
         [Menu("Tukohama's Vanguard", 70011, 7001)]
@@ -542,7 +570,7 @@ namespace SithylisQoL
 
         #region Vault Piles
 
-        [Menu("Vault Gold Piles", 8001)]
+        [Menu("Vault Gold Piles", 8001, 928465)]
         public ToggleNode VaultPiles { get; set; }
 
         [Menu("Draw on Floor", 80011, 8001)]
@@ -561,7 +589,7 @@ namespace SithylisQoL
 
         #region Debug-ish
 
-        [Menu("Debug-ish", 99)]
+        [Menu("Debug-ish", 99, 928465)]
         public ToggleNode Debug { get; set; }
 
         [Menu("Toggle Button", 993, 99)]
