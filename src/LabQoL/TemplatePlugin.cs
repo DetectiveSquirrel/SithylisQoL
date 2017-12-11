@@ -22,12 +22,14 @@ namespace SithylisQoL
 
         public string CustomImagePath;
 
-        public long LargeMapZoomLevelAddress =
-            API.GameController.Game.IngameState.IngameUi.Map.LargeMap.Address + 0x6EC + 0x2E8;
-
-        public float MapZoomLevel = 1.0f;
-
         public string PoeHudImageLocation;
+
+        public override void Initialise()
+        {
+            _entityCollection = new HashSet<EntityWrapper>();
+            CustomImagePath = PluginDirectory + @"\images\";
+            PoeHudImageLocation = PluginDirectory + @"\..\..\textures\";
+        }
 
         public void DrawImageToWorld(ImageToWorldData information)
         {
@@ -119,13 +121,6 @@ namespace SithylisQoL
         public override void EntityRemoved(EntityWrapper entity)
         {
             _entityCollection.Remove(entity);
-        }
-
-        public override void Initialise()
-        {
-            _entityCollection = new HashSet<EntityWrapper>();
-            CustomImagePath = PluginDirectory + @"\images\";
-            PoeHudImageLocation = PluginDirectory + @"\..\..\textures\";
         }
 
         private void ToggleDebug()
