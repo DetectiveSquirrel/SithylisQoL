@@ -172,6 +172,10 @@ namespace SithylisQoL
             #endregion
 
             AbyssCracks = true;
+            AbyssSmallNodeSize = new RangeNode<int>(7, 1, 200);
+            AbyssSmallNodeColor = new ColorBGRA(255, 140, 0, 255);
+            AbyssLargeNodeSize = new RangeNode<int>(14, 1, 200);
+            AbyssLargeNodeColor = new ColorBGRA(255, 100, 0, 255);
             AbysshoardChestToggleNode = true;
             AbysshoardChestSize = new RangeNode<int>(15, 1, 200);
             AbysshoardChestColor = new ColorBGRA(251, 177, 96, 255);
@@ -525,6 +529,18 @@ namespace SithylisQoL
 
         [Menu("Abyss Cracks", 742371, 74237)]
         public ToggleNode AbyssCracks { get; set; }
+
+        [Menu("Small Node Size", 7423711, 742371)]
+        public RangeNode<int> AbyssSmallNodeSize { get; set; }
+
+        [Menu("Small Node Color", 7423712, 742371)]
+        public ColorNode AbyssSmallNodeColor { get; set; }
+
+        [Menu("Large Node Size", 7423713, 742371)]
+        public RangeNode<int> AbyssLargeNodeSize { get; set; }
+
+        [Menu("Large Node Color", 7423714, 742371)]
+        public ColorNode AbyssLargeNodeColor { get; set; }
 
         [Menu("Chests", 742372, 74237)]
         public EmptyNode AbysschestsEmptyNode { get; set; }

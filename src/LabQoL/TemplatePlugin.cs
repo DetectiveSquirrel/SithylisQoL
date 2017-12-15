@@ -677,9 +677,9 @@ namespace SithylisQoL
                 if (e.Path.Contains("Metadata/MiscellaneousObjects/Abyss/AbyssCrackSpawners/AbyssCrackSkeletonSpawner"))
                     return new MapIcon(
                         e,
-                        new HudTexture(CustomImagePath + "abyss-crack.png"),
+                        new HudTexture(CustomImagePath + "abyss-crack.png", Settings.AbyssSmallNodeColor),
                         () => true,
-                        5);
+                        Settings.AbyssSmallNodeSize);
 
                 if (e.Path.Contains("Metadata/MiscellaneousObjects/Abyss/AbyssNodeLarge") ||
                     e.Path.Contains("Metadata/MiscellaneousObjects/Abyss/AbyssNodeSmall") ||
@@ -687,9 +687,9 @@ namespace SithylisQoL
                     e.Path.Contains("Metadata/Chests/Abyss/AbyssFinal"))
                     return new MapIcon(
                         e,
-                        new HudTexture(CustomImagePath + "abyss-node-small.png"),
+                        new HudTexture(CustomImagePath + "abyss-node-small.png", Settings.AbyssLargeNodeColor),
                         () => true,
-                        8);
+                        Settings.AbyssLargeNodeSize);
             }
             if (Settings.AbysshoardChestToggleNode)
             {
