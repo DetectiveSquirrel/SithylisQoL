@@ -168,6 +168,7 @@ namespace SithylisQoL
             TukohamasVanguard = true;
             WickerMan = true;
             PockedLanternbearer = true;
+            SolarGuard = true;
 
             #endregion
 
@@ -581,6 +582,9 @@ namespace SithylisQoL
 
         [Menu("Pocked Lanternbearer", 70013, 7001)]
         public ToggleNode PockedLanternbearer { get; set; }
+
+        [Menu("Solar Guard", 70014, 7001)]
+        public ToggleNode SolarGuard { get; set; }
 
         #endregion
 

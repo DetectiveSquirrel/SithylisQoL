@@ -209,6 +209,13 @@ namespace SithylisQoL
                         "Pocked " + Environment.NewLine + "Lanternbearer",
                         "Metadata/Monsters/Miner/MinerLantern",
                         120);
+
+                if (Settings.SolarGuard)
+                    DrawTextLabelSpecter(
+                        Color.Yellow,
+                        "Solar Guard",
+                        "Metadata/Monsters/HolyFireElemental/HolyFireElementalSolarisBeam",
+                        120);
             }
 
             if (Settings.Sentinels)
