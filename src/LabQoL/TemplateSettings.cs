@@ -200,425 +200,425 @@ namespace SithylisQoL
 
             #endregion
         }
-        [Menu("Text Size")]
+        [Menu("Text Size", "Plugin Wide text size\nExcludes debug text size")]
         public RangeNode<int> PluginTextSize { get; set; }
 
         #region Labyrinth
 
         // 11
-        [Menu("Labyrinth", 11)]
+        [Menu("Labyrinth", "Labyrinth Section", 11)]
         public EmptyNode LabyrinthEmpty { get; set; }
 
         // 11-1
-        [Menu("Chests", 111, 11)]
+        [Menu("Chests", "Labyrinth Chests", 111, 11)]
         public ToggleNode LabyrinthChest { get; set; }
 
-        [Menu("Size", 156811, 111)]
+        [Menu("Size", "Size of icon on map", 156811, 111)]
         public RangeNode<int> LabyrinthChestSize { get; set; }
 
 
-        [Menu("Normal", 4793, 111)]
+        [Menu("Normal", "These might be \"Puzzle\" chests I cant remember, sorry", 4793, 111)]
         public EmptyNode Dwfdfhdh { get; set; }
 
-        [Menu("Trinkets", 47931, 4793)]
+        [Menu("Trinkets", "Chest contains a Trinket", 47931, 4793)]
         public ColorNode TrinketChestColor { get; set; }
 
-        [Menu("Treasure Key", 47932, 4793)]
+        [Menu("Treasure Key", "Chest contains a Treasure Key", 47932, 4793)]
         public ColorNode TreasureKeyChestColor { get; set; }
 
-        [Menu("Specific Unique", 47933, 4793)]
+        [Menu("Specific Unique", "Chest contains Unique items", 47933, 4793)]
         public ColorNode SpecificUniqueChestColor { get; set; }
 
-        [Menu("Currency", 47934, 4793)]
+        [Menu("Currency", "Chest contains Regular Currency", 47934, 4793)]
         public ColorNode RewardCurrencyColor { get; set; }
 
-        [Menu("Currency High", 47935, 4793)]
+        [Menu("Quality Currency", "Chest contains Quality Currency", 47935, 4793)]
         public ColorNode RewardCurrencyQualityColor { get; set; }
 
 
-        [Menu("Danger", 465745, 111)]
+        [Menu("Danger", "Requires running a \"Gauntlet\" to get to the chest", 465745, 111)]
         public EmptyNode Ertjertj { get; set; }
 
-        [Menu("Danger Cur", 4657451, 465745)]
+        [Menu("Currency", "Chest contains Regular Currency", 4657451, 465745)]
         public ColorNode RewardDangerCurrencyColor { get; set; }
 
-        [Menu("Danger Cur Quality", 4657452, 465745)]
+        [Menu("Quality Currency", "Chest contains Quality Currency", 4657452, 465745)]
         public ColorNode RewardDangerCurrencyQualityColor { get; set; }
 
-        [Menu("Danger Unique", 4657453, 465745)]
+        [Menu("Unique", "Chest contains Unique items", 4657453, 465745)]
         public ColorNode RewardDangerUniqueColor { get; set; }
 
-        [Menu("Danger Divination", 4657454, 465745)]
+        [Menu("Divination", "Chest contains Divination Cards", 4657454, 465745)]
         public ColorNode RewardDangerDivinationColor { get; set; }
 
-        [Menu("Danger Low Superior Gems", 4657455, 465745)]
+        [Menu("Low Gems", "Chest contains Low Quality Skill Gems", 4657455, 465745)]
         public ColorNode RewardDangerLowGemColor { get; set; }
 
-        [Menu("Danger Corrupted Vaal", 4657456, 465745)]
+        [Menu("Corrupted Vaal", "Chest contains Corrupted/Fragment pieces", 4657456, 465745)]
         public ColorNode RewardDangerCorVaalColor { get; set; }
 
-        [Menu("Danger Jewelery", 4657457, 465745)]
+        [Menu("Jewelery", "Chest contains Generic Jewellery", 4657457, 465745)]
         public ColorNode RewardDangerJewelleryColor { get; set; }
 
-        [Menu("Danger Generic", 4657458, 465745)]
+        [Menu("Generic", "Chest contains Generic items", 4657458, 465745)]
         public ColorNode RewardDangerGenericColor { get; set; }
 
 
-        [Menu("Silver", 32546, 111)]
+        [Menu("Silver", "Requires Silver keys to gain access to these chests", 32546, 111)]
         public EmptyNode Yljhj { get; set; }
 
-        [Menu("Silver Cur", 325461, 32546)]
+        [Menu("Currency", "Chest contains Regular Currency", 325461, 32546)]
         public ColorNode RewardSilverCurrencyColor { get; set; }
 
-        [Menu("Silver Cur Quality", 325462, 32546)]
+        [Menu("Quality Currency", "Chest contains Quality Currency", 325462, 32546)]
         public ColorNode RewardSilverCurrencyQualityColor { get; set; }
 
-        [Menu("Silver Jewelry Unique", 325463, 32546)]
+        [Menu("Unique Jewellery", "Chest contains Generic Jewellery", 325463, 32546)]
         public ColorNode RewardSilverJewelryUniqueColor { get; set; }
 
-        [Menu("Silver Divination", 325464, 32546)]
+        [Menu("Divination", "Chest contains Divination Cards", 325464, 32546)]
         public ColorNode RewardSilverDivinationColor { get; set; }
 
-        [Menu("Silver Unique 1", 325465, 32546)]
+        [Menu("Unique 1", "Chest contains Unique items", 325465, 32546)]
         public ColorNode RewardSilverUniqueOneColor { get; set; }
 
-        [Menu("Silver Unique 2", 325466, 32546)]
+        [Menu("Unique 2", "Chest contains Unique items", 325466, 32546)]
         public ColorNode RewardSilverUniqueTwoColor { get; set; }
 
-        [Menu("Silver Unique 3", 325467, 32546)]
+        [Menu("Unique 3", "Chest contains Unique items", 325467, 32546)]
         public ColorNode RewardSilverUniqueThreeColor { get; set; }
 
-        [Menu("Silver Skill Gems", 325468, 32546)]
+        [Menu("Skill Gems", "Chest contains Quality Skill Gems", 325468, 32546)]
         public ColorNode RewardSilverSkillGemColor { get; set; }
 
         // 11-2
         [Menu("Dark Shrines", 112, 11)]
         public ToggleNode Darkshrines { get; set; }
 
-        [Menu("Draw on Floor", 1121, 112)]
+        [Menu("Draw on Floor", "Draw on the World Floor", 1121, 112)]
         public ToggleNode DarkshrinesOnFloor { get; set; }
 
-        [Menu("Size", 11211, 1121)]
+        [Menu("Size", "Size of icon on the World Floor", 11211, 1121)]
         public RangeNode<int> DarkshrinesOnFloorSize { get; set; }
 
-        [Menu("Draw on Map", 1122, 112)]
+        [Menu("Draw on Map", "Draw on the Minimap", 1122, 112)]
         public ToggleNode DarkshrinesOnMap { get; set; }
 
-        [Menu("Shrine Size", 11221, 1122)]
+        [Menu("Size", "Size of Icon on the Minimap", 11221, 1122)]
         public RangeNode<int> DarkshrinesIcon { get; set; }
 
-        [Menu("Shrine Color", 1123, 112)]
+        [Menu("Color", "Color of Icon", 1123, 112)]
         public ColorNode DarkshrinesColor { get; set; }
 
         // 11-3
-        [Menu("Secret Switch", 113, 11)]
+        [Menu("Secret Switch", "Switches that open secret doors", 113, 11)]
         public ToggleNode SecretSwitch { get; set; }
 
-        [Menu("Color", 1131, 113)]
+        [Menu("Color", "Color of text", 1131, 113)]
         public ColorNode SecretSwitchColor { get; set; }
 
         // 11-4
-        [Menu("Gauntlet Delivery", 114, 11)]
+        [Menu("Gauntlet Delivery", "Deliver Gauntlet to the end of the track", 114, 11)]
         public ToggleNode Delivery { get; set; }
 
-        [Menu("Color", 1141, 114)]
+        [Menu("Color", "Color of text", 1141, 114)]
         public ColorNode DeliveryColor { get; set; }
 
         // 11-6
-        [Menu("Hidden Doorway", 116, 11)]
+        [Menu("Hidden Doorway", "Hidden Doorway Icon", 116, 11)]
         public ToggleNode HiddenDoorway { get; set; }
 
-        [Menu("Size", 1161, 116)]
+        [Menu("Size", "Size of Icon on Minimap", 1161, 116)]
         public RangeNode<int> HiddenDoorwayIcon { get; set; }
 
-        [Menu("Color", 1162, 116)]
+        [Menu("Color", "Color of icon on Minimap, suggest making it white", 1162, 116)]
         public ColorNode HiddenDoorwayColor { get; set; }
 
 
-        [Menu("Secret Passage", 35476, 11)]
+        [Menu("Secret Passage", "Secret Passage to travel to another Area", 35476, 11)]
         public ToggleNode SecretPassage { get; set; }
 
-        [Menu("Size", 354761, 35476)]
+        [Menu("Size", "Size of Icon on minimap", 354761, 35476)]
         public RangeNode<int> SecretPassageIcon { get; set; }
 
-        [Menu("Color", 354762, 35476)]
+        [Menu("Color", "Color of icon on Minimap, suggest making it white", 354762, 35476)]
         public ColorNode SecretPassageColor { get; set; }
 
-        [Menu("Smashable Door", 118, 11)]
+        [Menu("Smashable Door", "Smashable doors on walls to gain access to blocked off areas", 118, 11)]
         public ToggleNode SmashableDoor { get; set; }
 
-        [Menu("Color", 1181, 118)]
+        [Menu("Color", "Color of text", 1181, 118)]
         public ColorNode SmashableDoorColor { get; set; }
 
-        [Menu("Lieutenant With Thorns", 117, 11)]
+        [Menu("Lieutenant With Thorns", "Ice Lieutenant in Izaro room sometimes casts a thorns/reflext aura\nThis will indicate that skeleton with a atziri mirror", 117, 11)]
         public ToggleNode LieutenantofRage { get; set; }
 
-        [Menu("Size", 1171, 117)]
+        [Menu("Size", "Size of mirror over the Lieutenant", 1171, 117)]
         public RangeNode<int> LieutenantofRageSize { get; set; }
 
         // 11-5
-        [Menu("Traps", 115, 11)]
+        [Menu("Traps", "Traps littered around the Labyrinth", 115, 11)]
         public EmptyNode TrapsEmpty { get; set; }
 
-        [Menu("Roombas", 1151, 115)]
+        [Menu("Roombas", "Flying Roombas of Doom", 1151, 115)]
         public ToggleNode Roombas { get; set; }
 
-        [Menu("On Map", 123412, 1151)]
+        [Menu("On Map", "Draw Icon on minimap", 123412, 1151)]
         public ToggleNode RoombasOnMap { get; set; }
-        [Menu("Size", 1234121, 123412)]
+        [Menu("Size", "Size of Icon on minimap", 1234121, 123412)]
         public RangeNode<int> RoombasOnMapSize { get; set; }
-        [Menu("Color", 1234122, 123412)]
+        [Menu("Color", "Color of Icon on minimap", 1234122, 123412)]
         public ColorNode RoombasOnMapColor { get; set; }
 
-        [Menu("Color", 11511, 1151)]
+        [Menu("Color", "Color of text on trap", 11511, 1151)]
         public ColorNode RoombasColor { get; set; }
 
-        [Menu("Spinners", 1152, 115)]
+        [Menu("Spinners", "Spinning Poles", 1152, 115)]
         public ToggleNode Spinners { get; set; }
 
-        [Menu("On Map", 853456, 1152)]
+        [Menu("On Map", "Draw Icon on minimap", 853456, 1152)]
         public ToggleNode SpinnersOnMap { get; set; }
-        [Menu("Size", 8534561, 853456)]
+        [Menu("Size", "Size of Icon on minimap", 8534561, 853456)]
         public RangeNode<int> SpinnersOnMapSize { get; set; }
-        [Menu("Color", 8534562, 853456)]
+        [Menu("Color", "Color of Icon on minimap", 8534562, 853456)]
         public ColorNode SpinnersOnMapColor { get; set; }
 
-        [Menu("Color", 11521, 1152)]
+        [Menu("Color", "Color of text on trap", 11521, 1152)]
         public ColorNode SpinnersColor { get; set; }
 
-        [Menu("Saws", 1153, 115)]
+        [Menu("Saws", "Saw Blades", 1153, 115)]
         public ToggleNode Saws { get; set; }
 
-        [Menu("On Map", 6378, 1153)]
+        [Menu("On Map", "Draw Icon on minimap", 6378, 1153)]
         public ToggleNode SawsOnMap { get; set; }
-        [Menu("Size", 63781, 6378)]
+        [Menu("Size", "Size of Icon on minimap", 63781, 6378)]
         public RangeNode<int> SawsOnMapSize { get; set; }
-        [Menu("Color", 63782, 6378)]
+        [Menu("Color", "Color of Icon on minimap", 63782, 6378)]
         public ColorNode SawsOnMapColor { get; set; }
 
-        [Menu("Color", 11531, 1153)]
+        [Menu("Color", "Color of text on trap", 11531, 1153)]
         public ColorNode SawsColor { get; set; }
 
-        [Menu("Arrows", 1154, 115)]
+        [Menu("Arrows", "Dart Traps hidden inside walls", 1154, 115)]
         public ToggleNode Arrows { get; set; }
 
-        [Menu("Color", 11541, 1154)]
+        [Menu("Color", "Color of text on trap", 11541, 1154)]
         public ColorNode ArrowColor { get; set; }
 
-        [Menu("Pressure Plates", 1155, 115)]
+        [Menu("Pressure Plates", "Pressure plates activate Arrow Traps", 1155, 115)]
         public ToggleNode PressurePlates { get; set; }
 
-        [Menu("Color", 11551, 1155)]
+        [Menu("Color", "Color of text on trap", 11551, 1155)]
         public ColorNode PressurePlatesColor { get; set; }
 
         // Sentinels
-        [Menu("Sentinels", 91357, 11)]
+        [Menu("Sentinels", "Bad Curse like totems", 91357, 11)]
         public ToggleNode Sentinels { get; set; }
 
-        [Menu("Slowing", 913578, 91357)]
+        [Menu("Unending Lethargy", "Applies Temporal Chains", 913578, 91357)]
         public ToggleNode UnendingLethargy { get; set; }
 
-        [Menu("Color", 9135781, 913578)]
+        [Menu("Color", "Color of text on totem", 9135781, 913578)]
         public ColorNode UnendingLethargyColor { get; set; }
 
-        [Menu("Remove Flask Chrages", 913571, 91357)]
+        [Menu("Endless Drought", "Removes flask charges", 913571, 91357)]
         public ToggleNode EndlessDrought { get; set; }
 
-        [Menu("Color", 9135711, 913571)]
+        [Menu("Color", "Color of text on totem", 9135711, 913571)]
         public ColorNode EndlessDroughtColor { get; set; }
 
-        [Menu("Movement Damage", 913572, 91357)]
+        [Menu("Endless Hazard", "Casts multiple circles that deal physical damage\nequal to 20% of life + 12% of ES (if ES is protecting life)\nwhen a movement skill is used\nThe damage can be mitigated, but not avoided", 913572, 91357)]
         public ToggleNode EndlessHazard { get; set; }
 
-        [Menu("Color", 9135721, 913572)]
+        [Menu("Color", "Color of text on totem", 9135721, 913572)]
         public ColorNode EndlessHazardColor { get; set; }
 
-        [Menu("Inc Damage Taken", 913573, 91357)]
+        [Menu("Endless Pain", "Casts an aura that apply 50% increased damage taken", 913573, 91357)]
         public ToggleNode EndlessPain { get; set; }
 
-        [Menu("Color", 9135731, 913573)]
+        [Menu("Color", "Color of text on totem", 9135731, 913573)]
         public ColorNode EndlessPainColor { get; set; }
 
-        [Menu("Bleeding", 913574, 91357)]
+        [Menu("Endless Sting", "Causes Bleeding", 913574, 91357)]
         public ToggleNode EndlessSting { get; set; }
 
-        [Menu("Color", 9135741, 913574)]
+        [Menu("Color", "Color of text on totem", 9135741, 913574)]
         public ColorNode EndlessStingColor { get; set; }
 
-        [Menu("Fire Nova", 913575, 91357)]
+        [Menu("Unending Fire", "Csts Fire Nova", 913575, 91357)]
         public ToggleNode UnendingFire { get; set; }
 
-        [Menu("Color", 9135751, 913575)]
+        [Menu("Color", "Color of text on totem", 9135751, 913575)]
         public ColorNode UnendingFireColor { get; set; }
 
-        [Menu("Ice Nova", 913576, 91357)]
+        [Menu("Unending Frost", "Casts Ice Nova", 913576, 91357)]
         public ToggleNode UnendingFrost { get; set; }
 
-        [Menu("Color", 9135761, 913576)]
+        [Menu("Color", "Color of text on totem", 9135761, 913576)]
         public ColorNode UnendingFrostColor { get; set; }
 
-        [Menu("Shock Nova", 913577, 91357)]
+        [Menu("Unending Storm", "Casts Shock Nova", 913577, 91357)]
         public ToggleNode UnendingStorm { get; set; }
 
-        [Menu("Color", 9135771, 913577)]
+        [Menu("Color", "Color of text on totem", 9135771, 913577)]
         public ColorNode UnendingStormColor { get; set; }
 
         #endregion
 
         #region Atziri
 
-        [Menu("Atziri", 22)]
+        [Menu("Atziri", "Atziri Section", 22)]
         public EmptyNode AtziriEmpty { get; set; }
 
-        [Menu("Show Reflection", 221, 22)]
+        [Menu("Show Reflection", "Show Atziri's mirror over the reflection clone\nHelps to quickly identify the bad clone", 221, 22)]
         public ToggleNode Atziri { get; set; }
 
-        [Menu("Atziri Mirror Size", 2211, 221)]
+        [Menu("Size", "Size of Icon over mirror clone", 2211, 221)]
         public RangeNode<int> AtziriMirrorSize { get; set; }
 
         #endregion
 
         #region Shrines
 
-        [Menu("Shrines", 33)]
+        [Menu("Shrines", "Shrines in Wraeclast", 33)]
         public EmptyNode Shrines { get; set; }
 
-        [Menu("Normal Shrines", 331, 33)]
+        [Menu("Normal Shrines", "Normal Shrines", 331, 33)]
         public ToggleNode NormalShrines { get; set; }
 
-        [Menu("Draw on Floor", 3311, 331)]
+        [Menu("Draw on Floor", "Draw icon on the world floor", 3311, 331)]
         public ToggleNode NormalShrineOnFloor { get; set; }
 
-        [Menu("Size", 33111, 3311)]
+        [Menu("Size", "Size of the icon", 33111, 3311)]
         public RangeNode<int> NormalShrineOnFloorSize { get; set; }
 
-        [Menu("Draw on Map", 3312, 331)]
+        [Menu("Draw on Map", "Draw icon on the minimap", 3312, 331)]
         public ToggleNode NormalShrineOnMap { get; set; }
 
-        [Menu("Size", 33121, 3312)]
+        [Menu("Size", "Size of the icon", 33121, 3312)]
         public RangeNode<int> NormalShrinesIcon { get; set; }
 
-        [Menu("Color", 3313, 331)]
+        [Menu("Color", "Color of the icon", 3313, 331)]
         public ColorNode NormalShrinesColor { get; set; }
 
-        [Menu("Lesser Shrines", 332, 33)]
+        [Menu("Lesser Shrines", "Lesser shrines created by \"The Gull\" helmet", 332, 33)]
         public ToggleNode LesserShrines { get; set; }
 
-        [Menu("Draw on Floor", 3321, 332)]
+        [Menu("Draw on Floor", "Draw the icon on the world floor", 3321, 332)]
         public ToggleNode LesserShrineOnFloor { get; set; }
 
-        [Menu("Size", 33211, 3321)]
+        [Menu("Size", "Size of the icon", 33211, 3321)]
         public RangeNode<int> LesserShrineOnFloorSize { get; set; }
 
-        [Menu("Draw on Map", 3322, 332)]
+        [Menu("Draw on Map", "Draw the icon on the minimap", 3322, 332)]
         public ToggleNode LesserShrineOnMap { get; set; }
 
-        [Menu("Size", 33221, 3322)]
+        [Menu("Size", "Size of the icon", 33221, 3322)]
         public RangeNode<int> LesserShrinesIcon { get; set; }
 
-        [Menu("Color", 3323, 332)]
+        [Menu("Color", "Color of the icon", 3323, 332)]
         public ColorNode LesserShrinesColor { get; set; }
 
         #endregion
 
 
-        [Menu("Others", 928465)]
+        [Menu("Others", "Other random features", 928465)]
         public EmptyNode OthersEmptyNode { get; set; }
 
-        [Menu("Abyss", 74237, 928465)]
+        [Menu("Abyss", "Abyss Section", 74237, 928465)]
         public EmptyNode AbyssNode { get; set; }
 
-        [Menu("Abyss Cracks", 742371, 74237)]
+        [Menu("Abyss Cracks", "Cracks in the floor can be seen before you activate the abyss", 742371, 74237)]
         public ToggleNode AbyssCracks { get; set; }
 
-        [Menu("Small Node Size", 7423711, 742371)]
+        [Menu("Small Node Size", "Size of cracks on the minimap", 7423711, 742371)]
         public RangeNode<int> AbyssSmallNodeSize { get; set; }
 
-        [Menu("Small Node Color", 7423712, 742371)]
+        [Menu("Small Node Color", "Color of the cracks on the minimap", 7423712, 742371)]
         public ColorNode AbyssSmallNodeColor { get; set; }
 
-        [Menu("Large Node Size", 7423713, 742371)]
+        [Menu("Large Node Size", "Size of the sections connected to the cracks that spawn monsters on minimap", 7423713, 742371)]
         public RangeNode<int> AbyssLargeNodeSize { get; set; }
 
-        [Menu("Large Node Color", 7423714, 742371)]
+        [Menu("Large Node Color", "Color of the large nodes on minimap", 7423714, 742371)]
         public ColorNode AbyssLargeNodeColor { get; set; }
 
-        [Menu("Chests", 742372, 74237)]
+        [Menu("Chests", "Chests inside Abyssl Depths\nIndicated by a ! on the minimap", 742372, 74237)]
         public EmptyNode AbysschestsEmptyNode { get; set; }
 
-        [Menu("Hoard (Good Loot)", 7423721, 742372)]
+        [Menu("Hoard", "Hoard chests usually contain awsome loot", 7423721, 742372)]
         public ToggleNode AbysshoardChestToggleNode { get; set; }
 
-        [Menu("Size", 74237211, 7423721)]
+        [Menu("Size", "Size of icon on minimap", 74237211, 7423721)]
         public RangeNode<int> AbysshoardChestSize { get; set; }
 
-        [Menu("Color", 74237212, 7423721)]
+        [Menu("Color", "Color of icon on minimap", 74237212, 7423721)]
         public ColorNode AbysshoardChestColor { get; set; }
 
 
         #region Area Transitions
 
-        [Menu("Area Transitions", 5468, 928465)]
+        [Menu("Area Transitions", "Shows area transitions on minimap\nCan show hidden ones that arnt currently shown on poes minimap", 5468, 928465)]
         public ToggleNode AreaTransition { get; set; }
 
-        [Menu("Size", 54681, 5468)]
+        [Menu("Size", "Size on icon on minimap", 54681, 5468)]
         public RangeNode<int> AreaTransitionIcon { get; set; }
 
-        [Menu("Color", 54682, 5468)]
+        [Menu("Color", "Color of icon on minimap\nI would suggest making this White", 54682, 5468)]
         public ColorNode AreaTransitionColor { get; set; }
 
         #endregion
 
         #region Specter Bodies
 
-        [Menu("Specter Bodies", 7001, 928465)]
+        [Menu("Specter Bodies", "Corpses onthe ground useful for spectres", 7001, 928465)]
         public ToggleNode Specters { get; set; }
 
-        [Menu("Tukohama's Vanguard", 70011, 7001)]
+        [Menu("Tukohama's Vanguard", "Casts Scorching Ray Totems\nUsually used for bossing", 70011, 7001)]
         public ToggleNode TukohamasVanguard { get; set; }
 
-        [Menu("WickerMan", 70012, 7001)]
+        [Menu("WickerMan", "Use a Rightous Fire arua\nHigh life", 70012, 7001)]
         public ToggleNode WickerMan { get; set; }
 
-        [Menu("Pocked Lanternbearer", 70013, 7001)]
+        [Menu("Pocked Lanternbearer", "Cant remember what i used these for, but i did", 70013, 7001)]
         public ToggleNode PockedLanternbearer { get; set; }
 
-        [Menu("Solar Guard", 70014, 7001)]
+        [Menu("Solar Guard", "Nice for projectiles summons\nusually used for high clearspeed", 70014, 7001)]
         public ToggleNode SolarGuard { get; set; }
 
         #endregion
 
         #region Vault Piles
 
-        [Menu("Vault Gold Piles", 8001, 928465)]
+        [Menu("Vault Gold Piles", "Inside the Vault Map there are Gold Piles that contain AWSOME loot\nIdicated by a Perandus Coin icon", 8001, 928465)]
         public ToggleNode VaultPiles { get; set; }
 
-        [Menu("Draw on Floor", 80011, 8001)]
+        [Menu("Draw on Floor", "Draw icon on world floor", 80011, 8001)]
         public ToggleNode VaultPilesOnFloor { get; set; }
 
-        [Menu("Size", 800111, 80011)]
+        [Menu("Size", "Size of the icon on world floor", 800111, 80011)]
         public RangeNode<int> VaultPilesOnFloorSize { get; set; }
 
-        [Menu("Draw on Map", 80012, 8001)]
+        [Menu("Draw on Map", "Draw icon on the minimap", 80012, 8001)]
         public ToggleNode VaultPilesOnMap { get; set; }
 
-        [Menu("Size", 800121, 80012)]
+        [Menu("Size", "Size of the icon on minimap", 800121, 80012)]
         public RangeNode<int> VaultPilesIcon { get; set; }
 
         #endregion
 
         #region Debug-ish
 
-        [Menu("Debug-ish", 99, 928465)]
+        [Menu("Debug-ish", "Random debug shit.  Please Note: Pressing this manually with does not work", 99, 928465)]
         public ToggleNode Debug { get; set; }
 
-        [Menu("Toggle Button", 993, 99)]
+        [Menu("Toggle Button", "Button to toggle debug On/Off", 993, 99)]
         public HotkeyNode DebugIshToggleButton { get; set; }
 
-        [Menu("Monsters Only", 992, 99)]
+        [Menu("Monsters Only", "Show only entities with Monster component", 992, 99)]
         public ToggleNode DebugMonstersOnly { get; set; }
 
-        [Menu("Text Size", 991, 99)]
+        [Menu("Text Size", "Size of text drawn over entities on world floor", 991, 99)]
         public RangeNode<int> DebugTextSize { get; set; }
 
         #endregion
