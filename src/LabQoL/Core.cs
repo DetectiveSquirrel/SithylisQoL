@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using PoeHUD.Framework.Helpers;
 using PoeHUD.Hud;
 using PoeHUD.Models;
@@ -9,6 +8,7 @@ using PoeHUD.Plugins;
 using PoeHUD.Poe.Components;
 using SharpDX;
 using SharpDX.Direct3D9;
+using MenuItem = PoeHUD.Hud.Menu.MenuItem;
 
 namespace SithylisQoL
 {
@@ -34,6 +34,181 @@ namespace SithylisQoL
             _entityCollection = new HashSet<EntityWrapper>();
             CustomImagePath = PluginDirectory + @"\images\";
             PoeHudImageLocation = PluginDirectory + @"\..\..\textures\";
+        }
+
+        public override void InitialiseMenu(MenuItem mainMenu)
+        {
+            base.InitialiseMenu(mainMenu);
+            {
+                var rootMenu = PluginSettingsRootMenu;
+
+                MenuWrapper.AddMenu("Text Size", rootMenu, Settings.PluginTextSize);
+
+                var others = MenuWrapper.AddMenu("Others", rootMenu, "Other random features");
+                var abyss = MenuWrapper.AddMenu("Abyss", others, "Abyss Section");
+                var abyssCrack = MenuWrapper.AddMenu("AbyssCracks", abyss, "Cracks in the floor can be seen before you activate the abyss");
+                MenuWrapper.AddMenu("Small Node Size", abyssCrack, Settings.AbyssSmallNodeSize, "Size of cracks on the minimap");
+                MenuWrapper.AddMenu("Small Node Color", abyssCrack, Settings.AbyssSmallNodeColor, "Color of the cracks on the minimap");
+                MenuWrapper.AddMenu("Large Node Size", abyssCrack, Settings.AbyssLargeNodeSize, "Size of the sections connected to the cracks that spawn monsters on minimap");
+                MenuWrapper.AddMenu("Large Node Color", abyssCrack, Settings.AbyssLargeNodeColor, "Color of the large cracks on the minimap");
+
+                var abyssChests = MenuWrapper.AddMenu("Chests", abyss);
+                var hoardChest = MenuWrapper.AddMenu("Hoard", abyssChests, Settings.AbysshoardChestToggleNode, "Hoard chests usually contain awsome loot");
+                MenuWrapper.AddMenu("Size", hoardChest, Settings.AbysshoardChestSize, "Size of icon on minimap");
+                MenuWrapper.AddMenu("Color", hoardChest, Settings.AbysshoardChestColor, "Color of icon on minimap");
+
+                var labyrinth = MenuWrapper.AddMenu("Labyrinth", rootMenu, "Labyrinth Section");
+                var labyrinthChests = MenuWrapper.AddMenu("Chests", labyrinth, "Labyrinth Chests");
+                MenuWrapper.AddMenu("Size", labyrinthChests, Settings.LabyrinthChestSize, "Size of icon on map");
+
+                var normalLabChests = MenuWrapper.AddMenu("Normal", labyrinthChests, "These might be \"Puzzle\" chests I cant remember, sorry");
+                MenuWrapper.AddMenu("Trinkets", normalLabChests, Settings.TrinketChestColor, "Chest contains a Trinket");
+                MenuWrapper.AddMenu("Treasure Key", normalLabChests, Settings.TreasureKeyChestColor, "Chest contains a Treasure Key");
+                MenuWrapper.AddMenu("Specific Unique", normalLabChests, Settings.SpecificUniqueChestColor, "Chest contains Unique items");
+                MenuWrapper.AddMenu("Currency", normalLabChests, Settings.RewardCurrencyColor, "Chest contains Regular Currency");
+                MenuWrapper.AddMenu("Quality Currency", normalLabChests, Settings.RewardCurrencyQualityColor, "Chest contains Quality Currency");
+
+                var dangerLabChests = MenuWrapper.AddMenu("Danger", labyrinthChests, "Requires running a \"Gauntlet\" to get to the chest");
+                MenuWrapper.AddMenu("Currency", dangerLabChests, Settings.RewardDangerCurrencyColor, "Chest contains Regular Currency");
+                MenuWrapper.AddMenu("Quality Currency", dangerLabChests, Settings.RewardDangerCurrencyQualityColor, "Chest contains Quality Currency");
+                MenuWrapper.AddMenu("Unique", dangerLabChests, Settings.RewardDangerUniqueColor, "Chest contains Unique items");
+                MenuWrapper.AddMenu("Divination", dangerLabChests, Settings.RewardDangerDivinationColor, "Chest contains Divination Cards");
+                MenuWrapper.AddMenu("Low Gems", dangerLabChests, Settings.RewardDangerLowGemColor, "Chest contains Low Quality Skill Gems");
+                MenuWrapper.AddMenu("Corrupted Vaal", dangerLabChests, Settings.RewardDangerCorVaalColor, "Chest contains Corrupted/Fragment pieces");
+                MenuWrapper.AddMenu("Jewelery", dangerLabChests, Settings.RewardDangerJewelleryColor, "Chest contains Generic Jewellery");
+                MenuWrapper.AddMenu("Generic", dangerLabChests, Settings.RewardDangerGenericColor, "Chest contains Generic items");
+
+                var silverLabChests = MenuWrapper.AddMenu("Silver", labyrinthChests, "Requires Silver keys to gain access to these chests");
+                MenuWrapper.AddMenu("Currency", silverLabChests, Settings.RewardSilverCurrencyColor, "Chest contains Regular Currency");
+                MenuWrapper.AddMenu("Quality Currency", silverLabChests, Settings.RewardSilverCurrencyQualityColor, "Chest contains Quality Currency");
+                MenuWrapper.AddMenu("Unique Jewellery", silverLabChests, Settings.RewardSilverJewelryUniqueColor, "Chest contains Generic Jewellery");
+                MenuWrapper.AddMenu("Divination", silverLabChests, Settings.RewardSilverDivinationColor, "Chest contains Divination Cards");
+                MenuWrapper.AddMenu("Unique 1", silverLabChests, Settings.RewardSilverUniqueOneColor, "Chest contains Unique items");
+                MenuWrapper.AddMenu("Unique 2", silverLabChests, Settings.RewardSilverUniqueTwoColor, "Chest contains Unique items");
+                MenuWrapper.AddMenu("Unique 3", silverLabChests, Settings.RewardSilverUniqueThreeColor, "Chest contains Unique items");
+                MenuWrapper.AddMenu("Skill Gems", silverLabChests, Settings.RewardSilverSkillGemColor, "Chest contains Quality Skill Gems");
+                
+                var darkShrines = MenuWrapper.AddMenu("Dark Shrines", labyrinth);
+                var darkShrineOnFloor = MenuWrapper.AddMenu("Draw on Floor", darkShrines, Settings.DarkshrinesOnFloor, "Draw on the World Floor");
+                MenuWrapper.AddMenu("Size", darkShrineOnFloor, Settings.DarkshrinesOnFloorSize, "Size of icon on the World Floor");
+
+                var darkShrineOnMap = MenuWrapper.AddMenu("Draw on Map", darkShrines, Settings.DarkshrinesOnMap, "Draw on the Minimap");
+                MenuWrapper.AddMenu("Size", darkShrineOnMap, Settings.DarkshrinesIcon, "Size of Icon on the Minimap");
+                MenuWrapper.AddMenu("Color", darkShrineOnMap, Settings.DarkshrinesColor, "Color of Icon");
+
+                var secretSwitch = MenuWrapper.AddMenu("Secret Switch", labyrinth, Settings.SecretSwitch, "Switches that open secret doors");
+                MenuWrapper.AddMenu("Color", secretSwitch, Settings.SecretSwitchColor, "Color of text");
+
+                var gauntletDelivery = MenuWrapper.AddMenu("Gauntlet Delivery", labyrinth, Settings.Delivery, "Deliver Gauntlet to the end of the track");
+                MenuWrapper.AddMenu("Color", gauntletDelivery, Settings.DeliveryColor, "Color of text");
+
+                var hidenDoorWay = MenuWrapper.AddMenu("Hidden Doorway", labyrinth, Settings.HiddenDoorway, "Hidden Doorway Icon");
+                MenuWrapper.AddMenu("Size", hidenDoorWay, Settings.HiddenDoorwayIcon, "Size of Icon on Minimap");
+                MenuWrapper.AddMenu("Color", hidenDoorWay, Settings.HiddenDoorwayColor, "Color of icon on Minimap, suggest making it white");
+
+                var secretPassage = MenuWrapper.AddMenu("Secret Passage", labyrinth, Settings.SecretPassage, "Secret Passage to travel to another Area");
+                MenuWrapper.AddMenu("Size", secretPassage, Settings.SecretPassageIcon, "Size of Icon on Minimap");
+                MenuWrapper.AddMenu("Color", secretPassage, Settings.SecretPassageColor, "Color of icon on Minimap, suggest making it white");
+
+                var smashableDoor = MenuWrapper.AddMenu("Smashable Door", labyrinth, Settings.SmashableDoor, "Smashable doors on walls to gain access to blocked off areas");
+                MenuWrapper.AddMenu("Color", smashableDoor, Settings.SmashableDoorColor, "Color of text");
+
+                var lieutenantOfRage = MenuWrapper.AddMenu("Lieutenant With Thorns", labyrinth, Settings.LieutenantofRage, "Ice Lieutenant in Izaro room sometimes casts a thorns/reflext aura\nThis will indicate that skeleton with a atziri mirror");
+                MenuWrapper.AddMenu("Size", lieutenantOfRage, Settings.LieutenantofRageSize, "Size of mirror over the Lieutenant");
+
+                var traps = MenuWrapper.AddMenu("Traps", labyrinth);
+                var roombas = MenuWrapper.AddMenu("Roombas", traps, Settings.Roombas, "Flying Roombas of Doom");
+                MenuWrapper.AddMenu("Text Color", roombas, Settings.RoombasColor, "Color of text on trap");
+                var roombasOnMap = MenuWrapper.AddMenu("On Map", roombas, Settings.RoombasOnMap, "Draw Icon on minimap");
+                MenuWrapper.AddMenu("Size", roombasOnMap, Settings.RoombasOnMapSize, "Size of Icon on minimap");
+                MenuWrapper.AddMenu("Color", roombasOnMap, Settings.RoombasOnMapColor, "Color of Icon on minimap");
+
+                var spinners = MenuWrapper.AddMenu("Spinners", traps, Settings.Spinners, "Spinning Poles");
+                MenuWrapper.AddMenu("Text Color", spinners, Settings.RoombasColor, "Color of text on trap");
+                var spinnersOnMap = MenuWrapper.AddMenu("On Map", spinners, Settings.SpinnersOnMap, "Draw Icon on minimap");
+                MenuWrapper.AddMenu("Size", spinnersOnMap, Settings.SpinnersOnMapSize, "Size of Icon on minimap");
+                MenuWrapper.AddMenu("Color", spinnersOnMap, Settings.SpinnersOnMapColor, "Color of Icon on minimap");
+
+                var saws = MenuWrapper.AddMenu("Saws", traps, Settings.Spinners, "Saw Blades");
+                MenuWrapper.AddMenu("Text Color", saws, Settings.RoombasColor, "Color of text on trap");
+                var sawsOnMap = MenuWrapper.AddMenu("On Map", saws, Settings.SawsOnMap, "Draw Icon on minimap");
+                MenuWrapper.AddMenu("Size", sawsOnMap, Settings.SawsOnMapSize, "Size of Icon on minimap");
+                MenuWrapper.AddMenu("Color", sawsOnMap, Settings.SawsOnMapColor, "Color of Icon on minimap");
+
+                var arrows = MenuWrapper.AddMenu("Arrows", traps, Settings.Arrows, "Dart Traps hidden inside walls");
+                MenuWrapper.AddMenu("Color", arrows, Settings.ArrowColor, "Color of text on trap");
+
+                var pressurePlates = MenuWrapper.AddMenu("Pressure Plates", traps, Settings.PressurePlates, "Pressure plates activate Arrow Traps");
+                MenuWrapper.AddMenu("Color", pressurePlates, Settings.PressurePlatesColor, "Color of text on trap");
+
+                var sentinels = MenuWrapper.AddMenu("Sentinels", traps, Settings.Sentinels, "Bad Curse like totems");
+                var unendingLethargyColor = MenuWrapper.AddMenu("Unending Lethargy", sentinels, Settings.UnendingLethargy, "Applies Temporal Chains");
+                MenuWrapper.AddMenu("Color", unendingLethargyColor, Settings.UnendingLethargyColor, "Color of text on totem");
+
+                var endlessDrought = MenuWrapper.AddMenu("Endless Drought", sentinels, Settings.EndlessDrought, "Removes flask charges");
+                MenuWrapper.AddMenu("Color", endlessDrought, Settings.EndlessDroughtColor, "Color of text on totem");
+
+                var endlessHazard = MenuWrapper.AddMenu("Endless Hazard", sentinels, Settings.EndlessHazard, "Casts multiple circles that deal physical damage\nequal to 20% of life + 12% of ES (if ES is protecting life)\nwhen a movement skill is used\nThe damage can be mitigated, but not avoided");
+                MenuWrapper.AddMenu("Color", endlessHazard, Settings.EndlessHazardColor, "Color of text on totem");
+
+                var endlessPain = MenuWrapper.AddMenu("Endless Pain", sentinels, Settings.EndlessPain, "Casts an aura that apply 50% increased damage taken");
+                MenuWrapper.AddMenu("Color", endlessPain, Settings.EndlessPainColor, "Color of text on totem");
+
+                var endlessSting = MenuWrapper.AddMenu("Endless Sting", sentinels, Settings.EndlessSting, "Causes Bleeding");
+                MenuWrapper.AddMenu("Color", endlessSting, Settings.EndlessStingColor, "Color of text on totem");
+
+                var unendingFire = MenuWrapper.AddMenu("Unending Fire", sentinels, Settings.UnendingFire, "Casts Fire Nova");
+                MenuWrapper.AddMenu("Color", unendingFire, Settings.UnendingFireColor, "Color of text on totem");
+
+                var unendingFrost = MenuWrapper.AddMenu("Unending Frost", sentinels, Settings.UnendingFrost, "Casts Ice Nova");
+                MenuWrapper.AddMenu("Color", unendingFrost, Settings.UnendingFrostColor, "Color of text on totem");
+
+                var unendingLethargy = MenuWrapper.AddMenu("Unending Storm", sentinels, Settings.UnendingLethargy, "Casts Shock Nova");
+                MenuWrapper.AddMenu("Color", unendingLethargy, Settings.UnendingStormColor, "Color of text on totem");
+
+                var atziri = MenuWrapper.AddMenu("Atziri", rootMenu, "Atziri Section");
+                MenuWrapper.AddMenu("Show Reflection", atziri, Settings.Atziri, "Show Atziri's mirror over the reflection clone\nHelps to quickly identify the bad clone");
+                MenuWrapper.AddMenu("Size", atziri, Settings.AtziriMirrorSize, "Size of Icon over mirror clone");
+
+                var shrines = MenuWrapper.AddMenu("Shrines", rootMenu, "Shrines in Wraeclast");
+                var normalShrines = MenuWrapper.AddMenu("Normal Shrines", shrines, Settings.NormalShrines, "Normal Shrines");
+                var normaShrineOnFloor = MenuWrapper.AddMenu("Draw on Floor", normalShrines, Settings.NormalShrineOnFloor, "Draw icon on the world floor");
+                MenuWrapper.AddMenu("Size", normaShrineOnFloor, Settings.NormalShrineOnFloorSize, "Size of the icon");
+
+                var normalShrineOnMap = MenuWrapper.AddMenu("Draw on Map", normalShrines, Settings.NormalShrineOnMap, "Draw icon on the minimap");
+                MenuWrapper.AddMenu("Size", normalShrineOnMap, Settings.NormalShrinesIcon, "Size of the icon");
+                MenuWrapper.AddMenu("Color", normalShrineOnMap, Settings.NormalShrinesColor, "Color of the icon");
+
+                var lesserShrines = MenuWrapper.AddMenu("Lesser Shrines", shrines, Settings.LesserShrines, "Lesser shrines created by \"The Gull\" helmet");
+                var lesserShrineOnFloor = MenuWrapper.AddMenu("Draw on Floor", lesserShrines, Settings.LesserShrineOnFloor, "Draw the icon on the world floor");
+                MenuWrapper.AddMenu("Size", lesserShrineOnFloor, Settings.LesserShrineOnFloorSize, "Size of the icon");
+
+                var lesserShrineOnMap = MenuWrapper.AddMenu("Draw on Floor", lesserShrines, Settings.LesserShrineOnMap, "Draw icon on the minimap");
+                MenuWrapper.AddMenu("Size", lesserShrineOnMap, Settings.LesserShrinesIcon, "Size of the icon");
+                MenuWrapper.AddMenu("Color", lesserShrineOnMap, Settings.LesserShrinesColor, "Color of the icon");
+                
+                var areaTransitions = MenuWrapper.AddMenu("Area Transitions", rootMenu, Settings.AreaTransition, "Shows area transitions on minimap\nCan show hidden ones that arnt currently shown on poes minimap");
+                MenuWrapper.AddMenu("Size", areaTransitions, Settings.AreaTransitionIcon, "Size on icon on minimap");
+                MenuWrapper.AddMenu("Color", areaTransitions, Settings.AreaTransitionColor, "Color of icon on minimap\nI would suggest making this White");
+
+                var specters = MenuWrapper.AddMenu("Specter Bodies", rootMenu, Settings.Specters, "Corpses onthe ground useful for spectres");
+                MenuWrapper.AddMenu("Tukohama's Vanguard", specters, Settings.TukohamasVanguard, "Casts Scorching Ray Totems\nUsually used for bossing");
+                MenuWrapper.AddMenu("WickerMan", specters, Settings.WickerMan, "Use a Rightous Fire arua\nHigh life");
+                MenuWrapper.AddMenu("Pocked Lanternbearer", specters, Settings.PockedLanternbearer, "Cant remember what i used these for, but i did");
+                MenuWrapper.AddMenu("Solar Guard", specters, Settings.SolarGuard, "Nice for projectiles summons\nusually used for high clearspeed");
+
+
+                var vaultPiles = MenuWrapper.AddMenu("Vault Gold Piles", rootMenu, Settings.VaultPiles, "Inside the Vault Map there are Gold Piles that contain AWSOME loot\nIdicated by a Perandus Coin icon");
+                var vaultPilesOnFloor = MenuWrapper.AddMenu("Draw on Floor", vaultPiles, Settings.VaultPilesOnFloor, "Draw icon on world floor");
+                MenuWrapper.AddMenu("Size", vaultPilesOnFloor, Settings.VaultPilesOnFloor, "Size of the icon on world floor");
+                var vaultPilesOnMap = MenuWrapper.AddMenu("Draw on Map", vaultPiles, Settings.VaultPilesOnMap, "Draw icon on the minimap");
+                MenuWrapper.AddMenu("Size", vaultPilesOnMap, Settings.VaultPilesIcon, "Size of the icon on the minimap");
+                
+                var debug = MenuWrapper.AddMenu("Debug-ish", rootMenu, "Random debug shit.");
+                MenuWrapper.AddMenu("Toggle Button", debug, Settings.DebugIshToggleButton, "Button to toggle debug On/Off");
+                MenuWrapper.AddMenu("Monsters Only", debug, Settings.DebugMonstersOnly, "Show only entities with Monster component");
+                MenuWrapper.AddMenu("Text Size", debug, Settings.DebugTextSize, "Size of text drawn over entities on world floor");
+            }
         }
 
         public void DrawImageToWorld(ImageToWorldData information)
@@ -308,25 +483,23 @@ namespace SithylisQoL
                 {
                     var camera = GameController.Game.IngameState.Camera;
                     var chestScreenCoords = camera.WorldToScreen(entity.Pos.Translate(0, 0, zOffset), entity);
-                    if (chestScreenCoords != new Vector2())
-                    {
-                        var iconRect = new Vector2(chestScreenCoords.X, chestScreenCoords.Y);
+                    if (chestScreenCoords == new Vector2()) continue;
+                    var iconRect = new Vector2(chestScreenCoords.X, chestScreenCoords.Y);
 
-                        float maxWidth = 0;
-                        float maxheight = 0;
+                    float maxWidth = 0;
+                    float maxheight = 0;
 
-                        var size = Graphics.DrawText(text, Settings.PluginTextSize, iconRect, color, FontDrawFlags.Center);
-                        chestScreenCoords.Y += size.Height;
-                        maxheight += size.Height;
-                        maxWidth = Math.Max(maxWidth, size.Width);
+                    var size = Graphics.DrawText(text, Settings.PluginTextSize, iconRect, color, FontDrawFlags.Center);
+                    chestScreenCoords.Y += size.Height;
+                    maxheight += size.Height;
+                    maxWidth = Math.Max(maxWidth, size.Width);
 
-                        var background = new RectangleF(
-                            chestScreenCoords.X - maxWidth / 2 - 3,
-                            chestScreenCoords.Y - maxheight,
-                            maxWidth + 6,
-                            maxheight);
-                        Graphics.DrawBox(background, Color.Black);
-                    }
+                    var background = new RectangleF(
+                        chestScreenCoords.X - maxWidth / 2 - 3,
+                        chestScreenCoords.Y - maxheight,
+                        maxWidth + 6,
+                        maxheight);
+                    Graphics.DrawBox(background, Color.Black);
                 }
         }
 
@@ -915,7 +1088,6 @@ namespace SithylisQoL
                         Graphics.DrawBox(background, Color.Black);
                     }
                 }
-                show = false;
             }
         }
 
