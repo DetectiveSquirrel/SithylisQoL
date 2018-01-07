@@ -13,3 +13,4 @@ Labyrinth Dark Shrines and somewhat useful boxes to open that arnt normally show
 
 And a few more you can find out :)
 Whether or not i add more is entirely dependent on finding random things to add that helps me.
+Test Add
