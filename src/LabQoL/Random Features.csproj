@@ -7,8 +7,8 @@
     <ProjectGuid>{C496AC39-F502-4F1A-B5DA-3EEA031E87D5}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SithylisQoL</RootNamespace>
-    <AssemblyName>SithylisQoLPlugin</AssemblyName>
+    <RootNamespace>Random_Features</RootNamespace>
+    <AssemblyName>Random Features</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -27,7 +27,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\..\..\PoE HUD #1\Release\plugins\1Sithylis QoL\</OutputPath>
+    <OutputPath>..\..\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -69,6 +69,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core.cs" />
+    <Compile Include="Libs\LocalPlayer.cs" />
+    <Compile Include="Libs\Mouse.cs" />
     <Compile Include="MenuWrapper.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
