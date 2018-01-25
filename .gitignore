@@ -52,3 +52,5 @@ config.ini
 SithylisQoLPlugin.dll.config
 SithylisQoLPlugin.pdb
 ErrorLog.txt
+Random Features.pdb
+Random Features.dll.config

@@ -120,10 +120,6 @@ namespace Random_Features
             AbysshoardChestToggleNode        = true;
             AbysshoardChestSize              = new RangeNode<int>(15, 1, 200);
             AbysshoardChestColor             = new ColorBGRA(251, 177, 96, 255);
-            Debug                            = false;
-            DebugIshToggleButton             = Keys.PageDown;
-            DebugMonstersOnly                = false;
-            DebugTextSize                    = new RangeNode<int>(12, 1, 50);
             VaultPiles                       = true;
             VaultPilesOnFloor                = true;
             VaultPilesOnFloorSize            = new RangeNode<int>(100, 1, 200);
@@ -268,10 +264,6 @@ namespace Random_Features
         public RangeNode<int> VaultPilesOnFloorSize            { get; set; }
         public ToggleNode     VaultPilesOnMap                  { get; set; }
         public RangeNode<int> VaultPilesIcon                   { get; set; }
-        public ToggleNode     Debug                            { get; set; }
-        public HotkeyNode     DebugIshToggleButton             { get; set; }
-        public ToggleNode     DebugMonstersOnly                { get; set; }
-        public RangeNode<int> DebugTextSize                    { get; set; }
 
         // Fuck Roman Numerals
         public ToggleNode     FrnMain                    { get; set; }
