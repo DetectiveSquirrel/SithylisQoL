@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Windows.Forms;
 using ImGuiNET;
+using PoeHUD.Framework;
 using PoeHUD.Hud.Settings;
 using PoeHUD.Plugins;
 using SharpDX;
@@ -19,26 +21,26 @@ namespace Random_Features.Libs
             return new ImGuiVector4(width + centerPos.X - width / 2, height + centerPos.Y - height / 2, width, height);
         }
 
-        public static bool BeginWindow(string title, int x, int y, int width, int height, bool autoResize = false)
+        public static bool BeginWindow(string title, ref bool isOpened, int x, int y, int width, int height, bool autoResize = false)
         {
             ImGui.SetNextWindowPos(new ImGuiVector2(width + x, height + y), Condition.Appearing, new ImGuiVector2(1, 1));
             ImGui.SetNextWindowSize(new ImGuiVector2(width, height), Condition.Appearing);
-            return ImGui.BeginWindow(title, autoResize ? WindowFlags.AlwaysAutoResize : WindowFlags.Default);
+            return ImGui.BeginWindow(title, ref isOpened, autoResize ? WindowFlags.AlwaysAutoResize : WindowFlags.Default);
         }
 
-        public static bool BeginWindow(string title, float x, float y, float width, float height, bool autoResize = false)
+        public static bool BeginWindow(string title, ref bool isOpened, float x, float y, float width, float height, bool autoResize = false)
         {
             ImGui.SetNextWindowPos(new ImGuiVector2(width + x, height + y), Condition.Appearing, new ImGuiVector2(1, 1));
             ImGui.SetNextWindowSize(new ImGuiVector2(width, height), Condition.Appearing);
-            return ImGui.BeginWindow(title, autoResize ? WindowFlags.AlwaysAutoResize : WindowFlags.Default);
+            return ImGui.BeginWindow(title, ref isOpened, autoResize ? WindowFlags.AlwaysAutoResize : WindowFlags.Default);
         }
 
-        public static bool BeginWindowCenter(string title, int width, int height, bool autoResize = false)
+        public static bool BeginWindowCenter(string title, ref bool isOpened, int width, int height, bool autoResize = false)
         {
             var size = CenterWindow(width, height);
             ImGui.SetNextWindowPos(new ImGuiVector2(size.X, size.Y), Condition.Appearing, new ImGuiVector2(1, 1));
             ImGui.SetNextWindowSize(new ImGuiVector2(size.Z, size.W), Condition.Appearing);
-            return ImGui.BeginWindow(title, autoResize ? WindowFlags.AlwaysAutoResize : WindowFlags.Default);
+            return ImGui.BeginWindow(title, ref isOpened, autoResize ? WindowFlags.AlwaysAutoResize : WindowFlags.Default);
         }
 
         // Int Sliders
@@ -147,12 +149,12 @@ namespace Random_Features.Libs
         public static Keys HotkeySelector(string buttonName, Keys currentKey)
         {
             if (ImGui.Button($"{buttonName}: {currentKey} ")) ImGui.OpenPopup(buttonName);
-            if (ImGui.BeginPopupModal(buttonName, (WindowFlags)35))
+            if (ImGui.BeginPopupModal(buttonName, (WindowFlags) 35))
             {
                 ImGui.Text($"Press a key to set as {buttonName}");
                 foreach (var key in KeyCodes())
                 {
-                    if (!PoeHUD.Framework.WinApi.IsKeyDown(key)) continue;
+                    if (!WinApi.IsKeyDown(key)) continue;
                     if (key != Keys.Escape && key != Keys.RButton && key != Keys.LButton)
                     {
                         ImGui.CloseCurrentPopup();
@@ -172,12 +174,12 @@ namespace Random_Features.Libs
         public static Keys HotkeySelector(string buttonName, string popupTitle, Keys currentKey)
         {
             if (ImGui.Button($"{buttonName}: {currentKey} ")) ImGui.OpenPopup(popupTitle);
-            if (ImGui.BeginPopupModal(popupTitle, (WindowFlags)35))
+            if (ImGui.BeginPopupModal(popupTitle, (WindowFlags) 35))
             {
                 ImGui.Text($"Press a key to set as {buttonName}");
                 foreach (var key in KeyCodes())
                 {
-                    if (!PoeHUD.Framework.WinApi.IsKeyDown(key)) continue;
+                    if (!WinApi.IsKeyDown(key)) continue;
                     if (key != Keys.Escape && key != Keys.RButton && key != Keys.LButton)
                     {
                         ImGui.CloseCurrentPopup();
@@ -208,9 +210,9 @@ namespace Random_Features.Libs
         public static int ComboBox(string sideLabel, int currentSelectedItem, List<string> objectList, ComboFlags comboFlags = ComboFlags.HeightRegular)
         {
             ImGui.Combo(sideLabel, ref currentSelectedItem, objectList.ToArray());
-
             return currentSelectedItem;
         }
+
         public static string ComboBox(string sideLabel, string currentSelectedItem, List<string> objectList, ComboFlags comboFlags = ComboFlags.HeightRegular)
         {
             if (ImGui.BeginCombo(sideLabel, currentSelectedItem, comboFlags))
@@ -219,7 +221,12 @@ namespace Random_Features.Libs
                 for (var n = 0; n < objectList.Count; n++)
                 {
                     var isSelected = refObject == objectList[n];
-                    if (ImGui.Selectable(objectList[n], isSelected)) return objectList[n];
+                    if (ImGui.Selectable(objectList[n], isSelected))
+                    {
+                        ImGui.EndCombo();
+                        return objectList[n];
+                    }
+
                     if (isSelected) ImGui.SetItemDefaultFocus();
                 }
 
@@ -228,6 +235,7 @@ namespace Random_Features.Libs
 
             return currentSelectedItem;
         }
+
         public static string ComboBox(string sideLabel, string currentSelectedItem, List<string> objectList, out bool didChange, ComboFlags comboFlags = ComboFlags.HeightRegular)
         {
             if (ImGui.BeginCombo(sideLabel, currentSelectedItem, comboFlags))
@@ -239,8 +247,10 @@ namespace Random_Features.Libs
                     if (ImGui.Selectable(objectList[n], isSelected))
                     {
                         didChange = true;
+                        ImGui.EndCombo();
                         return objectList[n];
                     }
+
                     if (isSelected) ImGui.SetItemDefaultFocus();
                 }
 
@@ -250,5 +260,38 @@ namespace Random_Features.Libs
             didChange = false;
             return currentSelectedItem;
         }
+
+        // Unput Text
+        public static unsafe string InputText(string label, string currentValue, uint maxLength, InputTextFlags flags)
+        {
+            var currentStringBytes = Encoding.Default.GetBytes(currentValue);
+            var buffer = new byte[maxLength];
+            Array.Copy(currentStringBytes, buffer, Math.Min(currentStringBytes.Length, maxLength));
+
+            int Callback(TextEditCallbackData* data)
+            {
+                var pCursorPos = (int*) data->UserData;
+                if (!data->HasSelection()) *pCursorPos = data->CursorPos;
+                return 0;
+            }
+
+            ImGui.InputText(label, buffer, maxLength, flags, Callback);
+            return Encoding.Default.GetString(buffer).TrimEnd('\0');
+        }
+
+        // ImColor_HSV Maker
+        public static ImGuiVector4 ImColor_HSV(float h, float s, float v)
+        {
+            ImGui.ColorConvertHSVToRGB(h, s, v, out var r, out var g, out var b);
+            return new ImGuiVector4(r, g, b, 255);
+        }
+
+        public static ImGuiVector4 ImColor_HSV(float h, float s, float v, float a)
+        {
+            ImGui.ColorConvertHSVToRGB(h, s, v, out var r, out var g, out var b);
+            return new ImGuiVector4(r, g, b, a);
+        }
+
+
     }
 }

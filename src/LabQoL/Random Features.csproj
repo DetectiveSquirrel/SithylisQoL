@@ -31,6 +31,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ImGui.NET">
@@ -81,7 +82,6 @@
     <Compile Include="Libs\ImGuiExtension.cs" />
     <Compile Include="Libs\LocalPlayer.cs" />
     <Compile Include="Libs\Mouse.cs" />
-    <Compile Include="MenuWrapper.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -15,6 +15,7 @@ namespace Random_Features
 {
     public class RandomFeatures : BaseSettingsPlugin<RandomFeaturesSettings>
     {
+        public static int selected;
         private HashSet<EntityWrapper> _entityCollection;
 
         public string CustomImagePath;
@@ -22,6 +23,7 @@ namespace Random_Features
         public string PoeHudImageLocation;
 
         public RandomFeatures() => PluginName = "Random Features";
+        public static string[] SettingName = { "Random Features", "Fuck Roman Numerals", "Wheres My Cursor?" };
 
         public override void Initialise()
         {
@@ -34,299 +36,436 @@ namespace Random_Features
         {
             var idPop = 1;
             if (!Settings.ShowWindow) return;
-            ImGuiExtension.BeginWindow($"{PluginName} Settings", Settings.LastSettingPos.X, Settings.LastSettingPos.Y, Settings.LastSettingSize.X, Settings.LastSettingSize.Y);
-            Settings.UnsortedPlugin.Value = ImGuiExtension.Checkbox("##MainOptions", Settings.UnsortedPlugin);
-            ImGui.SameLine();
-            if (ImGui.CollapsingHeader("Main Options", TreeNodeFlags.Framed))
-            {
-                Settings.PluginTextSize.Value = ImGuiExtension.IntSlider("Plugin Text Size", Settings.PluginTextSize);
-                if (ImGui.TreeNode("Abyss"))
+            var isOpened = Settings.ShowWindow.Value;
+            ImGuiExtension.BeginWindow($"{PluginName} Settings", ref isOpened, Settings.LastSettingPos.X, Settings.LastSettingPos.Y, Settings.LastSettingSize.X, Settings.LastSettingSize.Y);
+            Settings.ShowWindow.Value = isOpened;
+            ImGuiNative.igGetContentRegionAvail(out var newcontentRegionArea);
+            idPop = ImGuiExtension_ColorTabs("LeftSettings",idPop, SettingName, newcontentRegionArea);
+
+            ImGui.EndChild();
+            ImGui.PushStyleVar(StyleVar.ChildRounding, 5.0f);
+            ImGuiNative.igGetContentRegionAvail(out newcontentRegionArea);
+            if (ImGui.BeginChild("RightSettings", new System.Numerics.Vector2(newcontentRegionArea.X, newcontentRegionArea.Y), true, WindowFlags.Default))
+                switch (SettingName[selected])
                 {
-                    if (ImGui.TreeNode("Cracks"))
-                    {
-                        Settings.AbyssSmallNodeSize.Value = ImGuiExtension.IntSlider("Small Node Size", Settings.AbyssSmallNodeSize);
-                        Settings.AbyssSmallNodeColor.Value = ImGuiExtension.ColorPicker("Small Node Color", Settings.AbyssSmallNodeColor);
-                        ImGui.Spacing();
-                        Settings.AbyssLargeNodeSize.Value = ImGuiExtension.IntSlider("Large Node Size", Settings.AbyssLargeNodeSize);
-                        Settings.AbyssLargeNodeColor.Value = ImGuiExtension.ColorPicker("Large Node Color", Settings.AbyssLargeNodeColor);
-                        ImGui.TreePop();
-                    }
-
-                    if (ImGui.TreeNode("Hoard Chests"))
-                    {
-                        ImGui.PushID("AbyssHoardChest");
-                        Settings.AbysshoardChestToggleNode.Value = ImGuiExtension.Checkbox(Settings.AbysshoardChestToggleNode ? "Show" : "Hide", Settings.AbysshoardChestToggleNode); ImGui.PopID();
-                        Settings.AbysshoardChestSize.Value = ImGuiExtension.IntSlider("Hoard Chest Size", Settings.AbysshoardChestSize);
-                        Settings.AbysshoardChestColor.Value = ImGuiExtension.ColorPicker("Hoard Chest Color", Settings.AbysshoardChestColor);
-                        ImGui.TreePop();
-                    }
-
-                    ImGui.TreePop();
-                }
-
-                if (ImGui.TreeNode("Labyrinth"))
-                {
-                    if (ImGui.TreeNode("Chests"))
-                    {
-                        Settings.LabyrinthChestSize.Value = ImGuiExtension.IntSlider("Labyrinth Chest Size", Settings.LabyrinthChestSize);
-                        if (ImGui.TreeNode("Normal"))
+                    case "Random Features":
+                        Settings.UnsortedPlugin.Value = ImGuiExtension.Checkbox("Enable##RFToggle", Settings.UnsortedPlugin);
+                        Settings.PluginTextSize.Value = ImGuiExtension.IntSlider("Plugin Text Size", Settings.PluginTextSize);
+                        if (ImGui.TreeNode("Abyss"))
                         {
-                            Settings.TrinketChestColor.Value = ImGuiExtension.ColorPicker("Trinks", Settings.TrinketChestColor);
-                            Settings.TreasureKeyChestColor.Value = ImGuiExtension.ColorPicker("Treasure Key", Settings.TreasureKeyChestColor);
-                            Settings.SpecificUniqueChestColor.Value = ImGuiExtension.ColorPicker("Specific Unique", Settings.SpecificUniqueChestColor);
-                            Settings.RewardCurrencyColor.Value = ImGuiExtension.ColorPicker("Currency", Settings.RewardCurrencyColor);
-                            Settings.RewardCurrencyQualityColor.Value = ImGuiExtension.ColorPicker("Quality Currency", Settings.RewardCurrencyQualityColor);
+                            if (ImGui.TreeNode("Cracks"))
+                            {
+                                Settings.AbyssSmallNodeSize.Value = ImGuiExtension.IntSlider("Small Node Size", Settings.AbyssSmallNodeSize);
+                                Settings.AbyssSmallNodeColor.Value = ImGuiExtension.ColorPicker("Small Node Color", Settings.AbyssSmallNodeColor);
+                                ImGui.Spacing();
+                                Settings.AbyssLargeNodeSize.Value = ImGuiExtension.IntSlider("Large Node Size", Settings.AbyssLargeNodeSize);
+                                Settings.AbyssLargeNodeColor.Value = ImGuiExtension.ColorPicker("Large Node Color", Settings.AbyssLargeNodeColor);
+                                ImGui.TreePop();
+                            }
+
+                            if (ImGui.TreeNode("Hoard Chests"))
+                            {
+                                ImGui.PushID("AbyssHoardChest");
+                                Settings.AbysshoardChestToggleNode.Value = ImGuiExtension.Checkbox(Settings.AbysshoardChestToggleNode ? "Show" : "Hide", Settings.AbysshoardChestToggleNode);
+                                ImGui.PopID();
+                                Settings.AbysshoardChestSize.Value = ImGuiExtension.IntSlider("Hoard Chest Size", Settings.AbysshoardChestSize);
+                                Settings.AbysshoardChestColor.Value = ImGuiExtension.ColorPicker("Hoard Chest Color", Settings.AbysshoardChestColor);
+                                ImGui.TreePop();
+                            }
+
                             ImGui.TreePop();
                         }
 
-                        if (ImGui.TreeNode("Danger"))
+                        if (ImGui.TreeNode("Labyrinth"))
                         {
-                            ImGui.PushID(idPop); Settings.RewardDangerCurrencyColor.Value = ImGuiExtension.ColorPicker("Currency", Settings.RewardDangerCurrencyColor); ImGui.PopID(); idPop++;
-                            ImGui.PushID(idPop); Settings.RewardDangerCurrencyQualityColor.Value = ImGuiExtension.ColorPicker("Quality Currency", Settings.RewardDangerCurrencyQualityColor); ImGui.PopID(); idPop++;
-                            ImGui.PushID(idPop); Settings.RewardDangerUniqueColor.Value = ImGuiExtension.ColorPicker("Unique", Settings.RewardDangerUniqueColor); ImGui.PopID(); idPop++;
-                            ImGui.PushID(idPop); Settings.RewardDangerDivinationColor.Value = ImGuiExtension.ColorPicker("Divination", Settings.RewardDangerDivinationColor); ImGui.PopID(); idPop++;
-                            ImGui.PushID(idPop); Settings.RewardDangerLowGemColor.Value = ImGuiExtension.ColorPicker("Low Gems", Settings.RewardDangerLowGemColor); ImGui.PopID(); idPop++;
-                            ImGui.PushID(idPop); Settings.RewardDangerCorVaalColor.Value = ImGuiExtension.ColorPicker("Corrupted Vaal", Settings.RewardDangerCorVaalColor); ImGui.PopID(); idPop++;
-                            ImGui.PushID(idPop); Settings.RewardDangerJewelleryColor.Value = ImGuiExtension.ColorPicker("Jewelery", Settings.RewardDangerJewelleryColor); ImGui.PopID(); idPop++;
-                            ImGui.PushID(idPop); Settings.RewardDangerGenericColor.Value = ImGuiExtension.ColorPicker("Generic", Settings.RewardDangerGenericColor); ImGui.PopID(); idPop++;
+                            if (ImGui.TreeNode("Chests"))
+                            {
+                                Settings.LabyrinthChestSize.Value = ImGuiExtension.IntSlider("Labyrinth Chest Size", Settings.LabyrinthChestSize);
+                                if (ImGui.TreeNode("Normal"))
+                                {
+                                    Settings.TrinketChestColor.Value = ImGuiExtension.ColorPicker("Trinks", Settings.TrinketChestColor);
+                                    Settings.TreasureKeyChestColor.Value = ImGuiExtension.ColorPicker("Treasure Key", Settings.TreasureKeyChestColor);
+                                    Settings.SpecificUniqueChestColor.Value = ImGuiExtension.ColorPicker("Specific Unique", Settings.SpecificUniqueChestColor);
+                                    Settings.RewardCurrencyColor.Value = ImGuiExtension.ColorPicker("Currency", Settings.RewardCurrencyColor);
+                                    Settings.RewardCurrencyQualityColor.Value = ImGuiExtension.ColorPicker("Quality Currency", Settings.RewardCurrencyQualityColor);
+                                    ImGui.TreePop();
+                                }
+
+                                if (ImGui.TreeNode("Danger"))
+                                {
+                                    ImGui.PushID(idPop);
+                                    Settings.RewardDangerCurrencyColor.Value = ImGuiExtension.ColorPicker("Currency", Settings.RewardDangerCurrencyColor);
+                                    ImGui.PopID();
+                                    idPop++;
+                                    ImGui.PushID(idPop);
+                                    Settings.RewardDangerCurrencyQualityColor.Value = ImGuiExtension.ColorPicker("Quality Currency", Settings.RewardDangerCurrencyQualityColor);
+                                    ImGui.PopID();
+                                    idPop++;
+                                    ImGui.PushID(idPop);
+                                    Settings.RewardDangerUniqueColor.Value = ImGuiExtension.ColorPicker("Unique", Settings.RewardDangerUniqueColor);
+                                    ImGui.PopID();
+                                    idPop++;
+                                    ImGui.PushID(idPop);
+                                    Settings.RewardDangerDivinationColor.Value = ImGuiExtension.ColorPicker("Divination", Settings.RewardDangerDivinationColor);
+                                    ImGui.PopID();
+                                    idPop++;
+                                    ImGui.PushID(idPop);
+                                    Settings.RewardDangerLowGemColor.Value = ImGuiExtension.ColorPicker("Low Gems", Settings.RewardDangerLowGemColor);
+                                    ImGui.PopID();
+                                    idPop++;
+                                    ImGui.PushID(idPop);
+                                    Settings.RewardDangerCorVaalColor.Value = ImGuiExtension.ColorPicker("Corrupted Vaal", Settings.RewardDangerCorVaalColor);
+                                    ImGui.PopID();
+                                    idPop++;
+                                    ImGui.PushID(idPop);
+                                    Settings.RewardDangerJewelleryColor.Value = ImGuiExtension.ColorPicker("Jewelery", Settings.RewardDangerJewelleryColor);
+                                    ImGui.PopID();
+                                    idPop++;
+                                    ImGui.PushID(idPop);
+                                    Settings.RewardDangerGenericColor.Value = ImGuiExtension.ColorPicker("Generic", Settings.RewardDangerGenericColor);
+                                    ImGui.PopID();
+                                    idPop++;
+                                    ImGui.TreePop();
+                                }
+
+                                if (ImGui.TreeNode("Silver"))
+                                {
+                                    ImGui.PushID(idPop);
+                                    Settings.RewardSilverCurrencyColor.Value = ImGuiExtension.ColorPicker("Currency", Settings.RewardSilverCurrencyColor);
+                                    ImGui.PopID();
+                                    idPop++;
+                                    ImGui.PushID(idPop);
+                                    Settings.RewardSilverCurrencyQualityColor.Value = ImGuiExtension.ColorPicker("Quality Currency", Settings.RewardSilverCurrencyQualityColor);
+                                    ImGui.PopID();
+                                    idPop++;
+                                    ImGui.PushID(idPop);
+                                    Settings.RewardSilverJewelryUniqueColor.Value = ImGuiExtension.ColorPicker("Unique Jewelery", Settings.RewardSilverJewelryUniqueColor);
+                                    ImGui.PopID();
+                                    idPop++;
+                                    ImGui.PushID(idPop);
+                                    Settings.RewardSilverDivinationColor.Value = ImGuiExtension.ColorPicker("Divination", Settings.RewardSilverDivinationColor);
+                                    ImGui.PopID();
+                                    idPop++;
+                                    ImGui.PushID(idPop);
+                                    Settings.RewardSilverUniqueOneColor.Value = ImGuiExtension.ColorPicker("Unique 1", Settings.RewardSilverUniqueOneColor);
+                                    ImGui.PopID();
+                                    idPop++;
+                                    ImGui.PushID(idPop);
+                                    Settings.RewardSilverUniqueTwoColor.Value = ImGuiExtension.ColorPicker("Unique 2", Settings.RewardSilverUniqueTwoColor);
+                                    ImGui.PopID();
+                                    idPop++;
+                                    ImGui.PushID(idPop);
+                                    Settings.RewardSilverUniqueThreeColor.Value = ImGuiExtension.ColorPicker("Unique 3", Settings.RewardSilverUniqueThreeColor);
+                                    ImGui.PopID();
+                                    idPop++;
+                                    ImGui.PushID(idPop);
+                                    Settings.RewardSilverSkillGemColor.Value = ImGuiExtension.ColorPicker("Skill Gems", Settings.RewardSilverSkillGemColor);
+                                    ImGui.PopID();
+                                    idPop++;
+                                    ImGui.TreePop();
+                                }
+
+                                ImGui.TreePop();
+                            }
+
+                            if (ImGui.TreeNode("Dark Shrines"))
+                            {
+                                Settings.DarkshrinesOnFloor.Value = ImGuiExtension.Checkbox("Draw On The Floor", Settings.DarkshrinesOnFloor);
+                                ImGui.PushID(idPop);
+                                Settings.DarkshrinesOnFloorSize.Value = ImGuiExtension.IntSlider("Size", Settings.DarkshrinesOnFloorSize);
+                                ImGui.PopID();
+                                idPop++;
+                                ImGui.Spacing();
+                                Settings.DarkshrinesOnMap.Value = ImGuiExtension.Checkbox("Draw On The Map", Settings.DarkshrinesOnMap);
+                                ImGui.PushID(idPop);
+                                Settings.DarkshrinesIcon.Value = ImGuiExtension.IntSlider("Size", Settings.DarkshrinesIcon);
+                                ImGui.PopID();
+                                idPop++;
+                                ImGui.PushID(idPop);
+                                Settings.DarkshrinesColor.Value = ImGuiExtension.ColorPicker("Color", Settings.DarkshrinesColor);
+                                ImGui.PopID();
+                                idPop++;
+                                ImGui.TreePop();
+                            }
+
+                            if (ImGui.TreeNode("Rename Later - Misc Shit"))
+                            {
+                                Settings.SecretSwitchColor.Value = ImGuiExtension.ColorPicker("##SecretSwitch", Settings.SecretSwitchColor);
+                                ImGui.SameLine();
+                                Settings.SecretSwitch.Value = ImGuiExtension.Checkbox("Secret Switch", Settings.SecretSwitch.Value);
+                                Settings.DeliveryColor.Value = ImGuiExtension.ColorPicker("##GauntletDelivery", Settings.DeliveryColor);
+                                ImGui.SameLine();
+                                Settings.Delivery.Value = ImGuiExtension.Checkbox("Gauntlet Delivery", Settings.Delivery.Value);
+                                Settings.SmashableDoorColor.Value = ImGuiExtension.ColorPicker("##SmashableDoor", Settings.SmashableDoorColor);
+                                ImGui.SameLine();
+                                Settings.SmashableDoor.Value = ImGuiExtension.Checkbox("Smashable Door", Settings.SmashableDoor.Value);
+                                ImGui.Spacing();
+                                Settings.HiddenDoorway.Value = ImGuiExtension.Checkbox("Hidden Doorway", Settings.HiddenDoorway);
+                                ImGui.PushID(idPop);
+                                Settings.HiddenDoorwayIcon.Value = ImGuiExtension.IntSlider("Size", Settings.HiddenDoorwayIcon);
+                                ImGui.PopID();
+                                idPop++;
+                                ImGui.PushID(idPop);
+                                Settings.HiddenDoorwayColor.Value = ImGuiExtension.ColorPicker("Color", Settings.HiddenDoorwayColor);
+                                ImGui.PopID();
+                                idPop++;
+                                ImGui.Spacing();
+                                Settings.SecretPassage.Value = ImGuiExtension.Checkbox("Secret Passage", Settings.SecretPassage);
+                                ImGui.PushID(idPop);
+                                Settings.SecretPassageIcon.Value = ImGuiExtension.IntSlider("Size", Settings.SecretPassageIcon);
+                                ImGui.PopID();
+                                idPop++;
+                                ImGui.PushID(idPop);
+                                Settings.SecretPassageColor.Value = ImGuiExtension.ColorPicker("Color", Settings.SecretPassageColor);
+                                ImGui.PopID();
+                                idPop++;
+                                ImGui.Spacing();
+                                Settings.LieutenantofRageSize.Value = ImGuiExtension.IntSlider("##LieutenantofRageSize", "Size of icon", Settings.LieutenantofRageSize);
+                                ImGui.SameLine();
+                                Settings.LieutenantofRage.Value = ImGuiExtension.Checkbox("Lieutenant of Rage", Settings.LieutenantofRage.Value);
+                                ImGui.TreePop();
+                            }
+
+                            if (ImGui.TreeNode("Traps"))
+                            {
+                                if (ImGui.TreeNode("Sentinels"))
+                                {
+                                    Settings.UnendingLethargyColor.Value = ImGuiExtension.ColorPicker("##4tu3gv4", Settings.UnendingLethargyColor);
+                                    ImGui.SameLine();
+                                    Settings.UnendingLethargy.Value = ImGuiExtension.Checkbox("Undending Lethargy", Settings.UnendingLethargy.Value);
+                                    Settings.UnendingFireColor.Value = ImGuiExtension.ColorPicker("##tykrtbnb", Settings.UnendingFireColor);
+                                    ImGui.SameLine();
+                                    Settings.UnendingFire.Value = ImGuiExtension.Checkbox("Undending Fire", Settings.UnendingFire.Value);
+                                    Settings.UnendingFrostColor.Value = ImGuiExtension.ColorPicker("##gfljfghlk", Settings.UnendingFrostColor);
+                                    ImGui.SameLine();
+                                    Settings.UnendingFrost.Value = ImGuiExtension.Checkbox("Undending Frost", Settings.UnendingFrost.Value);
+                                    Settings.UnendingStormColor.Value = ImGuiExtension.ColorPicker("##fdgkdfg", Settings.UnendingStormColor);
+                                    ImGui.SameLine();
+                                    Settings.UnendingStorm.Value = ImGuiExtension.Checkbox("Undending Storm", Settings.UnendingStorm.Value);
+                                    Settings.EndlessDroughtColor.Value = ImGuiExtension.ColorPicker("##erturyhd", Settings.EndlessDroughtColor);
+                                    ImGui.SameLine();
+                                    Settings.EndlessDrought.Value = ImGuiExtension.Checkbox("Endless Drought", Settings.EndlessDrought.Value);
+                                    Settings.EndlessHazardColor.Value = ImGuiExtension.ColorPicker("##dsgjbngl", Settings.EndlessHazardColor);
+                                    ImGui.SameLine();
+                                    Settings.EndlessHazard.Value = ImGuiExtension.Checkbox("Endless Hazard", Settings.EndlessHazard.Value);
+                                    Settings.EndlessPainColor.Value = ImGuiExtension.ColorPicker("##fdgjn65", Settings.EndlessPainColor);
+                                    ImGui.SameLine();
+                                    Settings.EndlessPain.Value = ImGuiExtension.Checkbox("Endless Pain", Settings.EndlessPain.Value);
+                                    Settings.EndlessStingColor.Value = ImGuiExtension.ColorPicker("##fginkjre5", Settings.EndlessStingColor);
+                                    ImGui.SameLine();
+                                    Settings.EndlessSting.Value = ImGuiExtension.Checkbox("Endless Sting", Settings.EndlessSting.Value);
+                                    ImGui.TreePop();
+                                }
+
+                                if (ImGui.TreeNode("Roombas"))
+                                {
+                                    Settings.Roombas.Value = ImGuiExtension.Checkbox(Settings.Roombas.Value ? "Show" : "Hidden", Settings.Roombas);
+                                    ImGui.PushID(idPop);
+                                    Settings.RoombasColor.Value = ImGuiExtension.ColorPicker("Text", Settings.RoombasColor);
+                                    ImGui.PopID();
+                                    idPop++;
+                                    ImGui.Spacing();
+                                    ImGui.PushID(idPop);
+                                    Settings.RoombasOnMap.Value = ImGuiExtension.Checkbox("On Map", Settings.RoombasOnMap);
+                                    ImGui.PopID();
+                                    idPop++;
+                                    ImGui.PushID(idPop);
+                                    Settings.RoombasOnMapSize.Value = ImGuiExtension.IntSlider("Size", Settings.RoombasOnMapSize);
+                                    ImGui.PopID();
+                                    idPop++;
+                                    ImGui.PushID(idPop);
+                                    Settings.RoombasOnMapColor.Value = ImGuiExtension.ColorPicker("Color", Settings.RoombasOnMapColor);
+                                    ImGui.PopID();
+                                    idPop++;
+                                    ImGui.TreePop();
+                                }
+
+                                if (ImGui.TreeNode("Spinners"))
+                                {
+                                    Settings.Spinners.Value = ImGuiExtension.Checkbox(Settings.Spinners.Value ? "Show" : "Hidden", Settings.Spinners);
+                                    ImGui.PushID(idPop);
+                                    Settings.SpinnersColor.Value = ImGuiExtension.ColorPicker("Text", Settings.SpinnersColor);
+                                    ImGui.PopID();
+                                    idPop++;
+                                    ImGui.Spacing();
+                                    ImGui.PushID(idPop);
+                                    Settings.SpinnersOnMap.Value = ImGuiExtension.Checkbox("On Map", Settings.SpinnersOnMap);
+                                    ImGui.PopID();
+                                    idPop++;
+                                    ImGui.PushID(idPop);
+                                    Settings.SpinnersOnMapSize.Value = ImGuiExtension.IntSlider("Size", Settings.SpinnersOnMapSize);
+                                    ImGui.PopID();
+                                    idPop++;
+                                    ImGui.PushID(idPop);
+                                    Settings.SpinnersOnMapColor.Value = ImGuiExtension.ColorPicker("Color", Settings.SpinnersOnMapColor);
+                                    ImGui.PopID();
+                                    idPop++;
+                                    ImGui.TreePop();
+                                }
+
+                                if (ImGui.TreeNode("Saws"))
+                                {
+                                    Settings.Saws.Value = ImGuiExtension.Checkbox(Settings.Saws.Value ? "Show" : "Hidden", Settings.Saws);
+                                    ImGui.PushID(idPop);
+                                    Settings.SawsColor.Value = ImGuiExtension.ColorPicker("Text", Settings.SawsColor);
+                                    ImGui.PopID();
+                                    idPop++;
+                                    ImGui.Spacing();
+                                    ImGui.PushID(idPop);
+                                    Settings.SawsOnMap.Value = ImGuiExtension.Checkbox("On Map", Settings.SawsOnMap);
+                                    ImGui.PopID();
+                                    idPop++;
+                                    ImGui.PushID(idPop);
+                                    Settings.SawsOnMapSize.Value = ImGuiExtension.IntSlider("Size", Settings.SawsOnMapSize);
+                                    ImGui.PopID();
+                                    idPop++;
+                                    ImGui.PushID(idPop);
+                                    Settings.SawsOnMapColor.Value = ImGuiExtension.ColorPicker("Color", Settings.SawsOnMapColor);
+                                    ImGui.PopID();
+                                    idPop++;
+                                    ImGui.TreePop();
+                                }
+
+                                if (ImGui.TreeNode("Arrows"))
+                                {
+                                    Settings.Arrows.Value = ImGuiExtension.Checkbox(Settings.Arrows.Value ? "Show" : "Hidden", Settings.Arrows);
+                                    ImGui.PushID(idPop);
+                                    Settings.ArrowsColor.Value = ImGuiExtension.ColorPicker("Text", Settings.ArrowsColor);
+                                    ImGui.PopID();
+                                    idPop++;
+                                    ImGui.TreePop();
+                                }
+
+                                if (ImGui.TreeNode("Preassure Plates"))
+                                {
+                                    Settings.PressurePlates.Value = ImGuiExtension.Checkbox(Settings.PressurePlates.Value ? "Show" : "Hidden", Settings.PressurePlates);
+                                    ImGui.PushID(idPop);
+                                    Settings.PressurePlatesColor.Value = ImGuiExtension.ColorPicker("Text", Settings.PressurePlatesColor);
+                                    ImGui.PopID();
+                                    idPop++;
+                                    ImGui.TreePop();
+                                }
+
+                                ImGui.TreePop();
+                            }
+
                             ImGui.TreePop();
                         }
 
-                        if (ImGui.TreeNode("Silver"))
+                        if (ImGui.TreeNode("Atziri"))
                         {
-                            ImGui.PushID(idPop); Settings.RewardSilverCurrencyColor.Value = ImGuiExtension.ColorPicker("Currency", Settings.RewardSilverCurrencyColor); ImGui.PopID(); idPop++;
-                            ImGui.PushID(idPop); Settings.RewardSilverCurrencyQualityColor.Value = ImGuiExtension.ColorPicker("Quality Currency", Settings.RewardSilverCurrencyQualityColor); ImGui.PopID(); idPop++;
-                            ImGui.PushID(idPop); Settings.RewardSilverJewelryUniqueColor.Value = ImGuiExtension.ColorPicker("Unique Jewelery", Settings.RewardSilverJewelryUniqueColor); ImGui.PopID(); idPop++;
-                            ImGui.PushID(idPop); Settings.RewardSilverDivinationColor.Value = ImGuiExtension.ColorPicker("Divination", Settings.RewardSilverDivinationColor); ImGui.PopID(); idPop++;
-                            ImGui.PushID(idPop); Settings.RewardSilverUniqueOneColor.Value = ImGuiExtension.ColorPicker("Unique 1", Settings.RewardSilverUniqueOneColor); ImGui.PopID(); idPop++;
-                            ImGui.PushID(idPop); Settings.RewardSilverUniqueTwoColor.Value = ImGuiExtension.ColorPicker("Unique 2", Settings.RewardSilverUniqueTwoColor); ImGui.PopID(); idPop++;
-                            ImGui.PushID(idPop); Settings.RewardSilverUniqueThreeColor.Value = ImGuiExtension.ColorPicker("Unique 3", Settings.RewardSilverUniqueThreeColor); ImGui.PopID(); idPop++;
-                            ImGui.PushID(idPop); Settings.RewardSilverSkillGemColor.Value = ImGuiExtension.ColorPicker("Skill Gems", Settings.RewardSilverSkillGemColor); ImGui.PopID(); idPop++;
+                            Settings.AtziriMirrorSize.Value = ImGuiExtension.IntSlider("##324234", "Size", Settings.AtziriMirrorSize);
+                            ImGui.SameLine();
+                            Settings.Atziri.Value = ImGuiExtension.Checkbox("Show Clone", Settings.Atziri.Value);
                             ImGui.TreePop();
                         }
 
-                        ImGui.TreePop();
-                    }
-
-                    if (ImGui.TreeNode("Dark Shrines"))
-                    {
-                        Settings.DarkshrinesOnFloor.Value = ImGuiExtension.Checkbox("Draw On The Floor", Settings.DarkshrinesOnFloor);
-                        ImGui.PushID(idPop); Settings.DarkshrinesOnFloorSize.Value = ImGuiExtension.IntSlider("Size", Settings.DarkshrinesOnFloorSize); ImGui.PopID(); idPop++;
-                        ImGui.Spacing();
-                        Settings.DarkshrinesOnMap.Value = ImGuiExtension.Checkbox("Draw On The Map", Settings.DarkshrinesOnMap);
-                        ImGui.PushID(idPop); Settings.DarkshrinesIcon.Value = ImGuiExtension.IntSlider("Size", Settings.DarkshrinesIcon); ImGui.PopID(); idPop++;
-                        ImGui.PushID(idPop); Settings.DarkshrinesColor.Value = ImGuiExtension.ColorPicker("Color", Settings.DarkshrinesColor); ImGui.PopID(); idPop++;
-                        ImGui.TreePop();
-                    }
-
-                    if (ImGui.TreeNode("Rename Later - Misc Shit"))
-                    {
-                        Settings.SecretSwitchColor.Value = ImGuiExtension.ColorPicker("##SecretSwitch", Settings.SecretSwitchColor);
-                        ImGui.SameLine();
-                        Settings.SecretSwitch.Value = ImGuiExtension.Checkbox("Secret Switch", Settings.SecretSwitch.Value);
-                        Settings.DeliveryColor.Value = ImGuiExtension.ColorPicker("##GauntletDelivery", Settings.DeliveryColor);
-                        ImGui.SameLine();
-                        Settings.Delivery.Value = ImGuiExtension.Checkbox("Gauntlet Delivery", Settings.Delivery.Value);
-                        Settings.SmashableDoorColor.Value = ImGuiExtension.ColorPicker("##SmashableDoor", Settings.SmashableDoorColor);
-                        ImGui.SameLine();
-                        Settings.SmashableDoor.Value = ImGuiExtension.Checkbox("Smashable Door", Settings.SmashableDoor.Value);
-                        ImGui.Spacing();
-                        Settings.HiddenDoorway.Value = ImGuiExtension.Checkbox("Hidden Doorway", Settings.HiddenDoorway);
-                        ImGui.PushID(idPop); Settings.HiddenDoorwayIcon.Value = ImGuiExtension.IntSlider("Size", Settings.HiddenDoorwayIcon); ImGui.PopID(); idPop++;
-                        ImGui.PushID(idPop); Settings.HiddenDoorwayColor.Value = ImGuiExtension.ColorPicker("Color", Settings.HiddenDoorwayColor); ImGui.PopID(); idPop++;
-                        ImGui.Spacing();
-                        Settings.SecretPassage.Value = ImGuiExtension.Checkbox("Secret Passage", Settings.SecretPassage);
-                        ImGui.PushID(idPop); Settings.SecretPassageIcon.Value = ImGuiExtension.IntSlider("Size", Settings.SecretPassageIcon); ImGui.PopID(); idPop++;
-                        ImGui.PushID(idPop); Settings.SecretPassageColor.Value = ImGuiExtension.ColorPicker("Color", Settings.SecretPassageColor); ImGui.PopID(); idPop++;
-                        ImGui.Spacing();
-                        Settings.LieutenantofRageSize.Value = ImGuiExtension.IntSlider("##LieutenantofRageSize", "Size of icon", Settings.LieutenantofRageSize);
-                        ImGui.SameLine();
-                        Settings.LieutenantofRage.Value = ImGuiExtension.Checkbox("Lieutenant of Rage", Settings.LieutenantofRage.Value);
-                        ImGui.TreePop();
-                    }
-
-                    if (ImGui.TreeNode("Traps"))
-                    {
-                        if (ImGui.TreeNode("Sentinels"))
+                        if (ImGui.TreeNode("Shrines"))
                         {
-                            Settings.UnendingLethargyColor.Value = ImGuiExtension.ColorPicker("##4tu3gv4", Settings.UnendingLethargyColor);
-                            ImGui.SameLine();
-                            Settings.UnendingLethargy.Value = ImGuiExtension.Checkbox("Undending Lethargy", Settings.UnendingLethargy.Value);
-                            Settings.UnendingFireColor.Value = ImGuiExtension.ColorPicker("##tykrtbnb", Settings.UnendingFireColor);
-                            ImGui.SameLine();
-                            Settings.UnendingFire.Value = ImGuiExtension.Checkbox("Undending Fire", Settings.UnendingFire.Value);
-                            Settings.UnendingFrostColor.Value = ImGuiExtension.ColorPicker("##gfljfghlk", Settings.UnendingFrostColor);
-                            ImGui.SameLine();
-                            Settings.UnendingFrost.Value = ImGuiExtension.Checkbox("Undending Frost", Settings.UnendingFrost.Value);
-                            Settings.UnendingStormColor.Value = ImGuiExtension.ColorPicker("##fdgkdfg", Settings.UnendingStormColor);
-                            ImGui.SameLine();
-                            Settings.UnendingStorm.Value = ImGuiExtension.Checkbox("Undending Storm", Settings.UnendingStorm.Value);
-                            Settings.EndlessDroughtColor.Value = ImGuiExtension.ColorPicker("##erturyhd", Settings.EndlessDroughtColor);
-                            ImGui.SameLine();
-                            Settings.EndlessDrought.Value = ImGuiExtension.Checkbox("Endless Drought", Settings.EndlessDrought.Value);
-                            Settings.EndlessHazardColor.Value = ImGuiExtension.ColorPicker("##dsgjbngl", Settings.EndlessHazardColor);
-                            ImGui.SameLine();
-                            Settings.EndlessHazard.Value = ImGuiExtension.Checkbox("Endless Hazard", Settings.EndlessHazard.Value);
-                            Settings.EndlessPainColor.Value = ImGuiExtension.ColorPicker("##fdgjn65", Settings.EndlessPainColor);
-                            ImGui.SameLine();
-                            Settings.EndlessPain.Value = ImGuiExtension.Checkbox("Endless Pain", Settings.EndlessPain.Value);
-                            Settings.EndlessStingColor.Value = ImGuiExtension.ColorPicker("##fginkjre5", Settings.EndlessStingColor);
-                            ImGui.SameLine();
-                            Settings.EndlessSting.Value = ImGuiExtension.Checkbox("Endless Sting", Settings.EndlessSting.Value);
+                            if (ImGui.TreeNode("Normal"))
+                            {
+                                Settings.NormalShrines.Value = ImGuiExtension.Checkbox("Draw On The Floor", Settings.NormalShrines);
+                                ImGui.PushID(idPop);
+                                Settings.NormalShrinesIcon.Value = ImGuiExtension.IntSlider("Size", Settings.NormalShrinesIcon);
+                                ImGui.PopID();
+                                idPop++;
+                                ImGui.Spacing();
+                                Settings.NormalShrineOnMap.Value = ImGuiExtension.Checkbox("Draw On The Map", Settings.NormalShrineOnMap);
+                                ImGui.PushID(idPop);
+                                Settings.NormalShrineOnFloorSize.Value = ImGuiExtension.IntSlider("Size", Settings.NormalShrineOnFloorSize);
+                                ImGui.PopID();
+                                idPop++;
+                                ImGui.PushID(idPop);
+                                Settings.NormalShrinesColor.Value = ImGuiExtension.ColorPicker("Color", Settings.NormalShrinesColor);
+                                ImGui.PopID();
+                                idPop++;
+                                ImGui.TreePop();
+                            }
+
+                            if (ImGui.TreeNode("Lesser"))
+                            {
+                                Settings.LesserShrines.Value = ImGuiExtension.Checkbox("Draw On The Floor", Settings.LesserShrines);
+                                ImGui.PushID(idPop);
+                                Settings.LesserShrinesIcon.Value = ImGuiExtension.IntSlider("Size", Settings.LesserShrinesIcon);
+                                ImGui.PopID();
+                                idPop++;
+                                ImGui.Spacing();
+                                Settings.LesserShrineOnMap.Value = ImGuiExtension.Checkbox("Draw On The Map", Settings.LesserShrineOnMap);
+                                ImGui.PushID(idPop);
+                                Settings.LesserShrineOnFloorSize.Value = ImGuiExtension.IntSlider("Size", Settings.LesserShrineOnFloorSize);
+                                ImGui.PopID();
+                                idPop++;
+                                ImGui.PushID(idPop);
+                                Settings.LesserShrinesColor.Value = ImGuiExtension.ColorPicker("Color", Settings.LesserShrinesColor);
+                                ImGui.PopID();
+                                idPop++;
+                                ImGui.TreePop();
+                            }
+
                             ImGui.TreePop();
                         }
 
-                        if (ImGui.TreeNode("Roombas"))
+                        if (ImGui.TreeNode("Vault Gold Piles"))
                         {
-                            Settings.Roombas.Value = ImGuiExtension.Checkbox(Settings.Roombas.Value ? "Show" : "Hidden", Settings.Roombas);
-                            ImGui.PushID(idPop); Settings.RoombasColor.Value = ImGuiExtension.ColorPicker("Text", Settings.RoombasColor); ImGui.PopID(); idPop++;
+                            Settings.VaultPilesOnFloor.Value = ImGuiExtension.Checkbox("Draw On The Floor", Settings.VaultPilesOnFloor);
+                            ImGui.PushID(idPop);
+                            Settings.VaultPilesOnFloorSize.Value = ImGuiExtension.IntSlider("Size", Settings.VaultPilesOnFloorSize);
+                            ImGui.PopID();
+                            idPop++;
                             ImGui.Spacing();
-                            ImGui.PushID(idPop); Settings.RoombasOnMap.Value = ImGuiExtension.Checkbox("On Map", Settings.RoombasOnMap); ImGui.PopID(); idPop++;
-                            ImGui.PushID(idPop); Settings.RoombasOnMapSize.Value = ImGuiExtension.IntSlider("Size", Settings.RoombasOnMapSize); ImGui.PopID(); idPop++;
-                            ImGui.PushID(idPop); Settings.RoombasOnMapColor.Value = ImGuiExtension.ColorPicker("Color", Settings.RoombasOnMapColor); ImGui.PopID(); idPop++;
+                            Settings.VaultPilesOnMap.Value = ImGuiExtension.Checkbox("Draw On The Map", Settings.VaultPilesOnMap);
+                            ImGui.PushID(idPop);
+                            Settings.VaultPilesIcon.Value = ImGuiExtension.IntSlider("Size", Settings.VaultPilesIcon);
+                            ImGui.PopID();
+                            idPop++;
                             ImGui.TreePop();
                         }
 
-                        if (ImGui.TreeNode("Spinners"))
+                        if (ImGui.TreeNode("Specter Bodies"))
                         {
-                            Settings.Spinners.Value = ImGuiExtension.Checkbox(Settings.Spinners.Value ? "Show" : "Hidden", Settings.Spinners);
-                            ImGui.PushID(idPop); Settings.SpinnersColor.Value = ImGuiExtension.ColorPicker("Text", Settings.SpinnersColor); ImGui.PopID(); idPop++;
+                            ImGui.PushID(idPop);
+                            Settings.Specters.Value = ImGuiExtension.Checkbox("Show", Settings.Specters);
+                            ImGui.PopID();
+                            idPop++;
                             ImGui.Spacing();
-                            ImGui.PushID(idPop); Settings.SpinnersOnMap.Value = ImGuiExtension.Checkbox("On Map", Settings.SpinnersOnMap); ImGui.PopID(); idPop++;
-                            ImGui.PushID(idPop); Settings.SpinnersOnMapSize.Value = ImGuiExtension.IntSlider("Size", Settings.SpinnersOnMapSize); ImGui.PopID(); idPop++;
-                            ImGui.PushID(idPop); Settings.SpinnersOnMapColor.Value = ImGuiExtension.ColorPicker("Color", Settings.SpinnersOnMapColor); ImGui.PopID(); idPop++;
+                            Settings.TukohamasVanguard.Value = ImGuiExtension.Checkbox("Tukohama's Vanguard", Settings.TukohamasVanguard);
+                            Settings.WickerMan.Value = ImGuiExtension.Checkbox("WickerMan", Settings.WickerMan);
+                            Settings.PockedLanternbearer.Value = ImGuiExtension.Checkbox("Pocked Lanternbearer", Settings.PockedLanternbearer);
+                            Settings.SolarGuard.Value = ImGuiExtension.Checkbox("Solar Guard", Settings.SolarGuard);
                             ImGui.TreePop();
                         }
 
-                        if (ImGui.TreeNode("Saws"))
-                        {
-                            Settings.Saws.Value = ImGuiExtension.Checkbox(Settings.Saws.Value ? "Show" : "Hidden", Settings.Saws);
-                            ImGui.PushID(idPop); Settings.SawsColor.Value = ImGuiExtension.ColorPicker("Text", Settings.SawsColor); ImGui.PopID(); idPop++;
-                            ImGui.Spacing();
-                            ImGui.PushID(idPop); Settings.SawsOnMap.Value = ImGuiExtension.Checkbox("On Map", Settings.SawsOnMap); ImGui.PopID(); idPop++;
-                            ImGui.PushID(idPop); Settings.SawsOnMapSize.Value = ImGuiExtension.IntSlider("Size", Settings.SawsOnMapSize); ImGui.PopID(); idPop++;
-                            ImGui.PushID(idPop); Settings.SawsOnMapColor.Value = ImGuiExtension.ColorPicker("Color", Settings.SawsOnMapColor); ImGui.PopID(); idPop++;
-                            ImGui.TreePop();
-                        }
-
-                        if (ImGui.TreeNode("Arrows"))
-                        {
-                            Settings.Arrows.Value = ImGuiExtension.Checkbox(Settings.Arrows.Value ? "Show" : "Hidden", Settings.Arrows);
-                            ImGui.PushID(idPop); Settings.ArrowsColor.Value = ImGuiExtension.ColorPicker("Text", Settings.ArrowsColor); ImGui.PopID(); idPop++;
-                            ImGui.TreePop();
-                        }
-
-                        if (ImGui.TreeNode("Preassure Plates"))
-                        {
-                            Settings.PressurePlates.Value = ImGuiExtension.Checkbox(Settings.PressurePlates.Value ? "Show" : "Hidden", Settings.PressurePlates);
-                            ImGui.PushID(idPop); Settings.PressurePlatesColor.Value = ImGuiExtension.ColorPicker("Text", Settings.PressurePlatesColor); ImGui.PopID(); idPop++;
-                            ImGui.TreePop();
-                        }
-
-                        ImGui.TreePop();
-                    }
-
-                    ImGui.TreePop();
-                }
-
-                if (ImGui.TreeNode("Atziri"))
-                {
-                    Settings.AtziriMirrorSize.Value = ImGuiExtension.IntSlider("##324234", "Size", Settings.AtziriMirrorSize);
-                    ImGui.SameLine();
-                    Settings.Atziri.Value = ImGuiExtension.Checkbox("Show Clone", Settings.Atziri.Value);
-                    ImGui.TreePop();
-                }
-
-                if (ImGui.TreeNode("Shrines"))
-                {
-                    if (ImGui.TreeNode("Normal"))
-                    {
-                        Settings.NormalShrines.Value = ImGuiExtension.Checkbox("Draw On The Floor", Settings.NormalShrines);
-                        ImGui.PushID(idPop); Settings.NormalShrinesIcon.Value = ImGuiExtension.IntSlider("Size", Settings.NormalShrinesIcon); ImGui.PopID(); idPop++;
+                        break;
+                    case "Fuck Roman Numerals":
+                        Settings.FrnMain.Value = ImGuiExtension.Checkbox("Enable##FRNToggle", Settings.FrnMain);
+                        ImGui.Text("Box Options");
+                        Settings.FrnBackgroundBoxExtraWidth.Value = ImGuiExtension.IntSlider("Background Box Extra Width", Settings.FrnBackgroundBoxExtraWidth);
+                        Settings.FrnBackgroundBoxWidth.Value = ImGuiExtension.IntSlider("Background Box Width", Settings.FrnBackgroundBoxWidth);
+                        Settings.FrnBackgroundBoxHeight.Value = ImGuiExtension.IntSlider("Background Box Height", Settings.FrnBackgroundBoxHeight);
+                        Settings.FrnNextBoxOffset.Value = ImGuiExtension.IntSlider("Next Box Offset", Settings.FrnNextBoxOffset);
                         ImGui.Spacing();
-                        Settings.NormalShrineOnMap.Value = ImGuiExtension.Checkbox("Draw On The Map", Settings.NormalShrineOnMap);
-                        ImGui.PushID(idPop); Settings.NormalShrineOnFloorSize.Value = ImGuiExtension.IntSlider("Size", Settings.NormalShrineOnFloorSize); ImGui.PopID(); idPop++;
-                        ImGui.PushID(idPop); Settings.NormalShrinesColor.Value = ImGuiExtension.ColorPicker("Color", Settings.NormalShrinesColor); ImGui.PopID(); idPop++;
-                        ImGui.TreePop();
-                    }
-
-                    if (ImGui.TreeNode("Lesser"))
-                    {
-                        Settings.LesserShrines.Value = ImGuiExtension.Checkbox("Draw On The Floor", Settings.LesserShrines);
-                        ImGui.PushID(idPop); Settings.LesserShrinesIcon.Value = ImGuiExtension.IntSlider("Size", Settings.LesserShrinesIcon); ImGui.PopID(); idPop++;
+                        ImGui.Text("First Row");
+                        Settings.FrnFirstTierRowX.Value = ImGuiExtension.IntSlider("First Tier Row X", Settings.FrnFirstTierRowX);
+                        Settings.FrnFirstTierRowY.Value = ImGuiExtension.IntSlider("First Tier Row Y", Settings.FrnFirstTierRowY);
                         ImGui.Spacing();
-                        Settings.LesserShrineOnMap.Value = ImGuiExtension.Checkbox("Draw On The Map", Settings.LesserShrineOnMap);
-                        ImGui.PushID(idPop); Settings.LesserShrineOnFloorSize.Value = ImGuiExtension.IntSlider("Size", Settings.LesserShrineOnFloorSize); ImGui.PopID(); idPop++;
-                        ImGui.PushID(idPop); Settings.LesserShrinesColor.Value = ImGuiExtension.ColorPicker("Color", Settings.LesserShrinesColor); ImGui.PopID(); idPop++;
-                        ImGui.TreePop();
-                    }
-
-                    ImGui.TreePop();
+                        ImGui.Text("Second Row");
+                        Settings.FrnSecondTierRowX.Value = ImGuiExtension.IntSlider("Second Tier Row X", Settings.FrnSecondTierRowX);
+                        Settings.FrnSecondTierRowY.Value = ImGuiExtension.IntSlider("Second Tier Row Y", Settings.FrnSecondTierRowY);
+                        Settings.FrnFontSize.Value = ImGuiExtension.IntSlider("Font Size", Settings.FrnFontSize);
+                        break;
+                    case "Wheres My Cursor?":
+                        Settings.WmcMain.Value = ImGuiExtension.Checkbox("Enable##FRNToggle", Settings.WmcMain);
+                        Settings.WmcLineType.Value = ImGuiExtension.ComboBox("Line Type?", Settings.WmcLineType.Value, new List<string> { "Maximum Length To Cursor", "Draw To The Mouse", "Draw To The Edge Of The Screen" });
+                        Settings.WmcLineColor.Value = ImGuiExtension.ColorPicker("Line Color", Settings.WmcLineColor);
+                        Settings.WmcLineLength.Value = ImGuiExtension.IntSlider("Line Max Length", Settings.WmcLineLength);
+                        Settings.WmcLineSize.Value = ImGuiExtension.IntSlider("Line Thickness", Settings.WmcLineSize);
+                        ImGui.Spacing();
+                        Settings.WmcPlayerOffsetX.Value = ImGuiExtension.IntSlider("Player Offset X", Settings.WmcPlayerOffsetX.Value, -100, 100);
+                        Settings.WmcPlayerOffsetY.Value = ImGuiExtension.IntSlider("Player Offset Y", Settings.WmcPlayerOffsetY.Value, -100, 100);
+                        break;
                 }
-
-                if (ImGui.TreeNode("Vault Gold Piles"))
-                {
-                    Settings.VaultPilesOnFloor.Value = ImGuiExtension.Checkbox("Draw On The Floor", Settings.VaultPilesOnFloor);
-                    ImGui.PushID(idPop);
-                    Settings.VaultPilesOnFloorSize.Value = ImGuiExtension.IntSlider("Size", Settings.VaultPilesOnFloorSize);
-                    ImGui.PopID(); idPop++;
-                    ImGui.Spacing();
-                    Settings.VaultPilesOnMap.Value = ImGuiExtension.Checkbox("Draw On The Map", Settings.VaultPilesOnMap);
-                    ImGui.PushID(idPop);
-                    Settings.VaultPilesIcon.Value = ImGuiExtension.IntSlider("Size", Settings.VaultPilesIcon);
-                    ImGui.PopID(); idPop++;
-                    ImGui.TreePop();
-                }
-
-                if (ImGui.TreeNode("Specter Bodies"))
-                {
-                    ImGui.PushID(idPop);
-                    Settings.Specters.Value = ImGuiExtension.Checkbox("Show", Settings.Specters);
-                    ImGui.PopID(); idPop++;
-                    ImGui.Spacing();
-                    Settings.TukohamasVanguard.Value = ImGuiExtension.Checkbox("Tukohama's Vanguard", Settings.TukohamasVanguard);
-                    Settings.WickerMan.Value = ImGuiExtension.Checkbox("WickerMan", Settings.WickerMan);
-                    Settings.PockedLanternbearer.Value = ImGuiExtension.Checkbox("Pocked Lanternbearer", Settings.PockedLanternbearer);
-                    Settings.SolarGuard.Value = ImGuiExtension.Checkbox("Solar Guard", Settings.SolarGuard);
-                    ImGui.TreePop();
-                }
-
-                ImGui.Separator();
-            }
-
-            Settings.FrnMain.Value = ImGuiExtension.Checkbox("##FuckRomanNumerals", Settings.FrnMain);
-            ImGui.SameLine();
-            if (ImGui.CollapsingHeader("Fuck Roman Numerals", TreeNodeFlags.Framed))
-            {
-                ImGui.Text("Box Options");
-                Settings.FrnBackgroundBoxExtraWidth.Value = ImGuiExtension.IntSlider("Background Box Extra Width", Settings.FrnBackgroundBoxExtraWidth);
-                Settings.FrnBackgroundBoxWidth.Value = ImGuiExtension.IntSlider("Background Box Width", Settings.FrnBackgroundBoxWidth);
-                Settings.FrnBackgroundBoxHeight.Value = ImGuiExtension.IntSlider("Background Box Height", Settings.FrnBackgroundBoxHeight);
-                Settings.FrnNextBoxOffset.Value = ImGuiExtension.IntSlider("Next Box Offset", Settings.FrnNextBoxOffset);
-                ImGui.Spacing();
-                ImGui.Text("First Row");
-                Settings.FrnFirstTierRowX.Value = ImGuiExtension.IntSlider("First Tier Row X", Settings.FrnFirstTierRowX);
-                Settings.FrnFirstTierRowY.Value = ImGuiExtension.IntSlider("First Tier Row Y", Settings.FrnFirstTierRowY);
-                ImGui.Spacing();
-                ImGui.Text("Second Row");
-                Settings.FrnSecondTierRowX.Value = ImGuiExtension.IntSlider("Second Tier Row X", Settings.FrnSecondTierRowX);
-                Settings.FrnSecondTierRowY.Value = ImGuiExtension.IntSlider("Second Tier Row Y", Settings.FrnSecondTierRowY);
-                Settings.FrnFontSize.Value = ImGuiExtension.IntSlider("Font Size", Settings.FrnFontSize);
-                ImGui.Separator();
-            }
-
-            Settings.WmcMain.Value = ImGuiExtension.Checkbox("##WMCMain", Settings.WmcMain);
-            ImGui.SameLine();
-            if (ImGui.CollapsingHeader("Wheres My Cursor", TreeNodeFlags.Framed))
-            {
-                Settings.WmcLineType.Value = ImGuiExtension.ComboBox("Line Type?", Settings.WmcLineType.Value, new List<string> { "Maximum Length To Cursor", "Draw To The Mouse", "Draw To The Edge Of The Screen" });
-                Settings.WmcLineColor.Value = ImGuiExtension.ColorPicker("Line Color", Settings.WmcLineColor);
-                Settings.WmcLineLength.Value = ImGuiExtension.IntSlider("Line Max Length", Settings.WmcLineLength);
-                Settings.WmcLineSize.Value = ImGuiExtension.IntSlider("Line Thickness", Settings.WmcLineSize);
-                ImGui.Spacing();
-                Settings.WmcPlayerOffsetX.Value = ImGuiExtension.IntSlider("Player Offset X", Settings.WmcPlayerOffsetX.Value, -100, 100);
-                Settings.WmcPlayerOffsetY.Value = ImGuiExtension.IntSlider("Player Offset Y", Settings.WmcPlayerOffsetY.Value, -100, 100);
-            }
+            ImGui.PopStyleVar();
+            ImGui.EndChild();
 
             // Storing window Position and Size changed by the user
             if (ImGui.GetWindowHeight() > 21)
@@ -338,165 +477,28 @@ namespace Random_Features
             ImGui.EndWindow();
         }
 
-        //public override void InitialiseMenu(MenuItem mainMenu)
-        //{
-        //    base.InitialiseMenu(mainMenu);
-        //    {
-        //        var rootPluginMenu = PluginSettingsRootMenu;
-        //        var main = MenuWrapper.AddMenu("Unsorted", rootPluginMenu, Settings.UnsortedPlugin);
-        //        MenuWrapper.AddMenu("Text Size", main, Settings.PluginTextSize);
-        //        var others = MenuWrapper.AddMenu("Others", main, "Other random features");
-        //        var abyss = MenuWrapper.AddMenu("Abyss", others, "Abyss Section");
-        //        var abyssCrack = MenuWrapper.AddMenu("AbyssCracks", abyss, "Cracks in the floor can be seen before you activate the abyss");
-        //        MenuWrapper.AddMenu("Small Node Size", abyssCrack, Settings.AbyssSmallNodeSize, "Size of cracks on the minimap");
-        //        MenuWrapper.AddMenu("Small Node Color", abyssCrack, Settings.AbyssSmallNodeColor, "Color of the cracks on the minimap");
-        //        MenuWrapper.AddMenu("Large Node Size", abyssCrack, Settings.AbyssLargeNodeSize, "Size of the sections connected to the cracks that spawn monsters on minimap");
-        //        MenuWrapper.AddMenu("Large Node Color", abyssCrack, Settings.AbyssLargeNodeColor, "Color of the large cracks on the minimap");
-        //        var abyssChests = MenuWrapper.AddMenu("Chests", abyss);
-        //        var hoardChest = MenuWrapper.AddMenu("Hoard", abyssChests, Settings.AbysshoardChestToggleNode, "Hoard chests usually contain awsome loot");
-        //        MenuWrapper.AddMenu("Size", hoardChest, Settings.AbysshoardChestSize, "Size of icon on minimap");
-        //        MenuWrapper.AddMenu("Color", hoardChest, Settings.AbysshoardChestColor, "Color of icon on minimap");
-        //        var labyrinth = MenuWrapper.AddMenu("Labyrinth", main, "Labyrinth Section");
-        //        var labyrinthChests = MenuWrapper.AddMenu("Chests", labyrinth, "Labyrinth Chests");
-        //        MenuWrapper.AddMenu("Size", labyrinthChests, Settings.LabyrinthChestSize, "Size of icon on map");
-        //        var normalLabChests = MenuWrapper.AddMenu("Normal", labyrinthChests, "These might be \"Puzzle\" chests I cant remember, sorry");
-        //        MenuWrapper.AddMenu("Trinkets", normalLabChests, Settings.TrinketChestColor, "Chest contains a Trinket");
-        //        MenuWrapper.AddMenu("Treasure Key", normalLabChests, Settings.TreasureKeyChestColor, "Chest contains a Treasure Key");
-        //        MenuWrapper.AddMenu("Specific Unique", normalLabChests, Settings.SpecificUniqueChestColor, "Chest contains Unique items");
-        //        MenuWrapper.AddMenu("Currency", normalLabChests, Settings.RewardCurrencyColor, "Chest contains Regular Currency");
-        //        MenuWrapper.AddMenu("Quality Currency", normalLabChests, Settings.RewardCurrencyQualityColor, "Chest contains Quality Currency");
-        //        var dangerLabChests = MenuWrapper.AddMenu("Danger", labyrinthChests, "Requires running a \"Gauntlet\" to get to the chest");
-        //        MenuWrapper.AddMenu("Currency", dangerLabChests, Settings.RewardDangerCurrencyColor, "Chest contains Regular Currency");
-        //        MenuWrapper.AddMenu("Quality Currency", dangerLabChests, Settings.RewardDangerCurrencyQualityColor, "Chest contains Quality Currency");
-        //        MenuWrapper.AddMenu("Unique", dangerLabChests, Settings.RewardDangerUniqueColor, "Chest contains Unique items");
-        //        MenuWrapper.AddMenu("Divination", dangerLabChests, Settings.RewardDangerDivinationColor, "Chest contains Divination Cards");
-        //        MenuWrapper.AddMenu("Low Gems", dangerLabChests, Settings.RewardDangerLowGemColor, "Chest contains Low Quality Skill Gems");
-        //        MenuWrapper.AddMenu("Corrupted Vaal", dangerLabChests, Settings.RewardDangerCorVaalColor, "Chest contains Corrupted/Fragment pieces");
-        //        MenuWrapper.AddMenu("Jewelery", dangerLabChests, Settings.RewardDangerJewelleryColor, "Chest contains Generic Jewellery");
-        //        MenuWrapper.AddMenu("Generic", dangerLabChests, Settings.RewardDangerGenericColor, "Chest contains Generic items");
-        //        var silverLabChests = MenuWrapper.AddMenu("Silver", labyrinthChests, "Requires Silver keys to gain access to these chests");
-        //        MenuWrapper.AddMenu("Currency", silverLabChests, Settings.RewardSilverCurrencyColor, "Chest contains Regular Currency");
-        //        MenuWrapper.AddMenu("Quality Currency", silverLabChests, Settings.RewardSilverCurrencyQualityColor, "Chest contains Quality Currency");
-        //        MenuWrapper.AddMenu("Unique Jewellery", silverLabChests, Settings.RewardSilverJewelryUniqueColor, "Chest contains Generic Jewellery");
-        //        MenuWrapper.AddMenu("Divination", silverLabChests, Settings.RewardSilverDivinationColor, "Chest contains Divination Cards");
-        //        MenuWrapper.AddMenu("Unique 1", silverLabChests, Settings.RewardSilverUniqueOneColor, "Chest contains Unique items");
-        //        MenuWrapper.AddMenu("Unique 2", silverLabChests, Settings.RewardSilverUniqueTwoColor, "Chest contains Unique items");
-        //        MenuWrapper.AddMenu("Unique 3", silverLabChests, Settings.RewardSilverUniqueThreeColor, "Chest contains Unique items");
-        //        MenuWrapper.AddMenu("Skill Gems", silverLabChests, Settings.RewardSilverSkillGemColor, "Chest contains Quality Skill Gems");
-        //        var darkShrines = MenuWrapper.AddMenu("Dark Shrines", labyrinth);
-        //        var darkShrineOnFloor = MenuWrapper.AddMenu("Draw on Floor", darkShrines, Settings.DarkshrinesOnFloor, "Draw on the World Floor");
-        //        MenuWrapper.AddMenu("Size", darkShrineOnFloor, Settings.DarkshrinesOnFloorSize, "Size of icon on the World Floor");
-        //        var darkShrineOnMap = MenuWrapper.AddMenu("Draw on Map", darkShrines, Settings.DarkshrinesOnMap, "Draw on the Minimap");
-        //        MenuWrapper.AddMenu("Size", darkShrineOnMap, Settings.DarkshrinesIcon, "Size of Icon on the Minimap");
-        //        MenuWrapper.AddMenu("Color", darkShrineOnMap, Settings.DarkshrinesColor, "Color of Icon");
-        //        var secretSwitch = MenuWrapper.AddMenu("Secret Switch", labyrinth, Settings.SecretSwitch, "Switches that open secret doors");
-        //        MenuWrapper.AddMenu("Color", secretSwitch, Settings.SecretSwitchColor, "Color of text");
-        //        var gauntletDelivery = MenuWrapper.AddMenu("Gauntlet Delivery", labyrinth, Settings.Delivery, "Deliver Gauntlet to the end of the track");
-        //        MenuWrapper.AddMenu("Color", gauntletDelivery, Settings.DeliveryColor, "Color of text");
-        //        var hidenDoorWay = MenuWrapper.AddMenu("Hidden Doorway", labyrinth, Settings.HiddenDoorway, "Hidden Doorway Icon");
-        //        MenuWrapper.AddMenu("Size", hidenDoorWay, Settings.HiddenDoorwayIcon, "Size of Icon on Minimap");
-        //        MenuWrapper.AddMenu("Color", hidenDoorWay, Settings.HiddenDoorwayColor, "Color of icon on Minimap, suggest making it white");
-        //        var secretPassage = MenuWrapper.AddMenu("Secret Passage", labyrinth, Settings.SecretPassage, "Secret Passage to travel to another Area");
-        //        MenuWrapper.AddMenu("Size", secretPassage, Settings.SecretPassageIcon, "Size of Icon on Minimap");
-        //        MenuWrapper.AddMenu("Color", secretPassage, Settings.SecretPassageColor, "Color of icon on Minimap, suggest making it white");
-        //        var smashableDoor = MenuWrapper.AddMenu("Smashable Door", labyrinth, Settings.SmashableDoor, "Smashable doors on walls to gain access to blocked off areas");
-        //        MenuWrapper.AddMenu("Color", smashableDoor, Settings.SmashableDoorColor, "Color of text");
-        //        var lieutenantOfRage = MenuWrapper.AddMenu("Lieutenant With Thorns", labyrinth, Settings.LieutenantofRage,
-        //                "Ice Lieutenant in Izaro room sometimes casts a thorns/reflext aura\nThis will indicate that skeleton with a atziri mirror");
-        //        MenuWrapper.AddMenu("Size", lieutenantOfRage, Settings.LieutenantofRageSize, "Size of mirror over the Lieutenant");
-        //        var traps = MenuWrapper.AddMenu("Traps", labyrinth);
-        //        var roombas = MenuWrapper.AddMenu("Roombas", traps, Settings.Roombas, "Flying Roombas of Doom");
-        //        MenuWrapper.AddMenu("Text Color", roombas, Settings.RoombasColor, "Color of text on trap");
-        //        var roombasOnMap = MenuWrapper.AddMenu("On Map", roombas, Settings.RoombasOnMap, "Draw Icon on minimap");
-        //        MenuWrapper.AddMenu("Size", roombasOnMap, Settings.RoombasOnMapSize, "Size of Icon on minimap");
-        //        MenuWrapper.AddMenu("Color", roombasOnMap, Settings.RoombasOnMapColor, "Color of Icon on minimap");
-        //        var spinners = MenuWrapper.AddMenu("Spinners", traps, Settings.Spinners, "Spinning Poles");
-        //        MenuWrapper.AddMenu("Text Color", spinners, Settings.RoombasColor, "Color of text on trap");
-        //        var spinnersOnMap = MenuWrapper.AddMenu("On Map", spinners, Settings.SpinnersOnMap, "Draw Icon on minimap");
-        //        MenuWrapper.AddMenu("Size", spinnersOnMap, Settings.SpinnersOnMapSize, "Size of Icon on minimap");
-        //        MenuWrapper.AddMenu("Color", spinnersOnMap, Settings.SpinnersOnMapColor, "Color of Icon on minimap");
-        //        var saws = MenuWrapper.AddMenu("Saws", traps, Settings.Spinners, "Saw Blades");
-        //        MenuWrapper.AddMenu("Text Color", saws, Settings.RoombasColor, "Color of text on trap");
-        //        var sawsOnMap = MenuWrapper.AddMenu("On Map", saws, Settings.SawsOnMap, "Draw Icon on minimap");
-        //        MenuWrapper.AddMenu("Size", sawsOnMap, Settings.SawsOnMapSize, "Size of Icon on minimap");
-        //        MenuWrapper.AddMenu("Color", sawsOnMap, Settings.SawsOnMapColor, "Color of Icon on minimap");
-        //        var arrows = MenuWrapper.AddMenu("Arrows", traps, Settings.Arrows, "Dart Traps hidden inside walls");
-        //        MenuWrapper.AddMenu("Color", arrows, Settings.ArrowsColor, "Color of text on trap");
-        //        var pressurePlates = MenuWrapper.AddMenu("Pressure Plates", traps, Settings.PressurePlates, "Pressure plates activate Arrow Traps");
-        //        MenuWrapper.AddMenu("Color", pressurePlates, Settings.PressurePlatesColor, "Color of text on trap");
-        //        var sentinels = MenuWrapper.AddMenu("Sentinels", traps, Settings.Sentinels, "Bad Curse like totems");
-        //        var unendingLethargyColor = MenuWrapper.AddMenu("Unending Lethargy", sentinels, Settings.UnendingLethargy, "Applies Temporal Chains");
-        //        MenuWrapper.AddMenu("Color", unendingLethargyColor, Settings.UnendingLethargyColor, "Color of text on totem");
-        //        var endlessDrought = MenuWrapper.AddMenu("Endless Drought", sentinels, Settings.EndlessDrought, "Removes flask charges");
-        //        MenuWrapper.AddMenu("Color", endlessDrought, Settings.EndlessDroughtColor, "Color of text on totem");
-        //        var endlessHazard = MenuWrapper.AddMenu("Endless Hazard", sentinels, Settings.EndlessHazard,
-        //                "Casts multiple circles that deal physical damage\nequal to 20% of life + 12% of ES (if ES is protecting life)\nwhen a movement skill is used\nThe damage can be mitigated, but not avoided");
-        //        MenuWrapper.AddMenu("Color", endlessHazard, Settings.EndlessHazardColor, "Color of text on totem");
-        //        var endlessPain = MenuWrapper.AddMenu("Endless Pain", sentinels, Settings.EndlessPain, "Casts an aura that apply 50% increased damage taken");
-        //        MenuWrapper.AddMenu("Color", endlessPain, Settings.EndlessPainColor, "Color of text on totem");
-        //        var endlessSting = MenuWrapper.AddMenu("Endless Sting", sentinels, Settings.EndlessSting, "Causes Bleeding");
-        //        MenuWrapper.AddMenu("Color", endlessSting, Settings.EndlessStingColor, "Color of text on totem");
-        //        var unendingFire = MenuWrapper.AddMenu("Unending Fire", sentinels, Settings.UnendingFire, "Casts Fire Nova");
-        //        MenuWrapper.AddMenu("Color", unendingFire, Settings.UnendingFireColor, "Color of text on totem");
-        //        var unendingFrost = MenuWrapper.AddMenu("Unending Frost", sentinels, Settings.UnendingFrost, "Casts Ice Nova");
-        //        MenuWrapper.AddMenu("Color", unendingFrost, Settings.UnendingFrostColor, "Color of text on totem");
-        //        var unendingLethargy = MenuWrapper.AddMenu("Unending Storm", sentinels, Settings.UnendingLethargy, "Casts Shock Nova");
-        //        MenuWrapper.AddMenu("Color", unendingLethargy, Settings.UnendingStormColor, "Color of text on totem");
-        //        var atziri = MenuWrapper.AddMenu("Atziri", main, "Atziri Section");
-        //        MenuWrapper.AddMenu("Show Reflection", atziri, Settings.Atziri, "Show Atziri's mirror over the reflection clone\nHelps to quickly identify the bad clone");
-        //        MenuWrapper.AddMenu("Size", atziri, Settings.AtziriMirrorSize, "Size of Icon over mirror clone");
-        //        var shrines = MenuWrapper.AddMenu("Shrines", main, "Shrines in Wraeclast");
-        //        var normalShrines = MenuWrapper.AddMenu("Normal Shrines", shrines, Settings.NormalShrines, "Normal Shrines");
-        //        var normaShrineOnFloor = MenuWrapper.AddMenu("Draw on Floor", normalShrines, Settings.NormalShrineOnFloor, "Draw icon on the world floor");
-        //        MenuWrapper.AddMenu("Size", normaShrineOnFloor, Settings.NormalShrineOnFloorSize, "Size of the icon");
-        //        var normalShrineOnMap = MenuWrapper.AddMenu("Draw on Map", normalShrines, Settings.NormalShrineOnMap, "Draw icon on the minimap");
-        //        MenuWrapper.AddMenu("Size", normalShrineOnMap, Settings.NormalShrinesIcon, "Size of the icon");
-        //        MenuWrapper.AddMenu("Color", normalShrineOnMap, Settings.NormalShrinesColor, "Color of the icon");
-        //        var lesserShrines = MenuWrapper.AddMenu("Lesser Shrines", shrines, Settings.LesserShrines, "Lesser shrines created by \"The Gull\" helmet");
-        //        var lesserShrineOnFloor = MenuWrapper.AddMenu("Draw on Floor", lesserShrines, Settings.LesserShrineOnFloor, "Draw the icon on the world floor");
-        //        MenuWrapper.AddMenu("Size", lesserShrineOnFloor, Settings.LesserShrineOnFloorSize, "Size of the icon");
-        //        var lesserShrineOnMap = MenuWrapper.AddMenu("Draw on Floor", lesserShrines, Settings.LesserShrineOnMap, "Draw icon on the minimap");
-        //        MenuWrapper.AddMenu("Size", lesserShrineOnMap, Settings.LesserShrinesIcon, "Size of the icon");
-        //        MenuWrapper.AddMenu("Color", lesserShrineOnMap, Settings.LesserShrinesColor, "Color of the icon");
-        //        var areaTransitions = MenuWrapper.AddMenu("Area Transitions", main, Settings.AreaTransition,
-        //                "Shows area transitions on minimap\nCan show hidden ones that arnt currently shown on poes minimap");
-        //        MenuWrapper.AddMenu("Size", areaTransitions, Settings.AreaTransitionIcon, "Size on icon on minimap");
-        //        MenuWrapper.AddMenu("Color", areaTransitions, Settings.AreaTransitionColor, "Color of icon on minimap\nI would suggest making this White");
-        //        var specters = MenuWrapper.AddMenu("Specter Bodies", main, Settings.Specters, "Corpses onthe ground useful for spectres");
-        //        MenuWrapper.AddMenu("Tukohama's Vanguard", specters, Settings.TukohamasVanguard, "Casts Scorching Ray Totems\nUsually used for bossing");
-        //        MenuWrapper.AddMenu("WickerMan", specters, Settings.WickerMan, "Use a Rightous Fire arua\nHigh life");
-        //        MenuWrapper.AddMenu("Pocked Lanternbearer", specters, Settings.PockedLanternbearer, "Cant remember what i used these for, but i did");
-        //        MenuWrapper.AddMenu("Solar Guard", specters, Settings.SolarGuard, "Nice for projectiles summons\nusually used for high clearspeed");
-        //        var vaultPiles = MenuWrapper.AddMenu("Vault Gold Piles", main, Settings.VaultPiles,
-        //                "Inside the Vault Map there are Gold Piles that contain AWSOME loot\nIdicated by a Perandus Coin icon");
-        //        var vaultPilesOnFloor = MenuWrapper.AddMenu("Draw on Floor", vaultPiles, Settings.VaultPilesOnFloor, "Draw icon on world floor");
-        //        MenuWrapper.AddMenu("Size", vaultPilesOnFloor, Settings.VaultPilesOnFloor, "Size of the icon on world floor");
-        //        var vaultPilesOnMap = MenuWrapper.AddMenu("Draw on Map", vaultPiles, Settings.VaultPilesOnMap, "Draw icon on the minimap");
-        //        MenuWrapper.AddMenu("Size", vaultPilesOnMap, Settings.VaultPilesIcon, "Size of the icon on the minimap");
-        //        // Fuck Roman Numerals
-        //        var FrmMenu = MenuWrapper.AddMenu("Fuck Roman Numerals", rootPluginMenu, Settings.FrnMain,
-        //                "Draws numbers over the roman numerals in the Map Tab\nThis has to be manualy configured im sorry");
-        //        MenuWrapper.AddMenu("Background Box Extra Width", FrmMenu, Settings.FrnBackgroundBoxExtraWidth);
-        //        MenuWrapper.AddMenu("Background Box Width", FrmMenu, Settings.FrnBackgroundBoxWidth);
-        //        MenuWrapper.AddMenu("Background Box Height", FrmMenu, Settings.FrnBackgroundBoxHeight);
-        //        MenuWrapper.AddMenu("Next Box Offset", FrmMenu, Settings.FrnNextBoxOffset);
-        //        MenuWrapper.AddMenu("First Tier Row X", FrmMenu, Settings.FrnFirstTierRowX);
-        //        MenuWrapper.AddMenu("First Tier RowY", FrmMenu, Settings.FrnFirstTierRowY);
-        //        MenuWrapper.AddMenu("Second Tier Row X", FrmMenu, Settings.FrnSecondTierRowX);
-        //        MenuWrapper.AddMenu("Second Tier Row Y", FrmMenu, Settings.FrnSecondTierRowY);
-        //        MenuWrapper.AddMenu("Font Size", FrmMenu, Settings.FrnFontSize);
-        //        // Wheres My Cursor
-        //        var WmcMenu = MenuWrapper.AddMenu("Wheres My Cursor", rootPluginMenu, Settings.WmcMain, "Draws a line from your character to where your mouse is");
-        //        MenuWrapper.AddMenu("Line Type", WmcMenu, Settings.WmcLineType, "1: Draw a set length no matter where the mouse is\n2: Draw to the mouse\n3: Draw to the edge of the screen");
-        //        MenuWrapper.AddMenu("Line Color", WmcMenu, Settings.WmcLineColor);
-        //        MenuWrapper.AddMenu("Line Max Length", WmcMenu, Settings.WmcLineLength);
-        //        MenuWrapper.AddMenu("Line Size", WmcMenu, Settings.WmcLineSize);
-        //        MenuWrapper.AddMenu("Player Offset X Negitive", WmcMenu, Settings.WmcPlayerOffsetXNegitive);
-        //        MenuWrapper.AddMenu("Player Offset X", WmcMenu, Settings.WmcPlayerOffsetX);
-        //        MenuWrapper.AddMenu("Player Offset Y Negitive", WmcMenu, Settings.WmcPlayerOffsetYNegitive);
-        //        MenuWrapper.AddMenu("Player Offset Y", WmcMenu, Settings.WmcPlayerOffsetY);
-        //    }
-        //}
+        private static int ImGuiExtension_ColorTabs(string idString, int idPop, string[] settingName, System.Numerics.Vector2 newcontentRegionArea)
+        {
+            if (!ImGui.BeginChild(idString, new System.Numerics.Vector2(newcontentRegionArea.X, 42), false, WindowFlags.AlwaysHorizontalScrollbar)) return idPop;
+            ImGui.PushStyleVar(StyleVar.FrameRounding, 3.0f);
+            ImGui.PushStyleVar(StyleVar.FramePadding, 2.0f);
+            for (var i = 0; i < settingName.Length; i++)
+            {
+                ImGui.PushID(idPop);
+                var hue = i * 0.05f;
+                ImGui.PushStyleColor(ColorTarget.Button, ImGuiExtension.ImColor_HSV(hue, 0.6f, 0.6f, 0.8f));
+                ImGui.PushStyleColor(ColorTarget.ButtonHovered, ImGuiExtension.ImColor_HSV(hue, 0.7f, 0.7f, 0.9f));
+                ImGui.PushStyleColor(ColorTarget.ButtonActive, ImGuiExtension.ImColor_HSV(hue, 0.8f, 0.8f, 1.0f));
+                ImGui.SameLine();
+                if (ImGui.Button(settingName[i])) selected = i;
+                idPop++;
+                ImGui.PopID();
+                ImGui.PopStyleColor(3);
+            }
+
+            ImGui.PopStyleVar();
+            return idPop;
+        }
 
         public Vector2 Vector2OffsetCalculations(Vector2 information)
         {
@@ -846,18 +848,12 @@ namespace Random_Features
                 if (e.Path.Equals("Metadata/Terrain/Labyrinth/Objects/SecretPassage"))
                     return new MapIcon(e, new HudTexture(CustomImagePath + "hidden_door.png", Settings.SecretPassageColor), () => Settings.SecretPassage, Settings.SecretPassageIcon);
             if (Settings.AreaTransition)
-            {
                 if (e.Path.Contains("Transition"))
                     return new MapIcon(e, new HudTexture(CustomImagePath + "hidden_door.png", Settings.AreaTransitionColor), () => true, Settings.AreaTransitionIcon);
-            }
-
             if (Settings.VaultPilesOnMap)
-            {
                 if (e.Path.Contains("Metadata/Chests/VaultTreasurePile"))
                     if (!e.GetComponent<Chest>().IsOpened)
                         return new MapIcon(e, new HudTexture(CustomImagePath + "Coin.png"), () => true, Settings.VaultPilesIcon);
-            }
-
             if (Settings.AbyssCracks)
             {
                 if (e.Path.Contains("Metadata/MiscellaneousObjects/Abyss/AbyssCrackSpawners/AbyssCrackSkeletonSpawner"))
