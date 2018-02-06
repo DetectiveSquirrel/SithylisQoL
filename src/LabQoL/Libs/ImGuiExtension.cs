@@ -292,6 +292,32 @@ namespace Random_Features.Libs
             return new ImGuiVector4(r, g, b, a);
         }
 
+        // Color menu tabs
+        public static void ImGuiExtension_ColorTabs(string idString, int height, IReadOnlyList<string> settingList, ref int selectedItem, ref int uniqueIdPop)
+        {
+            ImGuiNative.igGetContentRegionAvail(out var newcontentRegionArea);
+            var boxRegion = new ImGuiVector2(newcontentRegionArea.X, height);
+            if (ImGui.BeginChild(idString, boxRegion, true, WindowFlags.HorizontalScrollbar))
+            {
+                ImGui.PushStyleVar(StyleVar.FrameRounding, 3.0f);
+                ImGui.PushStyleVar(StyleVar.FramePadding, 2.0f);
+                for (var i = 0; i < settingList.Count; i++)
+                {
+                    ImGui.PushID(uniqueIdPop);
+                    var hue = 1f / settingList.Count * i;
+                    ImGui.PushStyleColor(ColorTarget.Button, ImColor_HSV(hue, 0.6f, 0.6f, 0.8f));
+                    ImGui.PushStyleColor(ColorTarget.ButtonHovered, ImColor_HSV(hue, 0.7f, 0.7f, 0.9f));
+                    ImGui.PushStyleColor(ColorTarget.ButtonActive, ImColor_HSV(hue, 0.8f, 0.8f, 1.0f));
+                    ImGui.SameLine();
+                    if (ImGui.Button(settingList[i])) selectedItem = i;
+                    uniqueIdPop++;
+                    ImGui.PopID();
+                    ImGui.PopStyleColor(3);
+                }
+            }
 
+            ImGui.PopStyleVar();
+            ImGui.EndChild();
+        }
     }
 }

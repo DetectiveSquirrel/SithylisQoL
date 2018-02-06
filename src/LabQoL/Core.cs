@@ -15,7 +15,8 @@ namespace Random_Features
 {
     public class RandomFeatures : BaseSettingsPlugin<RandomFeaturesSettings>
     {
-        public static int selected;
+        public static int Selected;
+        public static string[] SettingName = { "Random Features", "Fuck Roman Numerals", "Wheres My Cursor?" };
         private HashSet<EntityWrapper> _entityCollection;
 
         public string CustomImagePath;
@@ -23,7 +24,6 @@ namespace Random_Features
         public string PoeHudImageLocation;
 
         public RandomFeatures() => PluginName = "Random Features";
-        public static string[] SettingName = { "Random Features", "Fuck Roman Numerals", "Wheres My Cursor?" };
 
         public override void Initialise()
         {
@@ -39,14 +39,11 @@ namespace Random_Features
             var isOpened = Settings.ShowWindow.Value;
             ImGuiExtension.BeginWindow($"{PluginName} Settings", ref isOpened, Settings.LastSettingPos.X, Settings.LastSettingPos.Y, Settings.LastSettingSize.X, Settings.LastSettingSize.Y);
             Settings.ShowWindow.Value = isOpened;
-            ImGuiNative.igGetContentRegionAvail(out var newcontentRegionArea);
-            idPop = ImGuiExtension_ColorTabs("LeftSettings",idPop, SettingName, newcontentRegionArea);
-
-            ImGui.EndChild();
             ImGui.PushStyleVar(StyleVar.ChildRounding, 5.0f);
-            ImGuiNative.igGetContentRegionAvail(out newcontentRegionArea);
+            ImGuiExtension.ImGuiExtension_ColorTabs("LeftSettings", 50, SettingName, ref Selected, ref idPop);
+            ImGuiNative.igGetContentRegionAvail(out var newcontentRegionArea);
             if (ImGui.BeginChild("RightSettings", new System.Numerics.Vector2(newcontentRegionArea.X, newcontentRegionArea.Y), true, WindowFlags.Default))
-                switch (SettingName[selected])
+                switch (SettingName[Selected])
                 {
                     case "Random Features":
                         Settings.UnsortedPlugin.Value = ImGuiExtension.Checkbox("Enable##RFToggle", Settings.UnsortedPlugin);
@@ -475,29 +472,6 @@ namespace Random_Features
             }
 
             ImGui.EndWindow();
-        }
-
-        private static int ImGuiExtension_ColorTabs(string idString, int idPop, string[] settingName, System.Numerics.Vector2 newcontentRegionArea)
-        {
-            if (!ImGui.BeginChild(idString, new System.Numerics.Vector2(newcontentRegionArea.X, 42), false, WindowFlags.AlwaysHorizontalScrollbar)) return idPop;
-            ImGui.PushStyleVar(StyleVar.FrameRounding, 3.0f);
-            ImGui.PushStyleVar(StyleVar.FramePadding, 2.0f);
-            for (var i = 0; i < settingName.Length; i++)
-            {
-                ImGui.PushID(idPop);
-                var hue = i * 0.05f;
-                ImGui.PushStyleColor(ColorTarget.Button, ImGuiExtension.ImColor_HSV(hue, 0.6f, 0.6f, 0.8f));
-                ImGui.PushStyleColor(ColorTarget.ButtonHovered, ImGuiExtension.ImColor_HSV(hue, 0.7f, 0.7f, 0.9f));
-                ImGui.PushStyleColor(ColorTarget.ButtonActive, ImGuiExtension.ImColor_HSV(hue, 0.8f, 0.8f, 1.0f));
-                ImGui.SameLine();
-                if (ImGui.Button(settingName[i])) selected = i;
-                idPop++;
-                ImGui.PopID();
-                ImGui.PopStyleColor(3);
-            }
-
-            ImGui.PopStyleVar();
-            return idPop;
         }
 
         public Vector2 Vector2OffsetCalculations(Vector2 information)
