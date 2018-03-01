@@ -10,14 +10,16 @@ using PoeHUD.Poe.Components;
 using Random_Features.Libs;
 using SharpDX;
 using SharpDX.Direct3D9;
+using ImVector4 = System.Numerics.Vector4;
 
 namespace Random_Features
 {
     public class RandomFeatures : BaseSettingsPlugin<RandomFeaturesSettings>
     {
         public static int Selected;
-        public static string[] SettingName = { "Random Features", "Fuck Roman Numerals", "Wheres My Cursor?" };
+        public static string[] SettingName = { "Random Features", "Fuck Roman Numerals", "Wheres My Cursor?", "Trials" };
         private HashSet<EntityWrapper> _entityCollection;
+        public const string Version = "1.0.0";
 
         public string CustomImagePath;
 
@@ -37,7 +39,7 @@ namespace Random_Features
             var idPop = 1;
             if (!Settings.ShowWindow) return;
             var isOpened = Settings.ShowWindow.Value;
-            ImGuiExtension.BeginWindow($"{PluginName} Settings", ref isOpened, Settings.LastSettingPos.X, Settings.LastSettingPos.Y, Settings.LastSettingSize.X, Settings.LastSettingSize.Y);
+            ImGuiExtension.BeginWindow($"{PluginName} v{Version}", ref isOpened, Settings.LastSettingPos.X, Settings.LastSettingPos.Y, Settings.LastSettingSize.X, Settings.LastSettingSize.Y);
             Settings.ShowWindow.Value = isOpened;
             ImGui.PushStyleVar(StyleVar.ChildRounding, 5.0f);
             ImGuiExtension.ImGuiExtension_ColorTabs("LeftSettings", 50, SettingName, ref Selected, ref idPop);
@@ -45,6 +47,8 @@ namespace Random_Features
             if (ImGui.BeginChild("RightSettings", new System.Numerics.Vector2(newcontentRegionArea.X, newcontentRegionArea.Y), true, WindowFlags.Default))
                 switch (SettingName[Selected])
                 {
+                    #region Random Features
+
                     case "Random Features":
                         Settings.UnsortedPlugin.Value = ImGuiExtension.Checkbox("Enable##RFToggle", Settings.UnsortedPlugin);
                         Settings.PluginTextSize.Value = ImGuiExtension.IntSlider("Plugin Text Size", Settings.PluginTextSize);
@@ -433,6 +437,11 @@ namespace Random_Features
                         }
 
                         break;
+
+                    #endregion
+
+                    #region Fuck Roman Numerals
+
                     case "Fuck Roman Numerals":
                         Settings.FrnMain.Value = ImGuiExtension.Checkbox("Enable##FRNToggle", Settings.FrnMain);
                         ImGui.Text("Box Options");
@@ -450,6 +459,11 @@ namespace Random_Features
                         Settings.FrnSecondTierRowY.Value = ImGuiExtension.IntSlider("Second Tier Row Y", Settings.FrnSecondTierRowY);
                         Settings.FrnFontSize.Value = ImGuiExtension.IntSlider("Font Size", Settings.FrnFontSize);
                         break;
+
+                    #endregion
+
+                    #region Wheres My Cursor?
+
                     case "Wheres My Cursor?":
                         Settings.WmcMain.Value = ImGuiExtension.Checkbox("Enable##FRNToggle", Settings.WmcMain);
                         Settings.WmcLineType.Value = ImGuiExtension.ComboBox("Line Type?", Settings.WmcLineType.Value, new List<string> { "Maximum Length To Cursor", "Draw To The Mouse", "Draw To The Edge Of The Screen" });
@@ -460,6 +474,13 @@ namespace Random_Features
                         Settings.WmcPlayerOffsetX.Value = ImGuiExtension.IntSlider("Player Offset X", Settings.WmcPlayerOffsetX.Value, -100, 100);
                         Settings.WmcPlayerOffsetY.Value = ImGuiExtension.IntSlider("Player Offset Y", Settings.WmcPlayerOffsetY.Value, -100, 100);
                         break;
+
+                    #endregion
+                    #region Completed Trials
+                    case "Trials":
+                        TrialDisplay();
+                        break;
+                        #endregion
                 }
             ImGui.PopStyleVar();
             ImGui.EndChild();
@@ -472,6 +493,64 @@ namespace Random_Features
             }
 
             ImGui.EndWindow();
+        }
+
+        public void TrialDisplay()
+        {
+            ImGui.Text("Normal Trials");
+            ImGui.Separator();
+            ImGui.Columns(2, "normalTrials", true);
+            for (var i = 0; i < 6; i++)
+            {
+                if (i == 3)
+                    ImGui.NextColumn();
+                TrialString(i);
+            }
+            ImGui.Columns(0, "normalTrials", false);
+            ImGui.Separator();
+            ImGuiExtension.Spacing(4);
+            ImGui.Text("Cruel Trials");
+            ImGui.Separator();
+            for (var i = 6; i < 9; i++)
+            {
+                TrialString(i);
+            }
+            ImGui.Separator();
+            ImGuiExtension.Spacing(4);
+            ImGui.Text("Merciless Trials");
+            ImGui.Separator();
+            for (var i = 9; i < 12; i++)
+            {
+                TrialString(i);
+            }
+            ImGui.Separator();
+            ImGuiExtension.Spacing(4);
+
+            ImGui.Text("Uber Trials");
+            ImGui.Separator();
+            ImGui.Columns(2, "uberTrials", true);
+            for (var i = 12; i < 18; i++)
+            {
+                if (i == 15)
+                    ImGui.NextColumn();
+                TrialString(i);
+            }
+            ImGui.Separator();
+        }
+
+
+        public void TrialString(int trialID)
+        {
+            var trial = GameController.Player.GetComponent<Player>().TrialStates[trialID];
+            if (trial.IsCompleted)
+                ImGui.PushStyleColor(ColorTarget.Text, new ImVector4(0.25f, 0.85f, 0.25f, 1f));
+            else
+                ImGui.PushStyleColor(ColorTarget.Text, new ImVector4(0.85f, 0.25f, 0.25f, 1f));
+            if (trial.TrialArea.Area.Act <= 10)
+                ImGui.Text($"{trial.TrialArea.Area.Name} (Act {trial.TrialArea.Area.Act})");
+            else
+                ImGui.Text($"{trial.TrialArea.Area.Name} (Maps)");
+            ImGui.PopStyleColor(1);
         }
 
         public Vector2 Vector2OffsetCalculations(Vector2 information)
@@ -987,6 +1066,14 @@ namespace Random_Features
             public string[] Path = { };
 
             public int YOffset;
+        }
+    }
+
+    internal static class ExtensionMethod
+    {
+        public static bool InRange(this int current, int range1, int range2)
+        {
+            return current >= range1 && current <= range2;
         }
     }
 }

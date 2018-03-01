@@ -1,6 +1,8 @@
-﻿using PoeHUD.Hud.Settings;
+﻿using System;
+using PoeHUD.Hud.Settings;
 using PoeHUD.Plugins;
 using SharpDX;
+using SharpDX.Direct3D9;
 using ImGuiVector2 = System.Numerics.Vector2;
 
 namespace Random_Features
@@ -126,6 +128,7 @@ namespace Random_Features
             VaultPilesOnFloorSize = new RangeNode<int>(100, 1, 200);
             VaultPilesOnMap = true;
             VaultPilesIcon = new RangeNode<int>(25, 1, 200);
+            AreaNamesOnMap = true;
             // Fuck Roman Numerals
             FrnMain = true;
             FrnBackgroundBoxExtraWidth = new RangeNode<int>(3, 0, 200);
@@ -270,6 +273,9 @@ namespace Random_Features
         public ToggleNode VaultPilesOnMap { get; set; }
         public RangeNode<int> VaultPilesIcon { get; set; }
 
+
+        public ToggleNode AreaNamesOnMap { get; set; }
+
         // Fuck Roman Numerals
         public ToggleNode FrnMain { get; set; }
         public RangeNode<int> FrnBackgroundBoxExtraWidth { get; set; }
@@ -298,5 +304,8 @@ namespace Random_Features
 
         public ImGuiVector2 LastSettingPos { get; set; }
         public ImGuiVector2 LastSettingSize { get; set; }
+
+        [Menu("Version " + RandomFeatures.Version)]
+        public EmptyNode VersionNode { get; set; }
     }
 }
