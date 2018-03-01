@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using ImGuiNET;
+﻿using ImGuiNET;
 using PoeHUD.Framework.Helpers;
 using PoeHUD.Hud;
 using PoeHUD.Models;
@@ -10,6 +8,8 @@ using PoeHUD.Poe.Components;
 using Random_Features.Libs;
 using SharpDX;
 using SharpDX.Direct3D9;
+using System;
+using System.Collections.Generic;
 using ImVector4 = System.Numerics.Vector4;
 
 namespace Random_Features
@@ -19,7 +19,7 @@ namespace Random_Features
         public static int Selected;
         public static string[] SettingName = { "Random Features", "Fuck Roman Numerals", "Wheres My Cursor?", "Trials" };
         private HashSet<EntityWrapper> _entityCollection;
-        public const string Version = "1.0.0";
+        public const string Version = "1.0.1";
 
         public string CustomImagePath;
 
@@ -476,6 +476,7 @@ namespace Random_Features
                         break;
 
                     #endregion
+
                     #region Completed Trials
                     case "Trials":
                         TrialDisplay();
