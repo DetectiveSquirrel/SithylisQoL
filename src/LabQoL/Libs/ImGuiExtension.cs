@@ -333,5 +333,11 @@ namespace Random_Features.Libs
             for (var i = 0; i < amount; i++)
                 ImGui.Spacing();
         }
+
+        //End Columns
+        public static void EndColumn()
+        {
+            ImGui.Columns(1, null, false);
+        }
     }
 }

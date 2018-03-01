@@ -19,7 +19,7 @@ namespace Random_Features
         public static int Selected;
         public static string[] SettingName = { "Random Features", "Fuck Roman Numerals", "Wheres My Cursor?", "Trials" };
         private HashSet<EntityWrapper> _entityCollection;
-        public const string Version = "1.0.1";
+        public const string Version = "1.0.2";
 
         public string CustomImagePath;
 
@@ -507,26 +507,22 @@ namespace Random_Features
                     ImGui.NextColumn();
                 TrialString(i);
             }
-            ImGui.Columns(0, "normalTrials", false);
+
+            ImGuiExtension.EndColumn();
             ImGui.Separator();
             ImGuiExtension.Spacing(4);
             ImGui.Text("Cruel Trials");
             ImGui.Separator();
             for (var i = 6; i < 9; i++)
-            {
                 TrialString(i);
-            }
             ImGui.Separator();
             ImGuiExtension.Spacing(4);
             ImGui.Text("Merciless Trials");
             ImGui.Separator();
             for (var i = 9; i < 12; i++)
-            {
                 TrialString(i);
-            }
             ImGui.Separator();
             ImGuiExtension.Spacing(4);
-
             ImGui.Text("Uber Trials");
             ImGui.Separator();
             ImGui.Columns(2, "uberTrials", true);
@@ -536,7 +532,9 @@ namespace Random_Features
                     ImGui.NextColumn();
                 TrialString(i);
             }
+
             ImGui.Separator();
+            ImGuiExtension.EndColumn();
         }
 
 
