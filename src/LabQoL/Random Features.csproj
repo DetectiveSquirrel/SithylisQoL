@@ -27,7 +27,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\</OutputPath>
+    <OutputPath>..\..\..\..\PoE HUD #1\ImGUI\Release\plugins\1Random Features\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -71,9 +71,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core.cs" />
+    <Compile Include="Plugins\Trials.cs" />
+    <Compile Include="Plugins\WheresMyCursor.cs" />
     <Compile Include="Libs\ImGuiExtension.cs" />
     <Compile Include="Libs\LocalPlayer.cs" />
     <Compile Include="Libs\Mouse.cs" />
+    <Compile Include="Plugins\FuckRomanNumerals.cs" />
+    <Compile Include="Plugins\RandomFeatures.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
