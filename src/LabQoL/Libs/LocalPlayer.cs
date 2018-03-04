@@ -14,7 +14,7 @@ namespace Random_Features.Libs
         public static int           Level      => Entity.GetComponent<Player>().Level;
         public static Life          Health     => Entity.GetComponent<Life>();
         public static AreaInstance  Area       => BasePlugin.API.GameController.Area.CurrentArea;
-        public static int           AreaHash   => BasePlugin.API.GameController.Game.IngameState.Data.CurrentAreaHash;
+        public static uint           AreaHash   => BasePlugin.API.GameController.Game.IngameState.Data.CurrentAreaHash;
 
         public static Vector2 PlayerToScreen => BasePlugin.API.GameController.Game.IngameState.Camera.WorldToScreen(Entity.Pos.Translate(0, 0, -170), Entity);
 

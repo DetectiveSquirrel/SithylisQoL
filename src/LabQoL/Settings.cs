@@ -108,8 +108,14 @@ namespace Random_Features
             LesserShrinesIcon = new RangeNode<int>(25, 1, 200);
             LesserShrinesColor = new ColorBGRA(0, 128, 255, 255);
             AreaTransition = true;
-            AreaTransitionIcon = new RangeNode<int>(18, 1, 50);
+            AreaTransitionMaxLength = new RangeNode<int>(15, 1, 50);
+            AreaTransitionSize = new RangeNode<int>(15, 1, 50);
+            AreaTransitionLargeMapYOffset = new RangeNode<int>(0, -50, 50);
+            AreaTransitionSizeSmall = new RangeNode<int>(10, 1, 50);
             AreaTransitionColor = new ColorBGRA(255, 150, 72, 255);
+            AreaTransitionColorBackground = new ColorBGRA(0, 0, 0, 0.7f);
+            AreaTransitionHideLocalTranition = true;
+            AreaTransitionHideInTownOrHideout = true;
             Specters = true;
             TukohamasVanguard = true;
             WickerMan = true;
@@ -260,8 +266,14 @@ namespace Random_Features
         public RangeNode<int> AbysshoardChestSize { get; set; }
         public ColorNode AbysshoardChestColor { get; set; }
         public ToggleNode AreaTransition { get; set; }
-        public RangeNode<int> AreaTransitionIcon { get; set; }
+        public ToggleNode AreaTransitionHideLocalTranition { get; set; }
+        public ToggleNode AreaTransitionHideInTownOrHideout { get; set; }
+        public RangeNode<int> AreaTransitionSize { get; set; }
+        public RangeNode<int> AreaTransitionLargeMapYOffset{ get; set; }
+        public RangeNode<int> AreaTransitionSizeSmall { get; set; }
+        public RangeNode<int> AreaTransitionMaxLength { get; set; }
         public ColorNode AreaTransitionColor { get; set; }
+        public ColorNode AreaTransitionColorBackground { get; set; }
         public ToggleNode Specters { get; set; }
         public ToggleNode TukohamasVanguard { get; set; }
         public ToggleNode WickerMan { get; set; }

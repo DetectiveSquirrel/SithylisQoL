@@ -1,4 +1,6 @@
-﻿using ImGuiNET;
+﻿using System;
+using System.Collections.Generic;
+using ImGuiNET;
 using PoeHUD.Framework.Helpers;
 using PoeHUD.Hud;
 using PoeHUD.Models;
@@ -6,7 +8,6 @@ using PoeHUD.Poe.Components;
 using Random_Features.Libs;
 using SharpDX;
 using SharpDX.Direct3D9;
-using System;
 
 namespace Random_Features
 {
@@ -404,7 +405,6 @@ namespace Random_Features
 
         private void UnsortedPlugin()
         {
-            // Graphics.DrawText(Class_Memory.ReadFloat(API.GameController.Game.IngameState.Camera.Address + 0x204).ToString(), 40, new Vector2(500, 500));
             if (!GameController.Game.IngameState.IngameUi.AtlasPanel.IsVisible && !GameController.Game.IngameState.IngameUi.TreePanel.IsVisible)
             {
                 RenderMapImages();
@@ -504,6 +504,43 @@ namespace Random_Features
                     var background = new RectangleF(chestScreenCoords.X - maxWidth / 2 - 3, chestScreenCoords.Y - maxheight, maxWidth + 6, maxheight);
                     Graphics.DrawBox(background, Color.Black);
                 }
+        }
+
+        public static string WordWrap(string input, int maxCharacters)
+        {
+            var lines = new List<string>();
+            if (!input.Contains(" "))
+            {
+                var start = 0;
+                while (start < input.Length)
+                {
+                    lines.Add(input.Substring(start, Math.Min(maxCharacters, input.Length - start)));
+                    start += maxCharacters;
+                }
+            }
+            else
+            {
+                var words = input.Split(' ');
+                var line = "";
+                foreach (var word in words)
+                {
+                    if ((line + word).Length > maxCharacters)
+                    {
+                        lines.Add(line.Trim());
+                        line = "";
+                    }
+
+                    line += string.Format("{0} ", word);
+                }
+
+                if (line.Length > 0)
+                    lines.Add(line.Trim());
+            }
+
+            var conectedLines = "";
+            foreach (var line in lines)
+                conectedLines += line + "\n\r";
+            return conectedLines;
         }
 
         private void DrawToLargeMiniMap(EntityWrapper entity)
@@ -623,9 +660,6 @@ namespace Random_Features
             if (Settings.SecretPassage)
                 if (e.Path.Equals("Metadata/Terrain/Labyrinth/Objects/SecretPassage"))
                     return new MapIcon(e, new HudTexture(CustomImagePath + "hidden_door.png", Settings.SecretPassageColor), () => Settings.SecretPassage, Settings.SecretPassageIcon);
-            if (Settings.AreaTransition)
-                if (e.Path.Contains("Transition"))
-                    return new MapIcon(e, new HudTexture(CustomImagePath + "hidden_door.png", Settings.AreaTransitionColor), () => true, Settings.AreaTransitionIcon);
             if (Settings.VaultPilesOnMap)
                 if (e.Path.Contains("Metadata/Chests/VaultTreasurePile"))
                     if (!e.GetComponent<Chest>().IsOpened)

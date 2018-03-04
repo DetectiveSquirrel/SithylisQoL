@@ -17,7 +17,8 @@ namespace Random_Features
                 "Random Features",
                 "Fuck Roman Numerals",
                 "Wheres My Cursor?",
-                "Trials"
+                "Trials",
+                "Area Transitions"
         };
 
         public static int idPop;
@@ -48,6 +49,7 @@ namespace Random_Features
             UnsortedPlugin();
             FuckRomanNumerals();
             WheresMyCursor();
+            AreaTranitions();
         }
 
         private void ImGuiMenu()
@@ -75,6 +77,9 @@ namespace Random_Features
                         break;
                     case "Trials":
                         TrialMenu();
+                        break;
+                    case "Area Transitions":
+                        AreaTranitionsMenu();
                         break;
                 }
             ImGui.PopStyleVar();
