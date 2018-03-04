@@ -32,36 +32,42 @@ namespace Random_Features
             if (LocalPlayer.Area.IsHideout || LocalPlayer.Area.IsTown && Settings.AreaTransitionHideInTownOrHideout)
                 return;
             foreach (var entity in GameController.Entities)
-                if (entity.HasComponent<AreaTransition>())
+                try
                 {
-                    if (entity.GetComponent<AreaTransition>().TransitionType == AreaTransition.AreaTransitionType.Local && Settings.AreaTransitionHideLocalTranition) return;
-                    if (GameController.Game.IngameState.IngameUi.Map.LargeMap.IsVisible)
+                    if (entity.HasComponent<AreaTransition>())
                     {
-                        var TextInfo = new MinimapTextInfo
+                        if (entity.GetComponent<AreaTransition>().TransitionType == AreaTransition.AreaTransitionType.Local && Settings.AreaTransitionHideLocalTranition) return;
+                        if (GameController.Game.IngameState.IngameUi.Map.LargeMap.IsVisible)
                         {
-                                Text = entity.GetComponent<AreaTransition>().TransitionType == AreaTransition.AreaTransitionType.Local ? LocalPlayer.Area.Name : entity.GetComponent<AreaTransition>().WorldArea.Name,
-                                FontSize = Settings.AreaTransitionSize,
-                                FontColor = Settings.AreaTransitionColor,
-                                FontBackgroundColor = Settings.AreaTransitionColorBackground,
-                                TextWrapLength = Settings.AreaTransitionMaxLength,
-                                TextOffsetY = Settings.AreaTransitionLargeMapYOffset
-                        };
-                        DrawToLargeMiniMapText(entity, TextInfo);
-                    }
+                            var TextInfo = new MinimapTextInfo
+                            {
+                                    Text = entity.GetComponent<AreaTransition>().TransitionType == AreaTransition.AreaTransitionType.Local ? LocalPlayer.Area.Name : entity.GetComponent<AreaTransition>().WorldArea.Name,
+                                    FontSize = Settings.AreaTransitionSize,
+                                    FontColor = Settings.AreaTransitionColor,
+                                    FontBackgroundColor = Settings.AreaTransitionColorBackground,
+                                    TextWrapLength = Settings.AreaTransitionMaxLength,
+                                    TextOffsetY = Settings.AreaTransitionLargeMapYOffset
+                            };
+                            DrawToLargeMiniMapText(entity, TextInfo);
+                        }
 
-                    if (GameController.Game.IngameState.IngameUi.Map.SmallMinimap.IsVisible)
-                    {
-                        var TextInfo = new MinimapTextInfo
+                        if (GameController.Game.IngameState.IngameUi.Map.SmallMinimap.IsVisible)
                         {
-                                Text = entity.GetComponent<AreaTransition>().TransitionType == AreaTransition.AreaTransitionType.Local ? LocalPlayer.Area.Name : entity.GetComponent<AreaTransition>().WorldArea.Name,
-                                FontSize = Settings.AreaTransitionSizeSmall,
-                                FontColor = Settings.AreaTransitionColor,
-                                FontBackgroundColor = Settings.AreaTransitionColorBackground,
-                                TextWrapLength = Settings.AreaTransitionMaxLength,
-                                TextOffsetY = 0
-                        };
-                        DrawToSmallMiniMapText(entity, TextInfo);
+                            var TextInfo = new MinimapTextInfo
+                            {
+                                    Text = entity.GetComponent<AreaTransition>().TransitionType == AreaTransition.AreaTransitionType.Local ? LocalPlayer.Area.Name : entity.GetComponent<AreaTransition>().WorldArea.Name,
+                                    FontSize = Settings.AreaTransitionSizeSmall,
+                                    FontColor = Settings.AreaTransitionColor,
+                                    FontBackgroundColor = Settings.AreaTransitionColorBackground,
+                                    TextWrapLength = Settings.AreaTransitionMaxLength,
+                                    TextOffsetY = 0
+                            };
+                            DrawToSmallMiniMapText(entity, TextInfo);
+                        }
                     }
+                }
+                catch
+                {
                 }
         }
 
