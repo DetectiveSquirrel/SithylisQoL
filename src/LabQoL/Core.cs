@@ -1,9 +1,14 @@
-﻿using ImGuiNET;
+﻿using System.Collections;
+using ImGuiNET;
+using PoeHUD.Framework;
+using PoeHUD.Framework.Helpers;
 using PoeHUD.Models;
 using PoeHUD.Plugins;
 using Random_Features.Libs;
 using System.Collections.Generic;
 using System.Numerics;
+using PoeHUD.Controllers;
+using System;
 
 namespace Random_Features
 {
@@ -28,13 +33,19 @@ namespace Random_Features
 
         public string PoeHudImageLocation;
 
-        public RandomFeatures() => PluginName = "Random Features";
+        public RandomFeatures() {
+            PluginName = "Random Features";
+        }
+
+        private void AreaChange() { new Coroutine(ClearStoredEntities(), nameof(Random_Features), "Clear Stored Area Entities").Run(); }
+
 
         public override void Initialise()
         {
             _entityCollection = new HashSet<EntityWrapper>();
             CustomImagePath = PluginDirectory + @"\images\";
             PoeHudImageLocation = PluginDirectory + @"\..\..\textures\";
+            GameController.Area.OnAreaChange += area => AreaChange();
         }
 
         public override void EntityAdded(EntityWrapper entity) { _entityCollection.Add(entity); }

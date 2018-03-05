@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using PoeHUD.Framework;
 using PoeHUD.Framework.Helpers;
 using PoeHUD.Hud;
-using PoeHUD.Models;
 using PoeHUD.Poe.Components;
 using Random_Features.Libs;
 using SharpDX;
@@ -11,6 +14,8 @@ namespace Random_Features
 {
     partial class RandomFeatures
     {
+        public static List<StoredEntity> storedAreaEntities = new List<StoredEntity>();
+
         public void AreaTranitionsMenu()
         {
             Settings.AreaTransition.Value = ImGuiExtension.Checkbox("Shows Area Transition Names", Settings.AreaTransition.Value);
@@ -22,6 +27,12 @@ namespace Random_Features
             Settings.AreaTransitionSize.Value = ImGuiExtension.IntSlider("Text Size", Settings.AreaTransitionSize);
             Settings.AreaTransitionColor = ImGuiExtension.ColorPicker("Text Color", Settings.AreaTransitionColor);
             Settings.AreaTransitionColorBackground = ImGuiExtension.ColorPicker("Text Color Background", Settings.AreaTransitionColorBackground);
+        }
+
+        private IEnumerator ClearStoredEntities()
+        {
+            storedAreaEntities.Clear();
+            yield return new WaitFunction(() => { return GameController.Game.IsGameLoading; });
         }
 
         private void AreaTranitions()
@@ -37,41 +48,32 @@ namespace Random_Features
                     if (entity.HasComponent<AreaTransition>())
                     {
                         if (entity.GetComponent<AreaTransition>().TransitionType == AreaTransition.AreaTransitionType.Local && Settings.AreaTransitionHideLocalTranition) return;
-                        if (GameController.Game.IngameState.IngameUi.Map.LargeMap.IsVisible)
+                        var TextInfo = new MinimapTextInfo
                         {
-                            var TextInfo = new MinimapTextInfo
-                            {
-                                    Text = entity.GetComponent<AreaTransition>().TransitionType == AreaTransition.AreaTransitionType.Local ? LocalPlayer.Area.Name : entity.GetComponent<AreaTransition>().WorldArea.Name,
-                                    FontSize = Settings.AreaTransitionSize,
-                                    FontColor = Settings.AreaTransitionColor,
-                                    FontBackgroundColor = Settings.AreaTransitionColorBackground,
-                                    TextWrapLength = Settings.AreaTransitionMaxLength,
-                                    TextOffsetY = Settings.AreaTransitionLargeMapYOffset
-                            };
-                            DrawToLargeMiniMapText(entity, TextInfo);
-                        }
-
-                        if (GameController.Game.IngameState.IngameUi.Map.SmallMinimap.IsVisible)
-                        {
-                            var TextInfo = new MinimapTextInfo
-                            {
-                                    Text = entity.GetComponent<AreaTransition>().TransitionType == AreaTransition.AreaTransitionType.Local ? LocalPlayer.Area.Name : entity.GetComponent<AreaTransition>().WorldArea.Name,
-                                    FontSize = Settings.AreaTransitionSizeSmall,
-                                    FontColor = Settings.AreaTransitionColor,
-                                    FontBackgroundColor = Settings.AreaTransitionColorBackground,
-                                    TextWrapLength = Settings.AreaTransitionMaxLength,
-                                    TextOffsetY = 0
-                            };
-                            DrawToSmallMiniMapText(entity, TextInfo);
-                        }
+                                Text = entity.GetComponent<AreaTransition>().TransitionType == AreaTransition.AreaTransitionType.Local ? LocalPlayer.Area.Name : entity.GetComponent<AreaTransition>().WorldArea.Name,
+                                FontSize = Settings.AreaTransitionSizeSmall,
+                                FontColor = Settings.AreaTransitionColor,
+                                FontBackgroundColor = Settings.AreaTransitionColorBackground,
+                                TextWrapLength = Settings.AreaTransitionMaxLength
+                        };
+                        if (storedAreaEntities.All(x => x.LongID != entity.LongId))
+                            storedAreaEntities.Add(new StoredEntity(entity.GetComponent<Render>().Z, entity.GetComponent<Positioned>().GridPos, entity.LongId, TextInfo));
                     }
                 }
                 catch
                 {
                 }
+
+            foreach (var storedAreaEntity in storedAreaEntities)
+            {
+                if (GameController.Game.IngameState.IngameUi.Map.LargeMap.IsVisible)
+                    DrawToLargeMiniMapText(storedAreaEntity, storedAreaEntity.TextureInfo);
+                if (GameController.Game.IngameState.IngameUi.Map.SmallMinimap.IsVisible)
+                    DrawToSmallMiniMapText(storedAreaEntity, storedAreaEntity.TextureInfo);
+            }
         }
 
-        private void DrawToLargeMiniMapText(EntityWrapper entity, MinimapTextInfo info)
+        private void DrawToLargeMiniMapText(StoredEntity entity, MinimapTextInfo info)
         {
             var camera = GameController.Game.IngameState.Camera;
             var mapWindow = GameController.Game.IngameState.IngameUi.Map;
@@ -82,9 +84,9 @@ namespace Random_Features
             var diag = (float) Math.Sqrt(camera.Width * camera.Width + camera.Height * camera.Height);
             var k = camera.Width < 1024f ? 1120f : 1024f;
             var scale = k / camera.Height * camera.Width * 3f / 4f / mapWindow.LargeMapZoom;
-            var iconZ = entity.GetComponent<Render>().Z;
-            var point = screenCenter + MapIcon.DeltaInWorldToMinimapDelta(entity.GetComponent<Positioned>().GridPos - playerPos, diag, scale, (iconZ - posZ) / (9f / mapWindow.LargeMapZoom));
-            point.Y += info.TextOffsetY;
+            var iconZ = entity.EntityZ;
+            var point = screenCenter + MapIcon.DeltaInWorldToMinimapDelta(entity.GridPos - playerPos, diag, scale, (iconZ - posZ) / (9f / mapWindow.LargeMapZoom));
+            point.Y += Settings.AreaTransitionLargeMapYOffset;
             var size = Graphics.DrawText(WordWrap(info.Text, info.TextWrapLength), info.FontSize, point, info.FontColor, FontDrawFlags.Center);
             float maxWidth = 0;
             float maxheight = 0;
@@ -95,7 +97,7 @@ namespace Random_Features
             Graphics.DrawBox(background, info.FontBackgroundColor);
         }
 
-        private void DrawToSmallMiniMapText(EntityWrapper entity, MinimapTextInfo info)
+        private void DrawToSmallMiniMapText(StoredEntity entity, MinimapTextInfo info)
         {
             var camera = GameController.Game.IngameState.Camera;
             var mapWindow = GameController.Game.IngameState.IngameUi.Map;
@@ -106,9 +108,10 @@ namespace Random_Features
             var diag = (float) Math.Sqrt(camera.Width * camera.Width + camera.Height * camera.Height);
             var k = camera.Width < 1024f ? 1120f : 1024f;
             var scale = k / camera.Height * camera.Width * 3f / 4f / mapWindow.SmallMinimapZoom;
-            var iconZ = entity.GetComponent<Render>().Z;
-            var point = screenCenter + MapIcon.DeltaInWorldToMinimapDelta(entity.GetComponent<Positioned>().GridPos - playerPos, diag, scale, (iconZ - posZ) / (9f / mapWindow.SmallMinimapZoom));
+            var iconZ = entity.EntityZ;
+            var point = screenCenter + MapIcon.DeltaInWorldToMinimapDelta(entity.GridPos - playerPos, diag, scale, (iconZ - posZ) / (9f / mapWindow.SmallMinimapZoom));
             point.Y += info.TextOffsetY;
+            if (!mapRect.Contains(point)) return;
             var size = Graphics.DrawText(WordWrap(info.Text, info.TextWrapLength), info.FontSize, point, info.FontColor, FontDrawFlags.Center);
             float maxWidth = 0;
             float maxheight = 0;
@@ -117,6 +120,22 @@ namespace Random_Features
             maxWidth = Math.Max(maxWidth, size.Width);
             var background = new RectangleF(point.X - maxWidth / 2 - 3, point.Y - maxheight, maxWidth + 6, maxheight);
             Graphics.DrawBox(background, info.FontBackgroundColor);
+        }
+    }
+
+    public class StoredEntity
+    {
+        public float EntityZ;
+        public Vector2 GridPos;
+        public long LongID;
+        public MinimapTextInfo TextureInfo;
+
+        public StoredEntity(float entityZ, Vector2 gridPos, long longID, MinimapTextInfo textureInfo)
+        {
+            EntityZ = entityZ;
+            GridPos = gridPos;
+            LongID = longID;
+            TextureInfo = textureInfo;
         }
     }
 

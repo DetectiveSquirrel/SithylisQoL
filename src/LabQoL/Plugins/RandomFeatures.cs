@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using ImGuiNET;
+﻿using ImGuiNET;
 using PoeHUD.Framework.Helpers;
 using PoeHUD.Hud;
 using PoeHUD.Models;
@@ -8,6 +6,8 @@ using PoeHUD.Poe.Components;
 using Random_Features.Libs;
 using SharpDX;
 using SharpDX.Direct3D9;
+using System;
+using System.Collections.Generic;
 
 namespace Random_Features
 {

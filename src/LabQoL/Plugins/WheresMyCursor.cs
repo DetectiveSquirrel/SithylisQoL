@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using ImGuiNET;
+﻿using ImGuiNET;
 using Random_Features.Libs;
 using SharpDX;
+using System.Collections.Generic;
 
 namespace Random_Features
 {
