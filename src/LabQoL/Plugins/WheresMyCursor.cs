@@ -7,10 +7,17 @@ namespace Random_Features
 {
     partial class RandomFeatures
     {
+        private Vector2 _clickWindowOffset;
+
         private void WheresMyCursorMenu()
         {
             Settings.WmcMain.Value = ImGuiExtension.Checkbox("Enable##FRNToggle", Settings.WmcMain);
-            Settings.WmcLineType.Value = ImGuiExtension.ComboBox("Line Type?", Settings.WmcLineType.Value, new List<string> { "Maximum Length To Cursor", "Draw To The Mouse", "Draw To The Edge Of The Screen" });
+            Settings.WmcLineType.Value = ImGuiExtension.ComboBox("Line Type?", Settings.WmcLineType.Value, new List<string>
+            {
+                    "Maximum Length To Cursor",
+                    "Draw To The Mouse",
+                    "Draw To The Edge Of The Screen"
+            });
             Settings.WmcLineColor.Value = ImGuiExtension.ColorPicker("Line Color", Settings.WmcLineColor);
             Settings.WmcLineLength.Value = ImGuiExtension.IntSlider("Line Max Length", Settings.WmcLineLength);
             Settings.WmcLineSize.Value = ImGuiExtension.IntSlider("Line Thickness", Settings.WmcLineSize);
@@ -32,7 +39,9 @@ namespace Random_Features
             if (windows.OpenRightPanel.IsVisible)
                 return;
             var cursorPositionVector = Mouse.GetCursorPositionVector();
-            var windowRectangle = GameController.Window.GetWindowRectangle();
+            var windowRectangle = GameController.Window.GetWindowRectangleReal();
+            _clickWindowOffset = GameController.Window.GetWindowRectangle().TopLeft;
+            cursorPositionVector -= _clickWindowOffset;
 
             // need to call use -170 in Z axis for player.pos.translate as this is whats used in poecore for hp bar.
             //i have no fucking clue why this is. If you do not follow this rule you will have a jumpy hp bar
@@ -50,7 +59,7 @@ namespace Random_Features
                     break;
                 case 2:
                     finalPointA = Vector2OffsetCalculations(new Vector2(playerToScreen.X, windowRectangle.Height / 2));
-                    DrawLineToPosWithLength(finalPointA, cursorPositionVector, (int)windowRectangle.Width, Settings.WmcLineSize, Settings.WmcLineColor);
+                    DrawLineToPosWithLength(finalPointA, cursorPositionVector, (int) windowRectangle.Width, Settings.WmcLineSize, Settings.WmcLineColor);
                     break;
             }
         }
@@ -58,8 +67,12 @@ namespace Random_Features
         public Vector2 Vector2OffsetCalculations(Vector2 information)
         {
             var finalVectorCalculation = information;
-            finalVectorCalculation.X = Settings.WmcPlayerOffsetXNegitive ? finalVectorCalculation.X - Settings.WmcPlayerOffsetX : finalVectorCalculation.X + Settings.WmcPlayerOffsetX;
-            finalVectorCalculation.Y = Settings.WmcPlayerOffsetYNegitive ? finalVectorCalculation.Y - Settings.WmcPlayerOffsetY : finalVectorCalculation.Y + Settings.WmcPlayerOffsetY;
+            finalVectorCalculation.X = Settings.WmcPlayerOffsetXNegitive 
+                                               ? finalVectorCalculation.X - Settings.WmcPlayerOffsetX 
+                                               : finalVectorCalculation.X + Settings.WmcPlayerOffsetX;
+            finalVectorCalculation.Y = Settings.WmcPlayerOffsetYNegitive 
+                                               ? finalVectorCalculation.Y - Settings.WmcPlayerOffsetY 
+                                               : finalVectorCalculation.Y + Settings.WmcPlayerOffsetY;
             return finalVectorCalculation;
         }
 
@@ -71,6 +84,9 @@ namespace Random_Features
             Graphics.DrawLine(pointA, pointC, lineSize, lineColor);
         }
 
-        public void DrawLineToPos(Vector2 pointA, Vector2 pointB, int lineSize, Color lineColor) { Graphics.DrawLine(pointA, pointB, lineSize, lineColor); }
+        public void DrawLineToPos(Vector2 pointA, Vector2 pointB, int lineSize, Color lineColor)
+        {
+            Graphics.DrawLine(pointA, pointB, lineSize, lineColor);
+        }
     }
 }
