@@ -1,5 +1,5 @@
-﻿using System.Collections;
-using ImGuiNET;
+﻿using ImGuiNET;
+using PoeHUD.Controllers;
 using PoeHUD.Framework;
 using PoeHUD.Framework.Helpers;
 using PoeHUD.Models;
@@ -7,14 +7,12 @@ using PoeHUD.Plugins;
 using Random_Features.Libs;
 using System.Collections.Generic;
 using System.Numerics;
-using PoeHUD.Controllers;
-using System;
 
 namespace Random_Features
 {
     public partial class RandomFeatures : BaseSettingsPlugin<RandomFeaturesSettings>
     {
-        public const string Version = "1.0.3";
+        public const string Version = "1.1.2";
         public static int Selected;
 
         public static string[] SettingName =

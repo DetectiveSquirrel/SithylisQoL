@@ -56,7 +56,13 @@ namespace Random_Features
                                 FontBackgroundColor = Settings.AreaTransitionColorBackground,
                                 TextWrapLength = Settings.AreaTransitionMaxLength
                         };
-                        if (storedAreaEntities.All(x => x.LongID != entity.LongId))
+                        if (TextInfo.Text.Contains("NULL")) return;
+                        if (storedAreaEntities.Any(x => x.LongID == entity.LongId))
+                        {
+                            var findIndex = storedAreaEntities.FindIndex(x => x.LongID == entity.LongId);
+                            storedAreaEntities[findIndex] = new StoredEntity(entity.GetComponent<Render>().Z, entity.GetComponent<Positioned>().GridPos, entity.LongId, TextInfo);
+                        }
+                        else
                             storedAreaEntities.Add(new StoredEntity(entity.GetComponent<Render>().Z, entity.GetComponent<Positioned>().GridPos, entity.LongId, TextInfo));
                     }
                 }
