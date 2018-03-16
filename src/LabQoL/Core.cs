@@ -54,20 +54,15 @@ namespace Random_Features
         {
             base.Render();
             if (!Settings.Enable) return;
-            ImGuiMenu();
             UnsortedPlugin();
             FuckRomanNumerals();
             WheresMyCursor();
             AreaTranitions();
         }
 
-        private void ImGuiMenu()
+        public override void DrawSettingsMenu()
         {
             idPop = 1;
-            if (!Settings.ShowWindow) return;
-            var isOpened = Settings.ShowWindow.Value;
-            ImGuiExtension.BeginWindow($"{PluginName} v{Version}", ref isOpened, Settings.LastSettingPos.X, Settings.LastSettingPos.Y, Settings.LastSettingSize.X, Settings.LastSettingSize.Y);
-            Settings.ShowWindow.Value = isOpened;
             ImGui.PushStyleVar(StyleVar.ChildRounding, 5.0f);
             ImGuiExtension.ImGuiExtension_ColorTabs("LeftSettings", 50, SettingName, ref Selected, ref idPop);
             ImGuiNative.igGetContentRegionAvail(out var newcontentRegionArea);
@@ -93,15 +88,6 @@ namespace Random_Features
                 }
             ImGui.PopStyleVar();
             ImGui.EndChild();
-
-            // Storing window Position and Size changed by the user
-            if (ImGui.GetWindowHeight() > 21)
-            {
-                Settings.LastSettingPos = ImGui.GetWindowPosition();
-                Settings.LastSettingSize = ImGui.GetWindowSize();
-            }
-
-            ImGui.EndWindow();
         }
     }
 

@@ -27,6 +27,7 @@ namespace Random_Features
             Settings.AreaTransitionSize.Value = ImGuiExtension.IntSlider("Text Size", Settings.AreaTransitionSize);
             Settings.AreaTransitionColor = ImGuiExtension.ColorPicker("Text Color", Settings.AreaTransitionColor);
             Settings.AreaTransitionColorBackground = ImGuiExtension.ColorPicker("Text Color Background", Settings.AreaTransitionColorBackground);
+            Settings._Debug = ImGuiExtension.Checkbox("Debug", Settings._Debug);
         }
 
         private IEnumerator ClearStoredEntities()
@@ -47,6 +48,7 @@ namespace Random_Features
                 {
                     if (entity.HasComponent<AreaTransition>())
                     {
+                        var positionedComp = entity.GetComponent<Positioned>();
                         if (entity.GetComponent<AreaTransition>().TransitionType == AreaTransition.AreaTransitionType.Local && Settings.AreaTransitionHideLocalTranition) return;
                         var TextInfo = new MinimapTextInfo
                         {
@@ -57,13 +59,17 @@ namespace Random_Features
                                 TextWrapLength = Settings.AreaTransitionMaxLength
                         };
                         if (TextInfo.Text.Contains("NULL")) return;
-                        if (storedAreaEntities.Any(x => x.LongID == entity.LongId))
+                        if (storedAreaEntities.Any(x => x.GridPos == positionedComp.GridPos))
                         {
-                            var findIndex = storedAreaEntities.FindIndex(x => x.LongID == entity.LongId);
-                            storedAreaEntities[findIndex] = new StoredEntity(entity.GetComponent<Render>().Z, entity.GetComponent<Positioned>().GridPos, entity.LongId, TextInfo);
+                            var findIndex = storedAreaEntities.FindIndex(x => x.GridPos == positionedComp.GridPos);
+                            storedAreaEntities[findIndex] = new StoredEntity(entity.GetComponent<Render>().Z, positionedComp.GridPos, entity.LongId, TextInfo);
                         }
                         else
-                            storedAreaEntities.Add(new StoredEntity(entity.GetComponent<Render>().Z, entity.GetComponent<Positioned>().GridPos, entity.LongId, TextInfo));
+                        {
+                            if (Settings._Debug)
+                                LogMessage($"Random Features [AreaTransitions] Added Area | Area:{TextInfo.Text}", 3);
+                            storedAreaEntities.Add(new StoredEntity(entity.GetComponent<Render>().Z, positionedComp.GridPos, entity.LongId, TextInfo));
+                        }
                     }
                 }
                 catch

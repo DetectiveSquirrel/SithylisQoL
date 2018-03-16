@@ -135,6 +135,7 @@ namespace Random_Features
             VaultPilesOnMap = true;
             VaultPilesIcon = new RangeNode<int>(25, 1, 200);
             AreaNamesOnMap = true;
+            _Debug = false;
             // Fuck Roman Numerals
             FrnMain = true;
             FrnBackgroundBoxExtraWidth = new RangeNode<int>(3, 0, 200);
@@ -284,6 +285,7 @@ namespace Random_Features
         public RangeNode<int> VaultPilesOnFloorSize { get; set; }
         public ToggleNode VaultPilesOnMap { get; set; }
         public RangeNode<int> VaultPilesIcon { get; set; }
+        public ToggleNode _Debug { get; set; }
 
 
         public ToggleNode AreaNamesOnMap { get; set; }

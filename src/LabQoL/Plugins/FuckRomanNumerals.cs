@@ -25,6 +25,7 @@ namespace Random_Features
             Settings.FrnSecondTierRowX.Value = ImGuiExtension.IntSlider("Second Tier Row X", Settings.FrnSecondTierRowX);
             Settings.FrnSecondTierRowY.Value = ImGuiExtension.IntSlider("Second Tier Row Y", Settings.FrnSecondTierRowY);
             Settings.FrnFontSize.Value = ImGuiExtension.IntSlider("Font Size", Settings.FrnFontSize);
+            Settings._Debug = ImGuiExtension.Checkbox("Debug", Settings._Debug);
         }
 
         private void FuckRomanNumerals()

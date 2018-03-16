@@ -401,6 +401,7 @@ namespace Random_Features
                 Settings.SolarGuard.Value = ImGuiExtension.Checkbox("Solar Guard", Settings.SolarGuard);
                 ImGui.TreePop();
             }
+            Settings._Debug = ImGuiExtension.Checkbox("Debug", Settings._Debug);
         }
 
         private void UnsortedPlugin()

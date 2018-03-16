@@ -46,6 +46,7 @@ namespace Random_Features
 
             ImGui.Separator();
             ImGuiExtension.EndColumn();
+            Settings._Debug = ImGuiExtension.Checkbox("Debug", Settings._Debug);
         }
 
         public void TrialString(int trialID)
