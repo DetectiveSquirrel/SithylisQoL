@@ -1,5 +1,6 @@
 ﻿using ImGuiNET;
 using PoeHUD.Models.Enums;
+using PoeHUD.Poe;
 using Random_Features.Libs;
 using SharpDX;
 using SharpDX.Direct3D9;
@@ -56,24 +57,34 @@ namespace Random_Features
                 var firstTabText = new Vector2(firstTabRow.X + firstTabRow.Width / 2, firstTabRow.Y);
                 var secondTabRow = new RectangleF(secondTierRowX - backgroundBoxExtraWidth, secondTierRowY, backgroundBoxWidth, backgroundBoxHeight);
                 var secondTabText = new Vector2(secondTabRow.X + secondTabRow.Width / 2, secondTabRow.Y);
+                Element UIHover;
                 for (var i = 0; i < topRowTierCount; i++)
                 {
+                    UIHover = GameController.Game.IngameState.UIHover;
                     var newBox = new RectangleF(firstTabRow.X + i * nextBoxOffset, firstTabRow.Y, backgroundBoxWidth, backgroundBoxHeight);
                     var newText = new Vector2(firstTabText.X + i * nextBoxOffset, firstTabText.Y + 1);
+                    if (UIHover.Tooltip.GetClientRect().Intersects(newBox))
+                        continue;
                     Graphics.DrawBox(newBox, Color.Black);
                     Graphics.DrawText((i + 1).ToString(), fontSize, newText, i + 1 < 6 ? Color.White : Color.Yellow, FontDrawFlags.Center);
                 }
 
                 for (var i = 0; i < bottomRowTierCount; i++)
                 {
+                    UIHover = GameController.Game.IngameState.UIHover;
                     var newBox = new RectangleF(secondTabRow.X + i * nextBoxOffset, secondTabRow.Y, backgroundBoxWidth, backgroundBoxHeight);
                     var newText = new Vector2(secondTabText.X + i * nextBoxOffset, secondTabText.Y + 1);
+                    if (UIHover.Tooltip.GetClientRect().Intersects(newBox))
+                        continue;
                     Graphics.DrawBox(newBox, Color.Black);
                     Graphics.DrawText((i + topRowTierCount + 1).ToString(), fontSize, newText, i + topRowTierCount + 1 < 11 ? Color.Yellow : Color.Red, FontDrawFlags.Center);
                 }
 
+                UIHover = GameController.Game.IngameState.UIHover;
                 var uBox = new RectangleF(secondTabRow.X + bottomRowTierCount * nextBoxOffset, secondTabRow.Y, backgroundBoxWidth, backgroundBoxHeight);
                 var uText = new Vector2(secondTabText.X + bottomRowTierCount * nextBoxOffset, secondTabText.Y + 1);
+                if (UIHover.Tooltip.GetClientRect().Intersects(uBox))
+                    return;
                 Graphics.DrawBox(uBox, Color.Black);
                 Graphics.DrawText("U", fontSize, uText, Color.Orange, FontDrawFlags.Center);
             }

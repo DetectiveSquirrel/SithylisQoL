@@ -30,10 +30,28 @@ namespace Random_Features
             Settings._Debug = ImGuiExtension.Checkbox("Debug", Settings._Debug);
         }
 
+        public int CompletedTrial(string trialString)
+        {
+            var trial = GameController.Player.GetComponent<Player>().TrialStates;
+            var returnState = 0;
+            foreach (var trialState in trial)
+            {
+                if (trialState.TrialArea.Area.Name == trialString)
+                    returnState = 2;
+                if (trialState.TrialArea.Area.Name == trialString && trialState.TrialArea.Area.Act > 10 && trialState.IsCompleted)
+                {
+                    returnState = 1;
+                    break;
+                }
+            }
+
+            return returnState;
+        }
+
         private IEnumerator ClearStoredEntities()
         {
             storedAreaEntities.Clear();
-            yield return new WaitFunction(() => { return GameController.Game.IsGameLoading; });
+            yield return new WaitFunction(() => GameController.Game.IsGameLoading);
         }
 
         private void AreaTranitions()
@@ -59,6 +77,10 @@ namespace Random_Features
                                 TextWrapLength = Settings.AreaTransitionMaxLength
                         };
                         if (TextInfo.Text.Contains("NULL")) return;
+                        if (CompletedTrial(TextInfo.Text) == 1)
+                            TextInfo.Text = $"(✓) {TextInfo.Text}";
+                        else if (CompletedTrial(TextInfo.Text) == 2)
+                            TextInfo.Text = $"(✕) {TextInfo.Text}";
                         if (storedAreaEntities.Any(x => x.GridPos == positionedComp.GridPos))
                         {
                             var findIndex = storedAreaEntities.FindIndex(x => x.GridPos == positionedComp.GridPos);
