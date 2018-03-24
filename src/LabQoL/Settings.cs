@@ -318,8 +318,5 @@ namespace Random_Features
 
         public ImGuiVector2 LastSettingPos { get; set; }
         public ImGuiVector2 LastSettingSize { get; set; }
-
-        [Menu("Version " + RandomFeatures.Version)]
-        public EmptyNode VersionNode { get; set; }
     }
 }
