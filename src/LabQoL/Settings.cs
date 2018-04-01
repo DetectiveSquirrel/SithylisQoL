@@ -1,4 +1,5 @@
 ﻿using System;
+using ImGuiNET;
 using PoeHUD.Hud.Settings;
 using PoeHUD.Plugins;
 using SharpDX;
@@ -161,6 +162,28 @@ namespace Random_Features
             var centerPos = BasePlugin.API.GameController.Window.GetWindowRectangle().Center;
             LastSettingSize = new ImGuiVector2(620, 376);
             LastSettingPos = new ImGuiVector2(centerPos.X - LastSettingSize.X / 2, centerPos.Y - LastSettingSize.Y / 2);
+
+            RoyaleThings = true;
+
+            RoyaleHoardChests = true;
+            RoyaleHoardSize = new RangeNode<int>(20, 1, 200);
+            RoyaleHoardColor = new ColorBGRA(255, 152, 0, 255);
+
+            RoyaleTroveChests = true;
+            RoyaleTroveSize = new RangeNode<int>(20, 1, 200);
+            RoyaleTroveColor = new ColorBGRA(0, 14, 255, 255);
+
+            RoyaleCacheChests = true;
+            RoyaleCacheSize = new RangeNode<int>(15, 1, 200);
+            RoyaleCacheColor = new ColorBGRA(0, 131, 0, 255);
+
+            RoyaleSuppliesChests = true;
+            RoyaleSuppliesSize = new RangeNode<int>(15, 1, 200);
+            RoyaleSuppliesColor = new ColorBGRA(0, 0, 0, 255);
+
+            RoyaleExplosiveBarrelsChests = true;
+            RoyaleExplosiveBarrelsSize = new RangeNode<int>(4, 1, 200);
+            RoyaleExplosiveBarrelsColor = Color.Red;
         }
 
         public ToggleNode UnsortedPlugin { get; set; }
@@ -318,5 +341,29 @@ namespace Random_Features
 
         public ImGuiVector2 LastSettingPos { get; set; }
         public ImGuiVector2 LastSettingSize { get; set; }
+
+        
+        public ToggleNode RoyaleThings { get; set; }
+
+        public ToggleNode RoyaleTroveChests { get; set; }
+        public RangeNode<int> RoyaleTroveSize { get; set; }
+        public ColorNode RoyaleTroveColor { get; set; }
+
+        public ToggleNode RoyaleHoardChests { get; set; }
+        public RangeNode<int> RoyaleHoardSize { get; set; }
+        public ColorNode RoyaleHoardColor { get; set; }
+
+        public ToggleNode RoyaleCacheChests { get; set; }
+        public RangeNode<int> RoyaleCacheSize { get; set; }
+        public ColorNode RoyaleCacheColor { get; set; }
+
+        public ToggleNode RoyaleSuppliesChests { get; set; }
+        public RangeNode<int> RoyaleSuppliesSize { get; set; }
+        public ColorNode RoyaleSuppliesColor { get; set; }
+
+        public ToggleNode RoyaleExplosiveBarrelsChests { get; set; }
+        public RangeNode<int> RoyaleExplosiveBarrelsSize { get; set; }
+        public ColorNode RoyaleExplosiveBarrelsColor { get; set; }
+
     }
 }
