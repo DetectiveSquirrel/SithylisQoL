@@ -7,25 +7,37 @@ using PoeHUD.Models;
 using PoeHUD.Plugins;
 using Random_Features.Libs;
 using System.Collections.Generic;
+using System.IO;
 using System.Numerics;
+using System.Reflection;
+using PoeHUD.Poe;
+using PoeHUD.Poe.Elements;
 
 namespace Random_Features
 {
     public partial class RandomFeatures : BaseSettingsPlugin<RandomFeaturesSettings>
     {
+        private const string AREA_MOD_WARNINGS = "Area Mod Warnings";
+        private const string AREA_TRANSITIONS = "Area Transitions";
+        private const string TRIALS = "Trials";
+        private const string WHERES_MY_CURSOR = "Wheres My Cursor?";
+        private const string FUCK_ROMAN_NUMERAS = "Fuck Roman Numerals";
+        private const string RANDOM_FEATURES = "Random Features";
+
         //https://stackoverflow.com/questions/826777/how-to-have-an-auto-incrementing-version-number-visual-studio
-        public Version version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+        public Version version = Assembly.GetExecutingAssembly().GetName().Version;
         public string PluginVersion;
         public DateTime buildDate;
         public static int Selected;
 
         public static string[] SettingName =
         {
-                "Random Features",
-                "Fuck Roman Numerals",
-                "Wheres My Cursor?",
-                "Trials",
-                "Area Transitions"
+                RANDOM_FEATURES,
+                FUCK_ROMAN_NUMERAS,
+                WHERES_MY_CURSOR,
+                TRIALS,
+                AREA_TRANSITIONS,
+                AREA_MOD_WARNINGS
         };
 
         public static int idPop;
@@ -36,7 +48,7 @@ namespace Random_Features
         public string PoeHudImageLocation;
 
         public RandomFeatures() {
-            PluginName = "Random Features";
+            PluginName = RANDOM_FEATURES;
         }
 
         private void AreaChange() { new Coroutine(ClearStoredEntities(), nameof(Random_Features), "Clear Stored Area Entities").Run(); }
@@ -50,7 +62,10 @@ namespace Random_Features
             CustomImagePath = PluginDirectory + @"\images\";
             PoeHudImageLocation = PluginDirectory + @"\..\..\textures\";
             GameController.Area.OnAreaChange += area => AreaChange();
+            AreaModWarningsInit();
         }
+
+        public string ReadElementText(Element element) { return element.AsObject<EntityLabel>().Text; }
 
         public override void EntityAdded(EntityWrapper entity) { _entityCollection.Add(entity); }
 
@@ -64,6 +79,35 @@ namespace Random_Features
             FuckRomanNumerals();
             WheresMyCursor();
             AreaTranitions();
+            AreaModWarnings();
+
+            //Element tradingWindow = GetPlayerTradingWindow();
+            //if (tradingWindow == null || !tradingWindow.IsVisible)
+            //{
+            //    return;
+            //}
+            //var acceptButton = tradingWindow.GetChildAtIndex(5).GetChildAtIndex(0);
+            //LogMessage(ReadElementText(acceptButton), 1);
+            //using (StreamWriter sw = File.AppendText("Button Log.txt"))
+            //{
+            //    sw.WriteLine(ReadElementText(acceptButton));
+            //}
+
+
+
+        }
+
+        public Element GetPlayerTradingWindow()
+        {
+            try
+            {
+                // Player Trade Window
+                return GameController.Game.IngameState.UIRoot.Children[1].Children[50].Children[3].Children[1].Children[0].Children[0];
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         public override void DrawSettingsMenu()
@@ -77,21 +121,24 @@ namespace Random_Features
             if (ImGui.BeginChild("RightSettings", new Vector2(newcontentRegionArea.X, newcontentRegionArea.Y), true, WindowFlags.Default))
                 switch (SettingName[Selected])
                 {
-                    case "Random Features":
+                    case RANDOM_FEATURES:
                         RandomFeaturesMenu(idPop, out var newInt);
                         idPop = newInt;
                         break;
-                    case "Fuck Roman Numerals":
+                    case FUCK_ROMAN_NUMERAS:
                         FuckRomanNumeralsMenu();
                         break;
-                    case "Wheres My Cursor?":
+                    case WHERES_MY_CURSOR:
                         WheresMyCursorMenu();
                         break;
-                    case "Trials":
+                    case TRIALS:
                         TrialMenu();
                         break;
-                    case "Area Transitions":
+                    case AREA_TRANSITIONS:
                         AreaTranitionsMenu();
+                        break;
+                    case AREA_MOD_WARNINGS:
+                        AreaModWarningsMenu();
                         break;
                 }
             ImGui.PopStyleVar();

@@ -184,6 +184,15 @@ namespace Random_Features
             RoyaleExplosiveBarrelsChests = true;
             RoyaleExplosiveBarrelsSize = new RangeNode<int>(4, 1, 200);
             RoyaleExplosiveBarrelsColor = Color.Red;
+
+            RoyalBETA = false;
+
+            BeyondThings = true;
+            BeyondPortal = true;
+            BeyondPortalSize = new RangeNode<int>(20, 1, 200);
+            BeyondPortalColor = new ColorBGRA(255, 152, 0, 255);
+
+            AreaModWarnings = true;
         }
 
         public ToggleNode UnsortedPlugin { get; set; }
@@ -365,5 +374,23 @@ namespace Random_Features
         public RangeNode<int> RoyaleExplosiveBarrelsSize { get; set; }
         public ColorNode RoyaleExplosiveBarrelsColor { get; set; }
 
+        public ToggleNode RoyalBETA { get; set; }
+
+        public ToggleNode RoyalOverrideColors { get; set; } = true;
+        public ToggleNode RoyalLockedMudule { get; set; } = false;
+        public Color RoyalModuleBackground { get; set; } = Color.Black;
+
+        public ToggleNode BeyondThings { get; set; }
+
+        public ToggleNode BeyondPortal { get; set; }
+        public RangeNode<int> BeyondPortalSize { get; set; }
+        public ColorNode BeyondPortalColor { get; set; }
+
+        public ToggleNode AreaModWarnings { get; set; }
+        public ToggleNode AreaModWarningOverrideColors { get; set; } = true;
+        public Color AreaModWarningBackground { get; set; } = Color.Black;
+        public Color AreaModWarningTitle { get; set; } = Color.White;
+        public Color AreaModWarningBodyText { get; set; } = Color.White;
+        public ToggleNode AreaModWarningLocked { get; set; } = true;
     }
 }

@@ -8,6 +8,9 @@ using PoeHUD.Poe.Components;
 using Random_Features.Libs;
 using SharpDX;
 using SharpDX.Direct3D9;
+using ImVector2 = System.Numerics.Vector2;
+using ImVector4 = System.Numerics.Vector4;
+using Vector4 = SharpDX.Vector4;
 
 namespace Random_Features
 {
@@ -452,11 +455,75 @@ namespace Random_Features
                 idPop++;
                 Settings.RoyaleExplosiveBarrelsColor.Value = ImGuiExtension.ColorPicker($"Color##{idPop}", Settings.RoyaleExplosiveBarrelsColor);
                 idPop++;
+                ImGui.Spacing();
+                ImGui.Spacing();
+                Settings.RoyalBETA.Value = ImGuiExtension.Checkbox($"World Position - Find Your Friends!##{idPop}", Settings.RoyalBETA);
+                idPop++;
+                Settings.RoyalLockedMudule.Value = ImGuiExtension.Checkbox($"locked Module##{idPop}", Settings.RoyalLockedMudule);
+                idPop++;
+                Settings.RoyalOverrideColors.Value = ImGuiExtension.Checkbox($"Override Module Colors##{idPop}", Settings.RoyalOverrideColors);
+                idPop++;
+                Settings.RoyalModuleBackground = ImGuiExtension.ColorPicker($"Module Background Color##{idPop}", Settings.RoyalModuleBackground);
+
+                ImGui.TreePop();
+            }
+
+            if (ImGui.TreeNode("Beyond Things"))
+            {
+                Settings.BeyondThings.Value = ImGuiExtension.Checkbox($"Show##{idPop}", Settings.BeyondThings);
+                idPop++;
+                ImGui.Spacing();
+                Settings.BeyondPortal.Value = ImGuiExtension.Checkbox($"Beyond Portal2##{idPop}", Settings.BeyondPortal);
+                idPop++;
+                Settings.BeyondPortalSize.Value = ImGuiExtension.IntSlider($"Size##{idPop}", Settings.BeyondPortalSize);
+                idPop++;
+                Settings.BeyondPortalColor.Value = ImGuiExtension.ColorPicker($"Color##{idPop}", Settings.BeyondPortalColor);
+                idPop++;
 
                 ImGui.TreePop();
             }
 
             Settings._Debug = ImGuiExtension.Checkbox("Debug", Settings._Debug);
+        }
+        private ImVector4 ToImVector4(Vector4 vector) => new ImVector4(vector.X, vector.Y, vector.Z, vector.W);
+
+        public void BETA_ROYALE()
+        {
+            if (!Settings.RoyalBETA)
+            {
+                return;
+            }
+
+            var refBool = true;
+            var menuOpacity = ImGui.GetStyle().GetColor(ColorTarget.WindowBg).W;
+            if (Settings.RoyalOverrideColors)
+            {
+                ImGui.PushStyleColor(ColorTarget.WindowBg, ToImVector4(Settings.RoyalModuleBackground.ToVector4()));
+                menuOpacity = ImGui.GetStyle().GetColor(ColorTarget.WindowBg).W;
+            }
+
+            ImGui.BeginWindow("ROYAL LOCATION", ref refBool, new ImVector2(200, 150), menuOpacity,
+                    Settings.RoyalLockedMudule
+                            ? WindowFlags.NoCollapse
+                            | WindowFlags.NoScrollbar
+                            | WindowFlags.NoMove
+                            | WindowFlags.NoResize
+                            | WindowFlags.NoInputs
+                            | WindowFlags.NoBringToFrontOnFocus
+                            | WindowFlags.NoTitleBar
+                            | WindowFlags.NoFocusOnAppearing
+                            : WindowFlags.Default | WindowFlags.NoTitleBar | WindowFlags.ResizeFromAnySide);
+            if (Settings.RoyalOverrideColors)
+            {
+                ImGui.PopStyleColor();
+            }
+
+            var location = LocalPlayer.Entity.GetComponent<Positioned>().WorldPos;
+            location = new Vector2((float) Math.Ceiling(location.X), (float) Math.Ceiling(location.Y));
+            ImGui.Text("World Position");
+            ImGui.BulletText($"X: {location.X}");
+            ImGui.BulletText($"Y: {location.Y}");
+            ImGui.EndWindow();
         }
 
         private void UnsortedPlugin()
@@ -468,6 +535,7 @@ namespace Random_Features
                 RenderAtziriMirrorClone();
                 RenderLieutenantSkeletonThorns();
                 RenderShrines();
+                BETA_ROYALE();
             }
 
             if (Settings.SecretSwitch)
@@ -768,6 +836,25 @@ namespace Random_Features
                 {
                     return new MapIcon(e, new HudTexture(PoeHudImageLocation + "chest.png", Settings.RoyaleExplosiveBarrelsColor),
                             () => Settings.RoyaleExplosiveBarrelsChests, Settings.RoyaleExplosiveBarrelsSize);
+                }
+            }
+
+            if (Settings.BeyondThings)
+            {
+                if (Settings.BeyondPortal && e.Path.Contains("Metadata/Monsters/BeyondDemons/BeyondPortal3"))
+                {
+                    return new MapIcon(e, new HudTexture(CustomImagePath + "Demon_Altar.png", Settings.BeyondPortalColor),
+                            () => Settings.BeyondPortal, Settings.BeyondPortalSize*1.5f);
+                }
+                if (Settings.BeyondPortal && e.Path.Contains("Metadata/Monsters/BeyondDemons/BeyondPortal2"))
+                {
+                    return new MapIcon(e, new HudTexture(CustomImagePath + "Demon_Altar.png", Settings.BeyondPortalColor),
+                            () => Settings.BeyondPortal, Settings.BeyondPortalSize);
+                }
+                if (Settings.BeyondPortal && e.Path.Contains("Metadata/Monsters/BeyondDemons/BeyondPortal1"))
+                {
+                    return new MapIcon(e, new HudTexture(CustomImagePath + "Demon_Small_Blood.png", Settings.BeyondPortalColor),
+                            () => Settings.BeyondPortal, Settings.BeyondPortalSize/2);
                 }
             }
 

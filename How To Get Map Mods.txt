@@ -1,0 +1,6 @@
+First you will need the Developer Plugin: https://github.com/DetectiveSquirrel/PoeHUD-Developer/
+
+You can go to this loction in the plugin to view your map mods: https://puu.sh/A3tEL/dd1e6a2749.png
+ * GameController.Game.IngameState.Data.MapStats => List Of Area Stats
+
+You can click each one and that will be the mod string to add to the `AreaWarningMods.txt` file
