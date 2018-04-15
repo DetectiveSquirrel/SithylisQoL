@@ -31,14 +31,18 @@ namespace Random_Features
             Settings.AreaModWarningBodyText = ImGuiExtension.ColorPicker("Bad Mod Colors", Settings.AreaModWarningBodyText);
             Settings.AreaModWarningBackground = ImGuiExtension.ColorPicker("Background", Settings.AreaModWarningBackground);
 
-            if (ImGui.Button("Open `AreaWarningMods.txt`"))
+            if (ImGui.Button("Open: AreaWarningMods.txt"))
             {
                 Process.Start(AreaModFile);
             }
             ImGui.SameLine();
-            if (ImGui.Button("Open `How To Get Area Mod Strings`"))
+            if (ImGui.Button("Open: How To Get Area Mod Strings"))
             {
                 Process.Start(PluginDirectory + "\\How To Get Map Mods.txt");
+            }
+            if (ImGui.Button("Open: Area Mod List"))
+            {
+                Process.Start(PluginDirectory + "\\Area Mods.txt");
             }
         }
 
