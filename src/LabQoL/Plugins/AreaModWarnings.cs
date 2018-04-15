@@ -111,7 +111,7 @@ namespace Random_Features
                     ImGui.PopStyleColor();
                 }
 
-                ImGui.Text("Bad Mods Present", Settings.AreaModWarningOverrideColors ? ToImVector4(Settings.AreaModWarningTitle.ToVector4()) : TextColor);
+                ImGui.Text("Mods Found", Settings.AreaModWarningOverrideColors ? ToImVector4(Settings.AreaModWarningTitle.ToVector4()) : TextColor);
                 foreach (var BadMod in BadMods_Present)
                 {
                     ImGui.Text(BadMod, Settings.AreaModWarningOverrideColors ? ToImVector4(Settings.AreaModWarningBodyText.ToVector4()) : TextColor);
