@@ -78,6 +78,7 @@ namespace Random_Features
             {
                 RectangleF skillGemButton = element.GetChildAtIndex(1).GetClientRect();
                 string skillGemText = element.GetChildAtIndex(3).AsObject<EntityLabel>().Text;
+                if (element.GetChildAtIndex(2).IsVisibleLocal) continue;
 
                 if (element.GetChildAtIndex(0).Tooltip.ChildCount == 0)
                 {
@@ -94,7 +95,7 @@ namespace Random_Features
                 if (element.GetChildAtIndex(0).Tooltip.ChildCount != 0)
                 {
                     SkillGemTooltipWrapper SkillGemToolTipInfo = new SkillGemTooltipWrapper(element.GetChildAtIndex(0).Tooltip);
-                    if (skillGemText.ToLower() == "click to level up" && PassedGemRule(SkillGemToolTipInfo))
+                    if (skillGemText?.ToLower() == "click to level up" && PassedGemRule(SkillGemToolTipInfo))
                     {
                         Mouse.SetCurosPosToCenterOfRec(skillGemButton, GameController.Window.GetWindowRectangle());
                         Mouse.LeftClick(5, 10);
