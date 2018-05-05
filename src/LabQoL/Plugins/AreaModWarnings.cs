@@ -65,7 +65,6 @@ namespace Random_Features
             }, new WaitTime(1000), nameof(Random_Features), "Update Area Mod Warning List").Run();
         }
 
-
         public void AreaModWarnings()
         {
             if (!Settings.AreaModWarnings)
@@ -85,7 +84,6 @@ namespace Random_Features
 
         public void DrawBadMods()
         {
-
             var AreaMods = GameController.Game.IngameState.Data.MapStats;
             var BadMods_Present = new List<string>();
             foreach (var areaMod in AreaMods)

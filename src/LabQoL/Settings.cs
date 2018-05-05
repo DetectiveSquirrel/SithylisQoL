@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Windows.Forms;
 using ImGuiNET;
 using PoeHUD.Hud.Settings;
 using PoeHUD.Plugins;
@@ -393,5 +395,10 @@ namespace Random_Features
         public Color AreaModWarningTitle { get; set; } = Color.White;
         public Color AreaModWarningBodyText { get; set; } = Color.White;
         public ToggleNode AreaModWarningLocked { get; set; } = true;
+
+
+        public ToggleNode LevelSkillGems { get; set; } = false;
+        public HotkeyNode LevelSkillGemsHotkey { get; set; } = Keys.D6;
+        public List<RandomFeatures.GemLevelRule> SkillGemStopList { get; set; } = new List<RandomFeatures.GemLevelRule>();
     }
 }

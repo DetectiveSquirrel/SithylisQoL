@@ -23,6 +23,7 @@ namespace Random_Features
         private const string WHERES_MY_CURSOR = "Wheres My Cursor?";
         private const string FUCK_ROMAN_NUMERAS = "Fuck Roman Numerals";
         private const string RANDOM_FEATURES = "Random Features";
+        private const string SKILL_GEM_LEVELING = "Skill Gem Leveling";
 
         //https://stackoverflow.com/questions/826777/how-to-have-an-auto-incrementing-version-number-visual-studio
         public Version version = Assembly.GetExecutingAssembly().GetName().Version;
@@ -37,7 +38,8 @@ namespace Random_Features
                 WHERES_MY_CURSOR,
                 TRIALS,
                 AREA_TRANSITIONS,
-                AREA_MOD_WARNINGS
+                AREA_MOD_WARNINGS,
+                SKILL_GEM_LEVELING
         };
 
         public static int idPop;
@@ -80,6 +82,7 @@ namespace Random_Features
             WheresMyCursor();
             AreaTranitions();
             AreaModWarnings();
+            LevelUpGems();
 
             //Element tradingWindow = GetPlayerTradingWindow();
             //if (tradingWindow == null || !tradingWindow.IsVisible)
@@ -139,6 +142,9 @@ namespace Random_Features
                         break;
                     case AREA_MOD_WARNINGS:
                         AreaModWarningsMenu();
+                        break;
+                    case SKILL_GEM_LEVELING:
+                        LevelSkillGemsMenu();
                         break;
                 }
             ImGui.PopStyleVar();

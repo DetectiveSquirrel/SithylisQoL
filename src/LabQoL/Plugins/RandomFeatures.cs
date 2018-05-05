@@ -534,10 +534,13 @@ namespace Random_Features
             ImGui.BulletText($"Y: {location.Y}");
             ImGui.EndWindow();
         }
-        public class Targetable : Component
+
+        public bool IsTargeted(EntityWrapper @entity)
         {
-            public bool isTargeted => Address != 0 && M.ReadBytes(Address + 0x30, 3)[2] == 1;
+        return @entity.GetComponent<Targetable>().Address != 0 && Memory.ReadBytes(@entity.GetComponent<Targetable>().Address + 0x30, 3)[2] == 1;
         }
+        
+
         private int TryGetStat(GameStat stat, EntityWrapper entity)
             => entity.GetComponent<Stats>().StatDictionary.TryGetValue(stat, out int statInt) ? statInt : 0;
 
@@ -549,7 +552,7 @@ namespace Random_Features
                 if (entity.IsValid)
                     if (entity.HasComponent<Monster>())
                         if (entity.IsAlive)
-                            if (entity.GetComponent<Targetable>().isTargeted)
+                            if (IsTargeted(entity))
                             {
                                 int FireRes = TryGetStat(GameStat.FireDamageResistancePct, entity);
                                 int ColdRes = TryGetStat(GameStat.ColdDamageResistancePct, entity);
@@ -566,7 +569,7 @@ namespace Random_Features
                                     nextTextSpace += Graphics.MeasureText(NextText, TextSize).Width;
                                     NextText = $" {ColdRes}";
                                     @string += NextText;
-                                    Graphics.DrawText(NextText, TextSize, new Vector2(pos.X + 10 + pos.Width + nextTextSpace, pos.Y), new Color(77, 134, 255, 255));
+                                    Graphics.DrawText(NextText, TextSize, new Vector2(pos.X + 10 + pos.Width + nextTextSpace, pos.Y), new Color(77, 77, 255, 255));
                                     nextTextSpace += Graphics.MeasureText(NextText, TextSize).Width;
                                     NextText = $" {LightRes}";
                                     @string += NextText;

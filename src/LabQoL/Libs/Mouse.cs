@@ -68,6 +68,18 @@ namespace Random_Features.Libs
             return lpPoint;
         }
 
+        public static void LeftClick(int extraDelay, int startDelay = 0)
+        {
+            if (startDelay > 0)
+            {
+                Thread.Sleep(startDelay);
+            }
+            LeftMouseDown();
+            Thread.Sleep(ClickDelay / 2);
+            LeftMouseUp();
+            Thread.Sleep(ClickDelay);
+        }
+
         public static void LeftMouseDown() { mouse_event(MouseeventfLeftdown, 0, 0, 0, 0); }
 
         public static void LeftMouseUp() { mouse_event(MouseeventfLeftup, 0, 0, 0, 0); }
