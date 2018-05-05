@@ -4,6 +4,8 @@ using ImGuiNET;
 using PoeHUD.Framework.Helpers;
 using PoeHUD.Hud;
 using PoeHUD.Models;
+using PoeHUD.Models.Enums;
+using PoeHUD.Poe;
 using PoeHUD.Poe.Components;
 using Random_Features.Libs;
 using SharpDX;
@@ -482,6 +484,13 @@ namespace Random_Features
 
                 ImGui.TreePop();
             }
+            if (ImGui.TreeNode("Monster Stats On Hover"))
+            {
+                Settings.MonsterHoverStats.Value = ImGuiExtension.Checkbox($"Show##{idPop}", Settings.MonsterHoverStats);
+                idPop++;
+
+                ImGui.TreePop();
+            }
 
             Settings._Debug = ImGuiExtension.Checkbox("Debug", Settings._Debug);
         }
@@ -525,6 +534,61 @@ namespace Random_Features
             ImGui.BulletText($"Y: {location.Y}");
             ImGui.EndWindow();
         }
+        public class Targetable : Component
+        {
+            public bool isTargeted => Address != 0 && M.ReadBytes(Address + 0x30, 3)[2] == 1;
+        }
+        private int TryGetStat(GameStat stat, EntityWrapper entity)
+            => entity.GetComponent<Stats>().StatDictionary.TryGetValue(stat, out int statInt) ? statInt : 0;
+
+        private void MonsterResistnaceOnHover()
+        {
+            if (!Settings.MonsterHoverStats) return;
+            foreach (EntityWrapper entity in _entityCollection)
+            {
+                if (entity.IsValid)
+                    if (entity.HasComponent<Monster>())
+                        if (entity.IsAlive)
+                            if (entity.GetComponent<Targetable>().isTargeted)
+                            {
+                                int FireRes = TryGetStat(GameStat.FireDamageResistancePct, entity);
+                                int ColdRes = TryGetStat(GameStat.ColdDamageResistancePct, entity);
+                                int LightRes = TryGetStat(GameStat.LightningDamageResistancePct, entity);
+                                Element MonsterBox = MonsterTopName();
+                                if (MonsterBox.Children[0].Width > 0)
+                                {
+                                    RectangleF pos = MonsterBox.Children[0].GetClientRect();
+                                    int TextSize = (int) pos.Height;
+                                    int nextTextSpace = 0;
+                                    string NextText = $"{FireRes}";
+                                    string @string = NextText;
+                                    Graphics.DrawText(NextText, TextSize, new Vector2(pos.X + 10 + pos.Width + nextTextSpace, pos.Y), new Color(255, 85, 85, 255));
+                                    nextTextSpace += Graphics.MeasureText(NextText, TextSize).Width;
+                                    NextText = $" {ColdRes}";
+                                    @string += NextText;
+                                    Graphics.DrawText(NextText, TextSize, new Vector2(pos.X + 10 + pos.Width + nextTextSpace, pos.Y), new Color(77, 134, 255, 255));
+                                    nextTextSpace += Graphics.MeasureText(NextText, TextSize).Width;
+                                    NextText = $" {LightRes}";
+                                    @string += NextText;
+                                    Graphics.DrawText(NextText, TextSize, new Vector2(pos.X + 10 + pos.Width + nextTextSpace, pos.Y), new Color(253, 245, 75, 255));
+                                    Graphics.DrawBox(
+                                            new RectangleF(pos.X + 10 + pos.Width, pos.Y, Graphics.MeasureText(@string, TextSize).Width, pos.Height),
+                                            Color.Black);
+                                }
+                            }
+            }
+        }
+        public Element MonsterTopName()
+        {
+            try
+            {
+                return GameController.Game.IngameState.UIRoot.Children[1]?.Children[10]?.Children[8];
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+        }
 
         private void UnsortedPlugin()
         {
@@ -536,6 +600,7 @@ namespace Random_Features
                 RenderLieutenantSkeletonThorns();
                 RenderShrines();
                 BETA_ROYALE();
+                MonsterResistnaceOnHover();
             }
 
             if (Settings.SecretSwitch)

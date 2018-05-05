@@ -317,6 +317,7 @@ namespace Random_Features
         public RangeNode<int> VaultPilesOnFloorSize { get; set; }
         public ToggleNode VaultPilesOnMap { get; set; }
         public RangeNode<int> VaultPilesIcon { get; set; }
+        public ToggleNode MonsterHoverStats { get; set; } = true;
         public ToggleNode _Debug { get; set; }
 
 
