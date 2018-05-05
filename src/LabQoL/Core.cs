@@ -87,7 +87,7 @@ namespace Random_Features
             //    return;
             //}
             //var acceptButton = tradingWindow.GetChildAtIndex(5).GetChildAtIndex(0);
-            //LogMessage(ReadElementText(acceptButton), 1);
+            //Graphics.DrawText(ReadElementText(acceptButton), 30, new SharpDX.Vector2(500, 500));
             //using (StreamWriter sw = File.AppendText("Button Log.txt"))
             //{
             //    sw.WriteLine(ReadElementText(acceptButton));

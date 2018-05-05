@@ -73,7 +73,14 @@ namespace Random_Features
                 return;
             }
 
-            DrawBadMods();
+            try
+            {
+                DrawBadMods();
+            }
+            catch (Exception e)
+            {
+                //Console.WriteLine(e);
+            }
         }
 
         public void DrawBadMods()
