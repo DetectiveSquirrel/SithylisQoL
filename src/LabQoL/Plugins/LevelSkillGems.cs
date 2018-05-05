@@ -65,7 +65,16 @@ namespace Random_Features
 
         public void LevelUpGems()
         {
-            if (!Keyboard.IsKeyDown((int) Settings.LevelSkillGemsHotkey.Value)) return;
+            if (!Keyboard.IsKeyDown((int) Settings.LevelSkillGemsHotkey.Value))
+            {
+                return;
+            }
+
+            if (!Settings.LevelSkillGems)
+            {
+                return;
+            }
+
             if (GemClickTimer.ElapsedMilliseconds < 150) return;
             GemClickTimer.Restart();
             Element SkillGemLevelUps = GameController.Game.IngameState.UIRoot.GetChildAtIndex(1)
@@ -123,15 +132,14 @@ namespace Random_Features
 
         public void LevelSkillGems()
         {
-            if (!Settings.LevelSkillGems) return;
-            try
-            {
-                LevelUpGems();
-            }
-            catch (Exception e)
-            {
-                //Console.WriteLine(e);
-            }
+                try
+                {
+                    LevelUpGems();
+                }
+                catch (Exception e)
+                {
+                    //Console.WriteLine(e);
+                }
         }
 
         public class SkillGemTooltipWrapper
