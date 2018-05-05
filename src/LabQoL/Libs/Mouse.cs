@@ -80,6 +80,18 @@ namespace Random_Features.Libs
             Thread.Sleep(ClickDelay);
         }
 
+        public static void RightClick(int extraDelay, int startDelay = 0)
+        {
+            if (startDelay > 0)
+            {
+                Thread.Sleep(startDelay);
+            }
+            RightMouseDown();
+            Thread.Sleep(ClickDelay / 2);
+            RightMouseUp();
+            Thread.Sleep(ClickDelay);
+        }
+
         public static void LeftMouseDown() { mouse_event(MouseeventfLeftdown, 0, 0, 0, 0); }
 
         public static void LeftMouseUp() { mouse_event(MouseeventfLeftup, 0, 0, 0, 0); }

@@ -104,13 +104,24 @@ namespace Random_Features
                 if (element.GetChildAtIndex(0).Tooltip.ChildCount != 0)
                 {
                     SkillGemTooltipWrapper SkillGemToolTipInfo = new SkillGemTooltipWrapper(element.GetChildAtIndex(0).Tooltip);
-                    if (skillGemText?.ToLower() == "click to level up" && PassedGemRule(SkillGemToolTipInfo))
+                    if (skillGemText?.ToLower() == "click to level up")
                     {
-                        Mouse.SetCurosPosToCenterOfRec(skillGemButton, GameController.Window.GetWindowRectangle());
-                        Mouse.LeftClick(5, 10);
-                        //Mouse.SetCurosPosToCenterOfRec(GameController.Window.GetWindowRectangle(), GameController.Window.GetWindowRectangle());
-                        GemClickTimer.Restart();
-                        break;
+                        if (PassedGemRule(SkillGemToolTipInfo))
+                        {
+                            Mouse.SetCurosPosToCenterOfRec(skillGemButton, GameController.Window.GetWindowRectangle());
+                            Mouse.LeftClick(5, 10);
+                            //Mouse.SetCurosPosToCenterOfRec(GameController.Window.GetWindowRectangle(), GameController.Window.GetWindowRectangle());
+                            GemClickTimer.Restart();
+                            break;
+                        }
+                        else
+                        {
+                            Mouse.SetCurosPosToCenterOfRec(skillGemButton, GameController.Window.GetWindowRectangle());
+                            Mouse.RightClick(5, 10);
+                            //Mouse.SetCurosPosToCenterOfRec(GameController.Window.GetWindowRectangle(), GameController.Window.GetWindowRectangle());
+                            GemClickTimer.Restart();
+                            break;
+                        }
                     }
                 }
                 Thread.Sleep(25);
