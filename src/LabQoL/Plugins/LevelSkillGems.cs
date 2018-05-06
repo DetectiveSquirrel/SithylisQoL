@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
 using ImGuiNET;
 using PoeHUD.Poe;
+using PoeHUD.Poe.Components;
 using PoeHUD.Poe.Elements;
 using Random_Features.Libs;
 using SharpDX;
@@ -24,43 +26,77 @@ namespace Random_Features
             ImGui.Separator();
             ImGui.Spacing();
 
-            if (ImGui.CollapsingHeader("Gem Leveling Rules", "##DOntLevelIf", true, true))
+            bool WeExistInRuleSet = false;
+            var PlayerName = GameController.Player.GetComponent<Player>().PlayerName;
+
+            if (Settings.SkillGemStopList == null)
             {
-                ImGui.Columns(3, "Columns", true);
-                ImGui.SetColumnWidth(0, 30f);
-                ImGui.Text(""); ImGui.NextColumn();
-                ImGui.Text("Full Gem Name"); ImGui.NextColumn();
-                ImGui.Text("Maximum Level"); ImGui.NextColumn();
-                ImGui.Separator();
-
-                for (int i = 0; i < Settings.SkillGemStopList.Count; i++)
+                Settings.SkillGemStopList.Add(new Person()
                 {
-                    GemLevelRule gemRule = Settings.SkillGemStopList[i];
-                    if (ImGui.Button($"X##REMOVERULE{i}"))
-                    {
-                        Settings.SkillGemStopList.Remove(gemRule);
-                    }
-                    ImGui.NextColumn();
-                    ImGui.PushItemWidth(ImGui.GetContentRegionAvailableWidth());
-                    gemRule.GemName = PoeHUD.Hud.UI.ImGuiExtension.InputText($"##GN{i}", gemRule.GemName, 35, InputTextFlags.Default);
-                    ImGui.PopItemWidth();
-                    //ImGui.SameLine();
-                    ImGui.NextColumn();
-                    ImGui.PushItemWidth(ImGui.GetContentRegionAvailableWidth());
-                    gemRule.MaxLevel = PoeHUD.Hud.UI.ImGuiExtension.IntSlider($"##ML{i}", gemRule.MaxLevel, 1, 20); ImGui.NextColumn();
-                    ImGui.PopItemWidth();
-                }
-
-                ImGui.Separator();
-                ImGui.Columns(1, "", false);
-
-                if (ImGui.Button("Add New"))
-                {
-                    Settings.SkillGemStopList.Add(new GemLevelRule {GemName = "Cast when Damage Taken Support", MaxLevel = 1});
-                }
+                        Character = PlayerName,
+                        Rules = new List<GemLevelRule>()
+                });
+            }
+            if (Settings.SkillGemStopList.Any(t => t.Character == PlayerName))
+            {
+                WeExistInRuleSet = true;
             }
 
-            Settings.SkillGemStopList = Settings.SkillGemStopList;
+            if (!WeExistInRuleSet)
+            {
+                Settings.SkillGemStopList.Add(new Person
+                {
+                        Character = PlayerName,
+                        Rules = new List<GemLevelRule>()
+                });
+            }
+
+            if (ImGui.CollapsingHeader("Gem Leveling Rules", "##GemLevelingRules", true, false))
+            {
+                for (int i = 0; i < Settings.SkillGemStopList.Count; i++)
+                {
+                    if (ImGui.CollapsingHeader(Settings.SkillGemStopList[i].Character, $"##DOntLevelIf{Settings.SkillGemStopList[i].Character}", true, false))
+                    {
+                        ImGui.Columns(3, $"Columns", true);
+                        ImGui.SetColumnWidth(0, 30f);
+                        ImGui.Text("");
+                        ImGui.NextColumn();
+                        ImGui.Text("Full Gem Name");
+                        ImGui.NextColumn();
+                        ImGui.Text("Maximum Level");
+                        ImGui.NextColumn();
+                        ImGui.Separator();
+                        for (int j = 0; j < Settings.SkillGemStopList[i].Rules.Count; j++)
+                        {
+                            if (ImGui.Button($"X##REMOVERULE{i}{j}"))
+                            {
+                                Settings.SkillGemStopList[i].Rules.Remove(Settings.SkillGemStopList[i].Rules[j]);
+                            }
+                            ImGui.NextColumn();
+                            ImGui.PushItemWidth(ImGui.GetContentRegionAvailableWidth());
+                            Settings.SkillGemStopList[i].Rules[j].GemName = PoeHUD.Hud.UI.ImGuiExtension.InputText($"##GN{i}{j}", Settings.SkillGemStopList[i].Rules[j].GemName, 35, InputTextFlags.Default);
+                            ImGui.PopItemWidth();
+                            //ImGui.SameLine();
+                            ImGui.NextColumn();
+                            ImGui.PushItemWidth(ImGui.GetContentRegionAvailableWidth());
+                            Settings.SkillGemStopList[i].Rules[j].MaxLevel = PoeHUD.Hud.UI.ImGuiExtension.IntSlider($"##ML{i}{j}", Settings.SkillGemStopList[i].Rules[j].MaxLevel, 1, 20); ImGui.NextColumn();
+                            ImGui.PopItemWidth();
+                        }
+
+                        ImGui.Separator();
+                        ImGui.Columns(1, "", false);
+                        if (ImGui.Button($"Add New##AN{i}"))
+                        {
+                            Settings.SkillGemStopList[i].Rules.Add(new GemLevelRule
+                            {
+                                GemName = "Cast when Damage Taken Support",
+                                MaxLevel = 1
+                            });
+                        }
+                        ImGui.Columns(1, "", false);
+                    }
+                }
+            }
         }
 
         public void LevelUpGems()
@@ -77,6 +113,30 @@ namespace Random_Features
 
             if (GemClickTimer.ElapsedMilliseconds < 150) return;
             GemClickTimer.Restart();
+
+
+            bool WeExistInRuleSet = false;
+            var RuleSet = new List<GemLevelRule>();
+            // Check if the profile exists
+            foreach (Person PersonCheck in Settings.SkillGemStopList)
+            {
+                if (PersonCheck.Character == GameController.Player.GetComponent<Player>().PlayerName)
+                {
+                    WeExistInRuleSet = true;
+                    RuleSet = PersonCheck.Rules;
+                    break;
+                }
+            }
+
+            if (!WeExistInRuleSet)
+            {
+                Settings.SkillGemStopList.Add(new Person
+                {
+                        Character = GameController.Player.GetComponent<Player>().PlayerName,
+                        Rules = new List<GemLevelRule>()
+                });
+            }
+
             Element SkillGemLevelUps = GameController.Game.IngameState.UIRoot.GetChildAtIndex(1)
                                                      .GetChildAtIndex(3)
                                                      .GetChildAtIndex(1)
@@ -106,7 +166,7 @@ namespace Random_Features
                     SkillGemTooltipWrapper SkillGemToolTipInfo = new SkillGemTooltipWrapper(element.GetChildAtIndex(0).Tooltip);
                     if (skillGemText?.ToLower() == "click to level up")
                     {
-                        if (PassedGemRule(SkillGemToolTipInfo))
+                        if (PassedGemRule(RuleSet, SkillGemToolTipInfo))
                         {
                             Mouse.SetCurosPosToCenterOfRec(skillGemButton, GameController.Window.GetWindowRectangle());
                             Mouse.LeftClick(5, 10);
@@ -130,9 +190,9 @@ namespace Random_Features
             //Mouse.SetCursorPos(MosuePos);
         }
 
-        public bool PassedGemRule(SkillGemTooltipWrapper gem)
+        public bool PassedGemRule(List<GemLevelRule> rules, SkillGemTooltipWrapper gem)
         {
-            foreach (GemLevelRule rule in Settings.SkillGemStopList)
+            foreach (GemLevelRule rule in rules)
             {
                 if (!string.Equals(gem.Name, rule.GemName, StringComparison.CurrentCultureIgnoreCase)) continue;
                 if (gem.Level >= rule.MaxLevel) return false;
@@ -174,6 +234,12 @@ namespace Random_Features
         {
             public string GemName { get; set; }
             public int MaxLevel { get; set; }
+        }
+
+        public class Person
+        {
+            public string Character { get; set; }
+            public List<GemLevelRule> Rules { get; set; }
         }
     }
 }
