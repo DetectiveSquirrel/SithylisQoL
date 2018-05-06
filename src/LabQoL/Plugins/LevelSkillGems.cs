@@ -51,7 +51,7 @@ namespace Random_Features
                 });
             }
 
-            if (ImGui.CollapsingHeader($"Gem Leveling Rules For - {PlayerName}", "##GemLevelingRules", true, false))
+            if (ImGui.CollapsingHeader($"Gem Leveling Rules For - {PlayerName}", "##GemLevelingRules", true, true))
             {
                 ImGui.Text("How Does It Work");
                 PoeHUD.Hud.UI.ImGuiExtension.ToolTip("All gems are leveled up UNLESS the rules below catch the gem\n"
@@ -171,7 +171,7 @@ namespace Random_Features
                 string skillGemText = element.GetChildAtIndex(3).AsObject<EntityLabel>().Text;
                 if (element.GetChildAtIndex(2).IsVisibleLocal) continue;
 
-                if (element.GetChildAtIndex(0).Tooltip.ChildCount == 0)
+                if (element.GetChildAtIndex(0).Tooltip.ChildCount == 0 && skillGemText?.ToLower() == "click to level up")
                 {
 
                     var ToolTipHover = skillGemButton;

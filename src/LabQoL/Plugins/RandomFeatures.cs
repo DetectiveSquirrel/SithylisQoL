@@ -484,7 +484,7 @@ namespace Random_Features
 
                 ImGui.TreePop();
             }
-            if (ImGui.TreeNode("Monster Stats On Hover"))
+            if (ImGui.TreeNode("Monster Stats On Hover - This is strange and only shows the resistances once that resistance has been affected with + or -"))
             {
                 Settings.MonsterHoverStats.Value = ImGuiExtension.Checkbox($"Show##{idPop}", Settings.MonsterHoverStats);
                 idPop++;
@@ -557,6 +557,7 @@ namespace Random_Features
                                 int FireRes = TryGetStat(GameStat.FireDamageResistancePct, entity);
                                 int ColdRes = TryGetStat(GameStat.ColdDamageResistancePct, entity);
                                 int LightRes = TryGetStat(GameStat.LightningDamageResistancePct, entity);
+                                int ChaosRes = TryGetStat(GameStat.ChaosDamageResistancePct, entity);
                                 Element MonsterBox = MonsterTopName();
                                 if (MonsterBox.Children[0].Width > 0)
                                 {
@@ -574,6 +575,10 @@ namespace Random_Features
                                     NextText = $" {LightRes}";
                                     @string += NextText;
                                     Graphics.DrawText(NextText, TextSize, new Vector2(pos.X + 10 + pos.Width + nextTextSpace, pos.Y), new Color(253, 245, 75, 255));
+                                    nextTextSpace += Graphics.MeasureText(NextText, TextSize).Width;
+                                    NextText = $" {ChaosRes}";
+                                    @string += NextText;
+                                    Graphics.DrawText(NextText, TextSize, new Vector2(pos.X + 10 + pos.Width + nextTextSpace, pos.Y), new Color(255, 91, 179, 255));
                                     Graphics.DrawBox(
                                             new RectangleF(pos.X + 10 + pos.Width, pos.Y, Graphics.MeasureText(@string, TextSize).Width, pos.Height),
                                             Color.Black);
