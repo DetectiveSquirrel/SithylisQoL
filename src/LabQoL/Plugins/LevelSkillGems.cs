@@ -51,51 +51,73 @@ namespace Random_Features
                 });
             }
 
-            if (ImGui.CollapsingHeader("Gem Leveling Rules", "##GemLevelingRules", true, false))
+            if (ImGui.CollapsingHeader($"Gem Leveling Rules For - {PlayerName}", "##GemLevelingRules", true, false))
             {
-                for (int i = 0; i < Settings.SkillGemStopList.Count; i++)
-                {
-                    if (ImGui.CollapsingHeader(Settings.SkillGemStopList[i].Character, $"##DOntLevelIf{Settings.SkillGemStopList[i].Character}", true, false))
-                    {
-                        ImGui.Columns(3, $"Columns", true);
-                        ImGui.SetColumnWidth(0, 30f);
-                        ImGui.Text("");
-                        ImGui.NextColumn();
-                        ImGui.Text("Full Gem Name");
-                        ImGui.NextColumn();
-                        ImGui.Text("Maximum Level");
-                        ImGui.NextColumn();
-                        ImGui.Separator();
-                        for (int j = 0; j < Settings.SkillGemStopList[i].Rules.Count; j++)
-                        {
-                            if (ImGui.Button($"X##REMOVERULE{i}{j}"))
-                            {
-                                Settings.SkillGemStopList[i].Rules.Remove(Settings.SkillGemStopList[i].Rules[j]);
-                            }
-                            ImGui.NextColumn();
-                            ImGui.PushItemWidth(ImGui.GetContentRegionAvailableWidth());
-                            Settings.SkillGemStopList[i].Rules[j].GemName = PoeHUD.Hud.UI.ImGuiExtension.InputText($"##GN{i}{j}", Settings.SkillGemStopList[i].Rules[j].GemName, 35, InputTextFlags.Default);
-                            ImGui.PopItemWidth();
-                            //ImGui.SameLine();
-                            ImGui.NextColumn();
-                            ImGui.PushItemWidth(ImGui.GetContentRegionAvailableWidth());
-                            Settings.SkillGemStopList[i].Rules[j].MaxLevel = PoeHUD.Hud.UI.ImGuiExtension.IntSlider($"##ML{i}{j}", Settings.SkillGemStopList[i].Rules[j].MaxLevel, 1, 20); ImGui.NextColumn();
-                            ImGui.PopItemWidth();
-                        }
+                ImGui.Text("How Does It Work");
+                PoeHUD.Hud.UI.ImGuiExtension.ToolTip("All gems are leveled up UNLESS the rules below catch the gem\n"
+                                                   + "Example, you dont want CWDT to be leveled past 3\n"
+                                                   + "Add \"Cast When Damage Taken Support\" with max level of 3\n"
+                                                   + "When the gem is level 3 it will right click to hide that gem and it wont be leveled any further");
 
-                        ImGui.Separator();
-                        ImGui.Columns(1, "", false);
-                        if (ImGui.Button($"Add New##AN{i}"))
-                        {
-                            Settings.SkillGemStopList[i].Rules.Add(new GemLevelRule
-                            {
-                                GemName = "Cast when Damage Taken Support",
-                                MaxLevel = 1
-                            });
-                        }
-                        ImGui.Columns(1, "", false);
+                var i = -1;
+                for (int index = 0; index < Settings.SkillGemStopList.Count; index++)
+                {
+                    Person PersonCheck = Settings.SkillGemStopList[index];
+                    if (PersonCheck.Character == GameController.Player.GetComponent<Player>().PlayerName)
+                    {
+                        i = index;
                     }
                 }
+
+                var RulesToRemove = new List<int>();
+                
+                ImGui.Separator();
+                ImGui.Columns(3, "Columns", true);
+                ImGui.SetColumnWidth(0, 30f);
+                ImGui.Text("");
+                ImGui.NextColumn();
+                ImGui.Text("Full Gem Name");
+                ImGui.NextColumn();
+                ImGui.Text("Maximum Level");
+                ImGui.NextColumn();
+                if (Settings.SkillGemStopList[i].Rules.Count != 0)
+                    ImGui.Separator();
+                for (int j = 0; j < Settings.SkillGemStopList[i].Rules.Count; j++)
+                {
+                    if (ImGui.Button($"X##REMOVERULE{i}{j}"))
+                    {
+                        RulesToRemove.Add(j);
+                    }
+
+                    ImGui.NextColumn();
+                    ImGui.PushItemWidth(ImGui.GetContentRegionAvailableWidth());
+                    Settings.SkillGemStopList[i].Rules[j].GemName =
+                            PoeHUD.Hud.UI.ImGuiExtension.InputText($"##GN{i}{j}", Settings.SkillGemStopList[i].Rules[j].GemName, 35,
+                                    InputTextFlags.Default);
+                    ImGui.PopItemWidth();
+                    //ImGui.SameLine();
+                    ImGui.NextColumn();
+                    ImGui.PushItemWidth(ImGui.GetContentRegionAvailableWidth());
+                    Settings.SkillGemStopList[i].Rules[j].MaxLevel =
+                            PoeHUD.Hud.UI.ImGuiExtension.IntSlider($"##ML{i}{j}", Settings.SkillGemStopList[i].Rules[j].MaxLevel, 1, 20);
+                    ImGui.NextColumn();
+                    ImGui.PopItemWidth();
+                }
+
+                foreach (int i1 in RulesToRemove)
+                {
+                    Settings.SkillGemStopList[i].Rules.Remove(Settings.SkillGemStopList[i].Rules[i1]);
+                }
+
+                ImGui.Separator();
+                ImGui.Columns(1, "", false);
+                if (ImGui.Button($"Add New##AN{i}"))
+                    Settings.SkillGemStopList[i]
+                            .Rules.Add(new GemLevelRule
+                             {
+                                     GemName = "Cast when Damage Taken Support",
+                                     MaxLevel = 1
+                             });
             }
         }
 
