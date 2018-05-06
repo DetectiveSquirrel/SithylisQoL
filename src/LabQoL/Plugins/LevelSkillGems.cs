@@ -155,7 +155,8 @@ namespace Random_Features
                     var ToolTipHover = skillGemButton;
                     ToolTipHover.X += ToolTipHover.Width;
                     Mouse.SetCurosPosToCenterOfRec(ToolTipHover, GameController.Window.GetWindowRectangle());
-                    while (element.GetChildAtIndex(0).Tooltip.ChildCount == 0)
+                    var WhileStart = DateTime.Now;
+                    while (element.GetChildAtIndex(0).Tooltip.ChildCount == 0 && WhileStart.AddSeconds(3) > DateTime.Now)
                     {
                         Thread.Sleep(25);
                         Mouse.SetCurosPosToCenterOfRec(ToolTipHover, GameController.Window.GetWindowRectangle());
