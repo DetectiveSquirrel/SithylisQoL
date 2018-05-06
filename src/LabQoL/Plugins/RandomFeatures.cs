@@ -539,10 +539,12 @@ namespace Random_Features
         {
         return @entity.GetComponent<Targetable>().Address != 0 && Memory.ReadBytes(@entity.GetComponent<Targetable>().Address + 0x30, 3)[2] == 1;
         }
-        
 
-        private int TryGetStat(GameStat stat, EntityWrapper entity)
-            => entity.GetComponent<Stats>().StatDictionary.TryGetValue(stat, out int statInt) ? statInt : 0;
+
+        private string TryGetStat(GameStat stat, EntityWrapper entity)
+        {
+            return entity.GetComponent<Stats>().StatDictionary.TryGetValue(stat, out int statInt) ? statInt.ToString() : "?";
+        }
 
         private void MonsterResistnaceOnHover()
         {
@@ -554,10 +556,10 @@ namespace Random_Features
                         if (entity.IsAlive)
                             if (IsTargeted(entity))
                             {
-                                int FireRes = TryGetStat(GameStat.FireDamageResistancePct, entity);
-                                int ColdRes = TryGetStat(GameStat.ColdDamageResistancePct, entity);
-                                int LightRes = TryGetStat(GameStat.LightningDamageResistancePct, entity);
-                                int ChaosRes = TryGetStat(GameStat.ChaosDamageResistancePct, entity);
+                                var FireRes = TryGetStat(GameStat.FireDamageResistancePct, entity);
+                                var ColdRes = TryGetStat(GameStat.ColdDamageResistancePct, entity);
+                                var LightRes = TryGetStat(GameStat.LightningDamageResistancePct, entity);
+                                var ChaosRes = TryGetStat(GameStat.ChaosDamageResistancePct, entity);
                                 Element MonsterBox = MonsterTopName();
                                 if (MonsterBox.Children[0].Width > 0)
                                 {
