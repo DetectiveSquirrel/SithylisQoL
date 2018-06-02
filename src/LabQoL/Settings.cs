@@ -320,6 +320,19 @@ namespace Random_Features
         public ToggleNode VaultPilesOnMap { get; set; }
         public RangeNode<int> VaultPilesIcon { get; set; }
         public ToggleNode MonsterHoverStats { get; set; } = true;
+
+
+        public ToggleNode Incursion { get; set; } = true;
+        public ToggleNode ClosedIncursionDoor { get; set; } = true;
+        public RangeNode<int> ClosedIncursionDoorOnMapSize { get; set; } = new RangeNode<int>(25, 1, 200);
+        public ColorNode ClosedIncursionDoorOnMapColor { get; set; } = new ColorBGRA(255, 255, 255, 255);
+
+        public ToggleNode IncursionBreachChest { get; set; } = true;
+        public RangeNode<int> IncursionBreachChestOnMapSize { get; set; } = new RangeNode<int>(10, 1, 200);
+        public ColorNode IncursionBreachChestOnMapColor { get; set; } = new ColorBGRA(240, 100, 255, 255);
+
+
+
         public ToggleNode _Debug { get; set; }
 
 

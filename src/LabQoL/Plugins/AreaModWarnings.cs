@@ -90,7 +90,33 @@ namespace Random_Features
             {
                 if (IsBadMod(areaMod.Key))
                 {
-                    BadMods_Present.Add($"({areaMod.Value}) {GetEnumDescription(areaMod.Key).Replace("Map ", "")}");
+                    string modString = "";
+                    modString = GetEnumDescription(areaMod.Key).Replace("Map ", "");
+
+                    if (modString.Contains("+%"))
+                    {
+                        modString = modString.Replace("+%", $"+{areaMod.Value}%");
+                    }
+                    else if (modString.Contains(" X%"))
+                    {
+                        modString = modString.Replace(" X%", $" {areaMod.Value}%");
+                    }
+                    else if (modString.Contains(" X"))
+                    {
+                        modString = modString.Replace(" X", $" {areaMod.Value}");
+                    }
+                    else if (modString.Contains(" +"))
+                    {
+                        modString = modString.Replace(" +", $" +{areaMod.Value}");
+                    }
+                    else if (modString.Contains("%"))
+                    {
+                        modString = modString.Replace("%", $"{areaMod.Value}%");
+                    }
+
+                    modString = modString.Replace("%", "%%");
+
+                    BadMods_Present.Add("(" + areaMod.Value + ") " + modString);
                 }
             }
 

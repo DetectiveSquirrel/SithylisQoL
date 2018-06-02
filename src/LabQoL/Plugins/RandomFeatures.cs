@@ -484,6 +484,41 @@ namespace Random_Features
 
                 ImGui.TreePop();
             }
+
+            if (ImGui.TreeNode("Incursion DooDads"))
+            {
+                if (ImGui.TreeNode("Blocked Gateway"))
+                {
+                    Settings.ClosedIncursionDoor.Value = ImGuiExtension.Checkbox(Settings.ClosedIncursionDoor.Value ? "Show" : "Hidden", Settings.ClosedIncursionDoor);
+
+                    ImGui.Spacing();
+                    ImGui.PushID(idPop);
+                    Settings.ClosedIncursionDoorOnMapSize.Value = ImGuiExtension.IntSlider("Size", Settings.ClosedIncursionDoorOnMapSize);
+                    ImGui.PopID();
+                    idPop++;
+                    ImGui.PushID(idPop);
+                    Settings.ClosedIncursionDoorOnMapColor.Value = ImGuiExtension.ColorPicker("Color", Settings.ClosedIncursionDoorOnMapColor);
+                    ImGui.PopID();
+                    idPop++;
+                    ImGui.TreePop();
+                }
+                if (ImGui.TreeNode("Breach Chest"))
+                {
+                    Settings.IncursionBreachChest.Value = ImGuiExtension.Checkbox(Settings.IncursionBreachChest.Value ? "Show" : "Hidden", Settings.IncursionBreachChest);
+
+                    ImGui.Spacing();
+                    ImGui.PushID(idPop);
+                    Settings.IncursionBreachChestOnMapSize.Value = ImGuiExtension.IntSlider("Size", Settings.IncursionBreachChestOnMapSize);
+                    ImGui.PopID();
+                    idPop++;
+                    ImGui.PushID(idPop);
+                    Settings.IncursionBreachChestOnMapColor.Value = ImGuiExtension.ColorPicker("Color", Settings.IncursionBreachChestOnMapColor);
+                    ImGui.PopID();
+                    idPop++;
+                    ImGui.TreePop();
+                }
+                ImGui.TreePop();
+            }
             if (ImGui.TreeNode("Monster Stats On Hover - This is strange and only shows the resistances once that resistance has been affected with + or -"))
             {
                 Settings.MonsterHoverStats.Value = ImGuiExtension.Checkbox($"Show##{idPop}", Settings.MonsterHoverStats);
@@ -1125,7 +1160,7 @@ namespace Random_Features
                         if (e.GetComponent<Shrine>().IsAvailable)
                         {
                             return new MapIcon(e, new HudTexture(CustomImagePath + "shrines.png", Settings.LesserShrinesColor),
-                                    () => Settings.LesserShrineOnMap, Settings.LesserShrinesIcon);
+                                () => Settings.LesserShrineOnMap, Settings.LesserShrinesIcon);
                         }
                     }
                 }
@@ -1185,6 +1220,29 @@ namespace Random_Features
                 {
                     return new MapIcon(e, new HudTexture(CustomImagePath + "exclamationmark.png", Settings.AbysshoardChestColor),
                             () => Settings.AbysshoardChestToggleNode, Settings.AbysshoardChestSize);
+                }
+            }
+
+            if (Settings.Incursion)
+            {
+                if (Settings.ClosedIncursionDoor)
+                {
+                    if (e.Path.Contains("Metadata/Terrain/Leagues/Incursion/Objects/ClosedDoorPresent_Fuse"))
+                    {
+                            return new MapIcon(e, new HudTexture(CustomImagePath + "gate.png", Settings.ClosedIncursionDoorOnMapColor),
+                                () => Settings.ClosedIncursionDoor, Settings.ClosedIncursionDoorOnMapSize);
+                    }
+                }
+                if (Settings.IncursionBreachChest)
+                {
+                    if (e.Path.Contains("Metadata/Chests/IncursionChests/IncursionChestBreach"))
+                    {
+                        if (!e.GetComponent<Chest>().IsOpened)
+                        {
+                            return new MapIcon(e, new HudTexture(PoeHudImageLocation + "strongbox.png", Settings.IncursionBreachChestOnMapColor),
+                                () => Settings.IncursionBreachChest, Settings.IncursionBreachChestOnMapSize);
+                        }
+                    }
                 }
             }
 

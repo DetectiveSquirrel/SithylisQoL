@@ -38,7 +38,7 @@ namespace Random_Features
             {
                 if (trialState.TrialArea.Area.Name == trialString)
                     returnState = 2;
-                if (trialState.TrialArea.Area.Name == trialString && trialState.TrialArea.Area.Act > 10 && trialState.IsCompleted)
+                if (trialState.TrialArea.Area.Name == trialString && trialState.IsCompleted)
                 {
                     returnState = 1;
                     break;
@@ -70,17 +70,21 @@ namespace Random_Features
                         if (entity.GetComponent<AreaTransition>().TransitionType == AreaTransition.AreaTransitionType.Local && Settings.AreaTransitionHideLocalTranition) return;
                         var TextInfo = new MinimapTextInfo
                         {
-                                Text = entity.GetComponent<AreaTransition>().TransitionType == AreaTransition.AreaTransitionType.Local ? LocalPlayer.Area.Name : entity.GetComponent<AreaTransition>().WorldArea.Name,
+                                Text = entity.GetComponent<AreaTransition>().TransitionType == AreaTransition.AreaTransitionType.Local ? "Local Transition" : entity.GetComponent<AreaTransition>().WorldArea.Name,
                                 FontSize = Settings.AreaTransitionSizeSmall,
                                 FontColor = Settings.AreaTransitionColor,
                                 FontBackgroundColor = Settings.AreaTransitionColorBackground,
                                 TextWrapLength = Settings.AreaTransitionMaxLength
                         };
                         if (TextInfo.Text.Contains("NULL")) return;
-                        if (CompletedTrial(TextInfo.Text) == 1)
-                            TextInfo.Text = $"(✓) {TextInfo.Text}";
-                        else if (CompletedTrial(TextInfo.Text) == 2)
-                            TextInfo.Text = $"(✕) {TextInfo.Text}";
+
+                        if (entity.GetComponent<AreaTransition>().WorldArea.IsMapTrialArea)
+                        {
+                            if (CompletedTrial(TextInfo.Text) == 1)
+                                TextInfo.Text = $"(✓) {TextInfo.Text}";
+                            else if (CompletedTrial(TextInfo.Text) == 2)
+                                TextInfo.Text = $"(✕) {TextInfo.Text}";
+                        }
                         if (storedAreaEntities.Any(x => x.GridPos == positionedComp.GridPos))
                         {
                             var findIndex = storedAreaEntities.FindIndex(x => x.GridPos == positionedComp.GridPos);

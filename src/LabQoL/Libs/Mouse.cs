@@ -53,7 +53,10 @@ namespace Random_Features.Libs
         /// <param name="position"></param>
         /// <param name="gameWindow"></param>
         /// <returns></returns>
-        public static bool SetCurosPosToCenterOfRec(RectangleF position, RectangleF gameWindow) => SetCursorPos((int) (gameWindow.X + position.Center.X), (int) (gameWindow.Y + position.Center.Y));
+        public static bool SetCurosPosToCenterOfRec(RectangleF position, RectangleF gameWindow)
+        {
+            return SetCursorPos((int)(gameWindow.X + position.Center.X), (int)(gameWindow.Y + position.Center.Y));
+        }
 
         /// <summary>
         ///     Retrieves the cursor's position, in screen coordinates.
