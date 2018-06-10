@@ -66,13 +66,13 @@ namespace Random_Features
                     if (i == 0 || i == 1 || i == 2 || i == 3 || i == 4)
                     {
                         color = Color.White;
-                        text = i.ToString();
+                        text = (i+1).ToString();
                     }
                     // Yellows
                     else if (i == 5 || i == 6 || i == 7 || i == 8 || i == 9)
                     {
                         color = Color.Yellow;
-                        text = i.ToString();
+                        text = (i + 1).ToString();
                     }
                     // Reds
                     else if (i == 10 || i == 11 || i == 12 || i == 13 || i == 14 || i == 15)
@@ -81,7 +81,7 @@ namespace Random_Features
                         text = i.ToString();
                     }
                     // Uniques
-                    else if (i == 16)
+                    else if ((i + 1) == 16)
                     {
                         color = Color.Orange;
                         text = "U";
