@@ -58,32 +58,33 @@ namespace Random_Features
                     Color textColor = Color.White;
                     Color backgroundColor = Color.Black;
                     float intersectWiggleRoom = 7;
-
-
-
                     string text = "";
 
-                    // Whites
+                    // Whites (Tier 1-5)
                     if (i == 0 || i == 1 || i == 2 || i == 3 || i == 4)
                     {
                         textColor = Color.White;
                         text = (i + 1).ToString();
                     }
+                    // Yellows (Tier 6-10)
                     else if (i == 5 || i == 6 || i == 7 || i == 8 || i == 9)
                     {
                         textColor = Color.Yellow;
                         text = (i + 1).ToString();
                     }
+                    // Reds (Tier 11-16)
                     else if (i == 10 || i == 11 || i == 12 || i == 13 || i == 14 || i == 15)
                     {
                         textColor = Color.Red;
                         text = (i + 1).ToString();
                     }
+                    // Uniques
                     else if (i == 16)
                     {
                         textColor = Color.Orange;
                         text = "U";
                     }
+
                     backgroundPos.Inflate(-intersectWiggleRoom, -intersectWiggleRoom);
                     if (uiHover.Tooltip.GetClientRect().Intersects(backgroundPos))
                     {
