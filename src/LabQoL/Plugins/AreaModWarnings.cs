@@ -76,7 +76,7 @@ namespace Random_Features
             {
                 DrawBadMods();
             }
-            catch (Exception E)
+            catch (Exception e)
             {
                 //Console.WriteLine(e);
             }
@@ -86,60 +86,60 @@ namespace Random_Features
         {
             var AreaMods = GameController.Game.IngameState.Data.MapStats;
             var BadMods_Present = new List<string>();
-            foreach (var AreaMod in AreaMods)
+            foreach (var areaMod in AreaMods)
             {
-                if (IsBadMod(AreaMod.Key))
+                if (IsBadMod(areaMod.Key))
                 {
-                    string ModString = "";
-                    ModString = GetEnumDescription(AreaMod.Key).Replace("Map ", "");
+                    string modString = "";
+                    modString = GetEnumDescription(areaMod.Key).Replace("Map ", "");
 
-                    if (ModString.Contains("+%"))
+                    if (modString.Contains("+%"))
                     {
-                        ModString = ModString.Replace("+%", $"+{AreaMod.Value}%");
+                        modString = modString.Replace("+%", $"+{areaMod.Value}%");
                     }
-                    else if (ModString.Contains(" X%"))
+                    else if (modString.Contains(" X%"))
                     {
-                        ModString = ModString.Replace(" X%", $" {AreaMod.Value}%");
+                        modString = modString.Replace(" X%", $" {areaMod.Value}%");
                     }
-                    else if (ModString.Contains(" X"))
+                    else if (modString.Contains(" X"))
                     {
-                        ModString = ModString.Replace(" X", $" {AreaMod.Value}");
+                        modString = modString.Replace(" X", $" {areaMod.Value}");
                     }
-                    else if (ModString.Contains(" +"))
+                    else if (modString.Contains(" +"))
                     {
-                        ModString = ModString.Replace(" +", $" +{AreaMod.Value}");
+                        modString = modString.Replace(" +", $" +{areaMod.Value}");
                     }
-                    else if (ModString.Contains("%"))
+                    else if (modString.Contains("%"))
                     {
-                        ModString = ModString.Replace("%", $"{AreaMod.Value}%");
+                        modString = modString.Replace("%", $"{areaMod.Value}%");
                     }
 
-                    ModString = ModString.Replace("%", "%%");
+                    modString = modString.Replace("%", "%%");
 
-                    BadMods_Present.Add("(" + AreaMod.Value + ") " + ModString);
+                    BadMods_Present.Add("(" + areaMod.Value + ") " + modString);
                 }
             }
 
             if (BadMods_Present.Count > 0)
             {
-                var RefBool = true;
-                float MenuOpacity = ImGui.GetStyle().GetColor(ColorTarget.ChildBg).W;
+                var refBool = true;
+                float menuOpacity = ImGui.GetStyle().GetColor(ColorTarget.ChildBg).W;
                 var TextColor = ImGui.GetStyle().GetColor(ColorTarget.Text);
-                var LongestText = ImGui.GetTextSize(BadMods_Present.OrderByDescending(S => S.Length).First());
-                var WindowPadding = ImGui.GetStyle().WindowPadding;
+                var LongestText = ImGui.GetTextSize(BadMods_Present.OrderByDescending(s => s.Length).First());
+                var windowPadding = ImGui.GetStyle().WindowPadding;
                 var ItemSpacing = ImGui.GetStyle().ItemSpacing;
 
                 if (Settings.AreaModWarningOverrideColors)
                 {
                     ImGui.PushStyleColor(ColorTarget.WindowBg, ToImVector4(Settings.AreaModWarningBackground.ToVector4()));
-                    MenuOpacity = ImGui.GetStyle().GetColor(ColorTarget.WindowBg).W;
+                    menuOpacity = ImGui.GetStyle().GetColor(ColorTarget.WindowBg).W;
                 }
 
-                ImGui.BeginWindow("RandomFeatures_BadAreaModWarning", ref RefBool, new Vector2(200, 150), MenuOpacity, Settings.AreaModWarningLocked ? WindowFlags.NoCollapse | WindowFlags.NoScrollbar | WindowFlags.NoMove | WindowFlags.NoResize | WindowFlags.NoInputs | WindowFlags.NoBringToFrontOnFocus | WindowFlags.NoTitleBar | WindowFlags.NoFocusOnAppearing : WindowFlags.Default | WindowFlags.NoTitleBar | WindowFlags.ResizeFromAnySide);
+                ImGui.BeginWindow("RandomFeatures_BadAreaModWarning", ref refBool, new Vector2(200, 150), menuOpacity, Settings.AreaModWarningLocked ? WindowFlags.NoCollapse | WindowFlags.NoScrollbar | WindowFlags.NoMove | WindowFlags.NoResize | WindowFlags.NoInputs | WindowFlags.NoBringToFrontOnFocus | WindowFlags.NoTitleBar | WindowFlags.NoFocusOnAppearing : WindowFlags.Default | WindowFlags.NoTitleBar | WindowFlags.ResizeFromAnySide);
 
                 ImGui.SetWindowSize(new Vector2(
-                        LongestText.X + WindowPadding.X * 2,
-                        LongestText.Y * (BadMods_Present.Count + 1) + WindowPadding.Y * 2 + (ItemSpacing.Y * BadMods_Present.Count)
+                        LongestText.X + windowPadding.X * 2,
+                        LongestText.Y * (BadMods_Present.Count + 1) + windowPadding.Y * 2 + (ItemSpacing.Y * BadMods_Present.Count)
                 ));
                 if (Settings.AreaModWarningOverrideColors)
                 {
@@ -168,11 +168,11 @@ namespace Random_Features
             return false;
         }
 
-        public static string GetEnumDescription(Enum Value)
+        public static string GetEnumDescription(Enum value)
         {
-            var Fi = Value.GetType().GetField(Value.ToString());
-            var Attributes = (DescriptionAttribute[]) Fi.GetCustomAttributes(typeof(DescriptionAttribute), false);
-            return Attributes.Length > 0 ? Attributes[0].Description : Value.ToString();
+            var fi = value.GetType().GetField(value.ToString());
+            var attributes = (DescriptionAttribute[]) fi.GetCustomAttributes(typeof(DescriptionAttribute), false);
+            return attributes.Length > 0 ? attributes[0].Description : value.ToString();
         }
     }
 }

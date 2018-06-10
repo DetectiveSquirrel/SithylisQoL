@@ -12,11 +12,11 @@ namespace Random_Features
             ImGui.Text("Normal Trials");
             ImGui.Separator();
             ImGui.Columns(2, "normalTrials", true);
-            for (var I = 0; I < 6; I++)
+            for (var i = 0; i < 6; i++)
             {
-                if (I == 3)
+                if (i == 3)
                     ImGui.NextColumn();
-                TrialString(I);
+                TrialString(i);
             }
 
             ImGuiExtension.EndColumn();
@@ -24,42 +24,42 @@ namespace Random_Features
             ImGuiExtension.Spacing(4);
             ImGui.Text("Cruel Trials");
             ImGui.Separator();
-            for (var I = 6; I < 9; I++)
-                TrialString(I);
+            for (var i = 6; i < 9; i++)
+                TrialString(i);
             ImGui.Separator();
             ImGuiExtension.Spacing(4);
             ImGui.Text("Merciless Trials");
             ImGui.Separator();
-            for (var I = 9; I < 12; I++)
-                TrialString(I);
+            for (var i = 9; i < 12; i++)
+                TrialString(i);
             ImGui.Separator();
             ImGuiExtension.Spacing(4);
             ImGui.Text("Uber Trials");
             ImGui.Separator();
             ImGui.Columns(2, "uberTrials", true);
-            for (var I = 12; I < 18; I++)
+            for (var i = 12; i < 18; i++)
             {
-                if (I == 15)
+                if (i == 15)
                     ImGui.NextColumn();
-                TrialString(I);
+                TrialString(i);
             }
 
             ImGui.Separator();
             ImGuiExtension.EndColumn();
-            Settings.Debug = ImGuiExtension.Checkbox("Debug", Settings.Debug);
+            Settings._Debug = ImGuiExtension.Checkbox("Debug", Settings._Debug);
         }
 
-        public void TrialString(int TrialId)
+        public void TrialString(int trialID)
         {
-            var Trial = GameController.Player.GetComponent<Player>().TrialStates[TrialId];
-            if (Trial.IsCompleted)
+            var trial = GameController.Player.GetComponent<Player>().TrialStates[trialID];
+            if (trial.IsCompleted)
                 ImGui.PushStyleColor(ColorTarget.Text, new ImVector4(0.25f, 0.85f, 0.25f, 1f));
             else
                 ImGui.PushStyleColor(ColorTarget.Text, new ImVector4(0.85f, 0.25f, 0.25f, 1f));
-            if (Trial.TrialArea.Area.Act <= 10)
-                ImGui.Text($"{Trial.TrialArea.Area.Name} (Act {Trial.TrialArea.Area.Act})");
+            if (trial.TrialArea.Area.Act <= 10)
+                ImGui.Text($"{trial.TrialArea.Area.Name} (Act {trial.TrialArea.Area.Act})");
             else
-                ImGui.Text($"{Trial.TrialArea.Area.Name} (Maps)");
+                ImGui.Text($"{trial.TrialArea.Area.Name} (Maps)");
             ImGui.PopStyleColor(1);
         }
     }

@@ -18,6 +18,6 @@ namespace Random_Features.Libs
 
         public static Vector2 PlayerToScreen => BasePlugin.API.GameController.Game.IngameState.Camera.WorldToScreen(Entity.Pos.Translate(0, 0, -170), Entity);
 
-        public static bool HasBuff(string BuffName) => Entity.GetComponent<Life>().HasBuff(BuffName);
+        public static bool HasBuff(string buffName) => Entity.GetComponent<Life>().HasBuff(buffName);
     }
 }
