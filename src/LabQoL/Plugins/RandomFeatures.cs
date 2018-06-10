@@ -517,6 +517,21 @@ namespace Random_Features
                     idPop++;
                     ImGui.TreePop();
                 }
+                if (ImGui.TreeNode("Armour Chests"))
+                {
+                    Settings.IncursionChestArmorChest.Value = ImGuiExtension.Checkbox(Settings.IncursionChestArmorChest.Value ? "Show" : "Hidden", Settings.IncursionChestArmorChest);
+
+                    ImGui.Spacing();
+                    ImGui.PushID(idPop);
+                    Settings.IncursionChestArmorChestOnMapSize.Value = ImGuiExtension.IntSlider("Size", Settings.IncursionChestArmorChestOnMapSize);
+                    ImGui.PopID();
+                    idPop++;
+                    ImGui.PushID(idPop);
+                    Settings.IncursionChestArmorChestOnMapColor.Value = ImGuiExtension.ColorPicker("Color", Settings.IncursionChestArmorChestOnMapColor);
+                    ImGui.PopID();
+                    idPop++;
+                    ImGui.TreePop();
+                }
                 ImGui.TreePop();
             }
             if (ImGui.TreeNode("Monster Stats On Hover - This is strange and only shows the resistances once that resistance has been affected with + or -"))
@@ -1229,18 +1244,32 @@ namespace Random_Features
                 {
                     if (e.Path.Contains("Metadata/Terrain/Leagues/Incursion/Objects/ClosedDoorPresent_Fuse"))
                     {
+
+                        if (Settings.ClosedIncursionDoorOnMapColor != Color.White)
+                        {
                             return new MapIcon(e, new HudTexture(CustomImagePath + "gate.png", Settings.ClosedIncursionDoorOnMapColor),
                                 () => Settings.ClosedIncursionDoor, Settings.ClosedIncursionDoorOnMapSize);
+                        }
+                        else
+                        {
+                            return new MapIcon(e, new HudTexture(CustomImagePath + "gate.png"),
+                                () => Settings.ClosedIncursionDoor, Settings.ClosedIncursionDoorOnMapSize);
+                        }
                     }
                 }
                 if (Settings.IncursionBreachChest)
                 {
-                    if (e.Path.Contains("Metadata/Chests/IncursionChests/IncursionChestBreach"))
+                    if (!e.GetComponent<Chest>().IsOpened)
                     {
-                        if (!e.GetComponent<Chest>().IsOpened)
+                        if (e.Path.Contains("Metadata/Chests/IncursionChests/IncursionChestBreach"))
                         {
                             return new MapIcon(e, new HudTexture(PoeHudImageLocation + "strongbox.png", Settings.IncursionBreachChestOnMapColor),
                                 () => Settings.IncursionBreachChest, Settings.IncursionBreachChestOnMapSize);
+                        }
+                        if (e.Path.Contains("Metadata/Chests/IncursionChestArmour"))
+                        {
+                            return new MapIcon(e, new HudTexture(PoeHudImageLocation + "strongbox.png", Settings.IncursionChestArmorChestOnMapColor),
+                                () => Settings.IncursionChestArmorChest, Settings.IncursionChestArmorChestOnMapSize);
                         }
                     }
                 }

@@ -1,9 +1,12 @@
-﻿using ImGuiNET;
+﻿using System;
+using System.Collections.Generic;
+using ImGuiNET;
+using PoeHUD.Hud.UI;
 using PoeHUD.Models.Enums;
 using PoeHUD.Poe;
-using Random_Features.Libs;
 using SharpDX;
 using SharpDX.Direct3D9;
+using ImGuiExtension = Random_Features.Libs.ImGuiExtension;
 
 namespace Random_Features
 {
@@ -12,21 +15,9 @@ namespace Random_Features
         private void FuckRomanNumeralsMenu()
         {
             Settings.FrnMain.Value = ImGuiExtension.Checkbox("Enable##FRNToggle", Settings.FrnMain);
-            ImGui.Text("Box Options");
-            Settings.FrnBackgroundBoxExtraWidth.Value = ImGuiExtension.IntSlider("Background Box Extra Width", Settings.FrnBackgroundBoxExtraWidth);
-            Settings.FrnBackgroundBoxWidth.Value = ImGuiExtension.IntSlider("Background Box Width", Settings.FrnBackgroundBoxWidth);
-            Settings.FrnBackgroundBoxHeight.Value = ImGuiExtension.IntSlider("Background Box Height", Settings.FrnBackgroundBoxHeight);
-            Settings.FrnNextBoxOffset.Value = ImGuiExtension.IntSlider("Next Box Offset", Settings.FrnNextBoxOffset);
             ImGui.Spacing();
-            ImGui.Text("First Row");
-            Settings.FrnFirstTierRowX.Value = ImGuiExtension.IntSlider("First Tier Row X", Settings.FrnFirstTierRowX);
-            Settings.FrnFirstTierRowY.Value = ImGuiExtension.IntSlider("First Tier Row Y", Settings.FrnFirstTierRowY);
-            ImGui.Spacing();
-            ImGui.Text("Second Row");
-            Settings.FrnSecondTierRowX.Value = ImGuiExtension.IntSlider("Second Tier Row X", Settings.FrnSecondTierRowX);
-            Settings.FrnSecondTierRowY.Value = ImGuiExtension.IntSlider("Second Tier Row Y", Settings.FrnSecondTierRowY);
-            Settings.FrnFontSize.Value = ImGuiExtension.IntSlider("Font Size", Settings.FrnFontSize);
-            Settings._Debug = ImGuiExtension.Checkbox("Debug", Settings._Debug);
+            Settings.FrnPercentOfBox.Value = ImGuiExtension.IntSlider("Size % of 'Map Tier' Button's Size", Settings.FrnPercentOfBox);
+            Settings.FrnFontSize.Value = ImGuiExtension.IntSlider("Font Size (Somewhat awkward to make it always fit into the box)", Settings.FrnFontSize);
         }
 
         private void FuckRomanNumerals()
@@ -35,63 +26,90 @@ namespace Random_Features
             DrawNumbersOverRomanNumerals();
         }
 
-        public bool IsMapTabOpen() => GameController.Game.IngameState.ServerData.StashPanel.IsVisible && GameController.Game.IngameState.ServerData.StashPanel.VisibleStash.InvType == InventoryType.MapStash;
+        public bool IsMapTabOpen()
+        {
+            return GameController.Game.IngameState.ServerData.StashPanel.IsVisible && GameController.Game.IngameState.ServerData.StashPanel.VisibleStash.InvType == InventoryType.MapStash;
+        }
 
         private void DrawNumbersOverRomanNumerals()
         {
             try
             {
                 if (!IsMapTabOpen()) return;
-                const int topRowTierCount = 9;
-                const int bottomRowTierCount = 7;
-                var backgroundBoxExtraWidth = Settings.FrnBackgroundBoxExtraWidth;
-                var backgroundBoxWidth = Settings.FrnBackgroundBoxWidth + Settings.FrnBackgroundBoxExtraWidth * 2;
-                var backgroundBoxHeight = Settings.FrnBackgroundBoxHeight;
-                var nextBoxOffset = Settings.FrnNextBoxOffset;
-                var firstTierRowX = Settings.FrnFirstTierRowX;
-                var firstTierRowY = Settings.FrnFirstTierRowY;
-                var secondTierRowX = Settings.FrnSecondTierRowX;
-                var secondTierRowY = Settings.FrnSecondTierRowY;
-                var fontSize = Settings.FrnFontSize;
-                var firstTabRow = new RectangleF(firstTierRowX - backgroundBoxExtraWidth, firstTierRowY, backgroundBoxWidth, backgroundBoxHeight);
-                var firstTabText = new Vector2(firstTabRow.X + firstTabRow.Width / 2, firstTabRow.Y);
-                var secondTabRow = new RectangleF(secondTierRowX - backgroundBoxExtraWidth, secondTierRowY, backgroundBoxWidth, backgroundBoxHeight);
-                var secondTabText = new Vector2(secondTabRow.X + secondTabRow.Width / 2, secondTabRow.Y);
-                Element UIHover;
-                for (var i = 0; i < topRowTierCount; i++)
-                {
-                    UIHover = GameController.Game.IngameState.UIHover;
-                    var newBox = new RectangleF(firstTabRow.X + i * nextBoxOffset, firstTabRow.Y, backgroundBoxWidth, backgroundBoxHeight);
-                    var newText = new Vector2(firstTabText.X + i * nextBoxOffset, firstTabText.Y + 1);
-                    if (UIHover.Tooltip.GetClientRect().Intersects(newBox))
-                        continue;
-                    Graphics.DrawBox(newBox, Color.Black);
-                    Graphics.DrawText((i + 1).ToString(), fontSize, newText, i + 1 < 6 ? Color.White : Color.Yellow, FontDrawFlags.Center);
-                }
 
-                for (var i = 0; i < bottomRowTierCount; i++)
-                {
-                    UIHover = GameController.Game.IngameState.UIHover;
-                    var newBox = new RectangleF(secondTabRow.X + i * nextBoxOffset, secondTabRow.Y, backgroundBoxWidth, backgroundBoxHeight);
-                    var newText = new Vector2(secondTabText.X + i * nextBoxOffset, secondTabText.Y + 1);
-                    if (UIHover.Tooltip.GetClientRect().Intersects(newBox))
-                        continue;
-                    Graphics.DrawBox(newBox, Color.Black);
-                    Graphics.DrawText((i + topRowTierCount + 1).ToString(), fontSize, newText, i + topRowTierCount + 1 < 11 ? Color.Yellow : Color.Red, FontDrawFlags.Center);
-                }
+                List<Element> mapElements = GameController.Game.IngameState.ServerData.StashPanel.VisibleStash.InventoryUiElement.Parent.Children;
+                Element uiHover = GameController.Game.IngameState.UIHover;
 
-                UIHover = GameController.Game.IngameState.UIHover;
-                var uBox = new RectangleF(secondTabRow.X + bottomRowTierCount * nextBoxOffset, secondTabRow.Y, backgroundBoxWidth, backgroundBoxHeight);
-                var uText = new Vector2(secondTabText.X + bottomRowTierCount * nextBoxOffset, secondTabText.Y + 1);
-                if (UIHover.Tooltip.GetClientRect().Intersects(uBox))
-                    return;
-                Graphics.DrawBox(uBox, Color.Black);
-                Graphics.DrawText("U", fontSize, uText, Color.Orange, FontDrawFlags.Center);
+
+                int row = 0;
+                int elementID = 0;
+                for (int i = 0; i < 17; i++)
+                {
+                    if (i == 9)
+                    {
+                        row = 1;
+                        elementID = 0;
+                    }
+
+                    Element element = mapElements[row].Children[elementID].Children[2];
+                    RectangleF backgroundPos = RomanPosition(element);
+                    Vector2 textPos = new Vector2(backgroundPos.Center.X, backgroundPos.Center.Y);
+                    Color color = Color.White;
+
+
+                    string text = "";
+
+                    if (uiHover.Tooltip.GetClientRect().Intersects(backgroundPos))
+                        continue;
+
+                    // Whites
+                    if (i == 0 || i == 1 || i == 2 || i == 3 || i == 4)
+                    {
+                        color = Color.White;
+                        text = i.ToString();
+                    }
+                    // Yellows
+                    else if (i == 5 || i == 6 || i == 7 || i == 8 || i == 9)
+                    {
+                        color = Color.Yellow;
+                        text = i.ToString();
+                    }
+                    // Reds
+                    else if (i == 10 || i == 11 || i == 12 || i == 13 || i == 14 || i == 15)
+                    {
+                        color = Color.Red;
+                        text = i.ToString();
+                    }
+                    // Uniques
+                    else if (i == 16)
+                    {
+                        color = Color.Orange;
+                        text = "U";
+                    }
+
+                    // Generate a nice font size depending on what our settings are
+                    int FontStartSize = Settings.FrnFontSize;
+                    double Percent = (double) Settings.FrnPercentOfBox / 100;
+                    int TextSize = (int) (FontStartSize * Percent);
+
+                    Graphics.DrawBox(backgroundPos, Color.Black);
+                    Graphics.DrawText(text, TextSize, textPos, color, FontDrawFlags.VerticalCenter | FontDrawFlags.Center);
+                    elementID++;
+                }
             }
             catch
             {
                 // ignored
             }
+        }
+
+        private RectangleF RomanPosition(Element element)
+        {
+            float elementWidth = element.GetClientRect().Width;
+            double percent = (double) Settings.FrnPercentOfBox / 100;
+            double size = elementWidth * percent;
+
+            return new RectangleF(element.GetClientRect().Center.X - (int) size / 2, element.GetClientRect().Center.Y - (int) size / 2, (int) size, (int) size);
         }
     }
 }

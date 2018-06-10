@@ -141,14 +141,7 @@ namespace Random_Features
             _Debug = false;
             // Fuck Roman Numerals
             FrnMain = true;
-            FrnBackgroundBoxExtraWidth = new RangeNode<int>(3, 0, 200);
-            FrnBackgroundBoxWidth = new RangeNode<int>(24, 1, 200);
-            FrnBackgroundBoxHeight = new RangeNode<int>(24, 1, 200);
-            FrnNextBoxOffset = new RangeNode<int>(66, 1, 500);
-            FrnFirstTierRowX = new RangeNode<int>(55, 1, 500);
-            FrnFirstTierRowY = new RangeNode<int>(207, 1, 500);
-            FrnSecondTierRowX = new RangeNode<int>(82, 1, 500);
-            FrnSecondTierRowY = new RangeNode<int>(274, 1, 500);
+            FrnPercentOfBox = new RangeNode<int>(40, 1, 100);
             FrnFontSize = new RangeNode<int>(20, 1, 60);
             // Wheres My Cursor
             WmcMain = true;
@@ -331,6 +324,10 @@ namespace Random_Features
         public RangeNode<int> IncursionBreachChestOnMapSize { get; set; } = new RangeNode<int>(10, 1, 200);
         public ColorNode IncursionBreachChestOnMapColor { get; set; } = new ColorBGRA(240, 100, 255, 255);
 
+        public ToggleNode IncursionChestArmorChest { get; set; } = true;
+        public RangeNode<int> IncursionChestArmorChestOnMapSize { get; set; } = new RangeNode<int>(10, 1, 200);
+        public ColorNode IncursionChestArmorChestOnMapColor { get; set; } = new ColorBGRA(255, 255, 255, 255);
+
 
 
         public ToggleNode _Debug { get; set; }
@@ -340,14 +337,7 @@ namespace Random_Features
 
         // Fuck Roman Numerals
         public ToggleNode FrnMain { get; set; }
-        public RangeNode<int> FrnBackgroundBoxExtraWidth { get; set; }
-        public RangeNode<int> FrnBackgroundBoxWidth { get; set; }
-        public RangeNode<int> FrnBackgroundBoxHeight { get; set; }
-        public RangeNode<int> FrnNextBoxOffset { get; set; }
-        public RangeNode<int> FrnFirstTierRowX { get; set; }
-        public RangeNode<int> FrnFirstTierRowY { get; set; }
-        public RangeNode<int> FrnSecondTierRowX { get; set; }
-        public RangeNode<int> FrnSecondTierRowY { get; set; }
+        public RangeNode<int> FrnPercentOfBox { get; set; }
         public RangeNode<int> FrnFontSize { get; set; }
 
         // Wheres My Cusrsor
