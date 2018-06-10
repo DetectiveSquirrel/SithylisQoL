@@ -230,7 +230,7 @@ namespace Random_Features
                 {
                     LevelUpGems();
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     //Console.WriteLine(e);
                 }

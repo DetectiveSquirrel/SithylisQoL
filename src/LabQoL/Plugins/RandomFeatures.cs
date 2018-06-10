@@ -644,7 +644,7 @@ namespace Random_Features
             {
                 return GameController.Game.IngameState.UIRoot.Children[1]?.Children[10]?.Children[8];
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return null;
             }

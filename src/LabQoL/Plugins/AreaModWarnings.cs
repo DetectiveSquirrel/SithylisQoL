@@ -76,7 +76,7 @@ namespace Random_Features
             {
                 DrawBadMods();
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 //Console.WriteLine(e);
             }
