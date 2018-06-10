@@ -63,28 +63,37 @@ namespace Random_Features
                         continue;
 
                     // Whites
-                    if (i == 0 || i == 1 || i == 2 || i == 3 || i == 4)
+                    switch (i)
                     {
-                        color = Color.White;
-                        text = (i+1).ToString();
-                    }
-                    // Yellows
-                    else if (i == 5 || i == 6 || i == 7 || i == 8 || i == 9)
-                    {
-                        color = Color.Yellow;
-                        text = (i + 1).ToString();
-                    }
-                    // Reds
-                    else if (i == 10 || i == 11 || i == 12 || i == 13 || i == 14 || i == 15)
-                    {
-                        color = Color.Red;
-                        text = i.ToString();
-                    }
-                    // Uniques
-                    else if ((i + 1) == 16)
-                    {
-                        color = Color.Orange;
-                        text = "U";
+                        case 0:
+                        case 1:
+                        case 2:
+                        case 3:
+                        case 4:
+                            color = Color.White;
+                            text = (i+1).ToString();
+                            break;
+                        case 5:
+                        case 6:
+                        case 7:
+                        case 8:
+                        case 9:
+                            color = Color.Yellow;
+                            text = (i + 1).ToString();
+                            break;
+                        case 10:
+                        case 11:
+                        case 12:
+                        case 13:
+                        case 14:
+                        case 15:
+                            color = Color.Red;
+                            text = (i + 1).ToString();
+                            break;
+                        case 16:
+                            color = Color.Orange;
+                            text = "U";
+                            break;
                     }
 
                     // Generate a nice font size depending on what our settings are
