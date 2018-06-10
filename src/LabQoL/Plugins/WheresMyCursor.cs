@@ -7,7 +7,7 @@ namespace Random_Features
 {
     partial class RandomFeatures
     {
-        private Vector2 _clickWindowOffset;
+        private Vector2 _ClickWindowOffset;
 
         private void WheresMyCursorMenu()
         {
@@ -29,64 +29,64 @@ namespace Random_Features
         private void WheresMyCursor()
         {
             if (!Settings.WmcMain) return;
-            var windows = GameController.Game.IngameState.IngameUi;
-            if (windows.TreePanel.IsVisible)
+            var Windows = GameController.Game.IngameState.IngameUi;
+            if (Windows.TreePanel.IsVisible)
                 return;
-            if (windows.AtlasPanel.IsVisible)
+            if (Windows.AtlasPanel.IsVisible)
                 return;
-            if (windows.OpenLeftPanel.IsVisible)
+            if (Windows.OpenLeftPanel.IsVisible)
                 return;
-            if (windows.OpenRightPanel.IsVisible)
+            if (Windows.OpenRightPanel.IsVisible)
                 return;
-            var cursorPositionVector = Mouse.GetCursorPositionVector();
-            var windowRectangle = GameController.Window.GetWindowRectangleReal();
-            _clickWindowOffset = GameController.Window.GetWindowRectangle().TopLeft;
-            cursorPositionVector -= _clickWindowOffset;
+            var CursorPositionVector = Mouse.GetCursorPositionVector();
+            var WindowRectangle = GameController.Window.GetWindowRectangleReal();
+            _ClickWindowOffset = GameController.Window.GetWindowRectangle().TopLeft;
+            CursorPositionVector -= _ClickWindowOffset;
 
             // need to call use -170 in Z axis for player.pos.translate as this is whats used in poecore for hp bar.
             //i have no fucking clue why this is. If you do not follow this rule you will have a jumpy hp bar
-            var playerToScreen = LocalPlayer.PlayerToScreen;
-            Vector2 finalPointA;
+            var PlayerToScreen = LocalPlayer.PlayerToScreen;
+            Vector2 FinalPointA;
             switch (Settings.WmcLineType)
             {
                 case 0:
-                    finalPointA = Vector2OffsetCalculations(new Vector2(playerToScreen.X, windowRectangle.Height / 2));
-                    DrawLineToPosWithLength(finalPointA, cursorPositionVector, Settings.WmcLineLength, Settings.WmcLineSize, Settings.WmcLineColor);
+                    FinalPointA = Vector2OffsetCalculations(new Vector2(PlayerToScreen.X, WindowRectangle.Height / 2));
+                    DrawLineToPosWithLength(FinalPointA, CursorPositionVector, Settings.WmcLineLength, Settings.WmcLineSize, Settings.WmcLineColor);
                     break;
                 case 1:
-                    finalPointA = Vector2OffsetCalculations(new Vector2(playerToScreen.X, windowRectangle.Height / 2));
-                    DrawLineToPos(finalPointA, cursorPositionVector, Settings.WmcLineSize, Settings.WmcLineColor);
+                    FinalPointA = Vector2OffsetCalculations(new Vector2(PlayerToScreen.X, WindowRectangle.Height / 2));
+                    DrawLineToPos(FinalPointA, CursorPositionVector, Settings.WmcLineSize, Settings.WmcLineColor);
                     break;
                 case 2:
-                    finalPointA = Vector2OffsetCalculations(new Vector2(playerToScreen.X, windowRectangle.Height / 2));
-                    DrawLineToPosWithLength(finalPointA, cursorPositionVector, (int) windowRectangle.Width, Settings.WmcLineSize, Settings.WmcLineColor);
+                    FinalPointA = Vector2OffsetCalculations(new Vector2(PlayerToScreen.X, WindowRectangle.Height / 2));
+                    DrawLineToPosWithLength(FinalPointA, CursorPositionVector, (int) WindowRectangle.Width, Settings.WmcLineSize, Settings.WmcLineColor);
                     break;
             }
         }
 
-        public Vector2 Vector2OffsetCalculations(Vector2 information)
+        public Vector2 Vector2OffsetCalculations(Vector2 Information)
         {
-            var finalVectorCalculation = information;
-            finalVectorCalculation.X = Settings.WmcPlayerOffsetXNegitive 
-                                               ? finalVectorCalculation.X - Settings.WmcPlayerOffsetX 
-                                               : finalVectorCalculation.X + Settings.WmcPlayerOffsetX;
-            finalVectorCalculation.Y = Settings.WmcPlayerOffsetYNegitive 
-                                               ? finalVectorCalculation.Y - Settings.WmcPlayerOffsetY 
-                                               : finalVectorCalculation.Y + Settings.WmcPlayerOffsetY;
-            return finalVectorCalculation;
+            var FinalVectorCalculation = Information;
+            FinalVectorCalculation.X = Settings.WmcPlayerOffsetXNegitive 
+                                               ? FinalVectorCalculation.X - Settings.WmcPlayerOffsetX 
+                                               : FinalVectorCalculation.X + Settings.WmcPlayerOffsetX;
+            FinalVectorCalculation.Y = Settings.WmcPlayerOffsetYNegitive 
+                                               ? FinalVectorCalculation.Y - Settings.WmcPlayerOffsetY 
+                                               : FinalVectorCalculation.Y + Settings.WmcPlayerOffsetY;
+            return FinalVectorCalculation;
         }
 
-        public void DrawLineToPosWithLength(Vector2 pointA, Vector2 pointB, int lineLength, int lineSize, Color lineColor)
+        public void DrawLineToPosWithLength(Vector2 PointA, Vector2 PointB, int LineLength, int LineSize, Color LineColor)
         {
-            var direction = pointB - pointA;
-            direction.Normalize();
-            var pointC = pointA + direction * lineLength;
-            Graphics.DrawLine(pointA, pointC, lineSize, lineColor);
+            var Direction = PointB - PointA;
+            Direction.Normalize();
+            var PointC = PointA + Direction * LineLength;
+            Graphics.DrawLine(PointA, PointC, LineSize, LineColor);
         }
 
-        public void DrawLineToPos(Vector2 pointA, Vector2 pointB, int lineSize, Color lineColor)
+        public void DrawLineToPos(Vector2 PointA, Vector2 PointB, int LineSize, Color LineColor)
         {
-            Graphics.DrawLine(pointA, pointB, lineSize, lineColor);
+            Graphics.DrawLine(PointA, PointB, LineSize, LineColor);
         }
     }
 }

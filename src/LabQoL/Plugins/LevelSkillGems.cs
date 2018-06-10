@@ -16,7 +16,7 @@ namespace Random_Features
 {
     partial class RandomFeatures
     {
-        private readonly Stopwatch GemClickTimer = Stopwatch.StartNew();
+        private readonly Stopwatch _GemClickTimer = Stopwatch.StartNew();
 
         public void LevelSkillGemsMenu()
         {
@@ -37,7 +37,7 @@ namespace Random_Features
                         Rules = new List<GemLevelRule>()
                 });
             }
-            if (Settings.SkillGemStopList.Any(t => t.Character == PlayerName))
+            if (Settings.SkillGemStopList.Any(T => T.Character == PlayerName))
             {
                 WeExistInRuleSet = true;
             }
@@ -59,13 +59,13 @@ namespace Random_Features
                                                    + "Add \"Cast When Damage Taken Support\" with max level of 3\n"
                                                    + "When the gem is level 3 it will right click to hide that gem and it wont be leveled any further");
 
-                var i = -1;
-                for (int index = 0; index < Settings.SkillGemStopList.Count; index++)
+                var I = -1;
+                for (int Index = 0; Index < Settings.SkillGemStopList.Count; Index++)
                 {
-                    Person PersonCheck = Settings.SkillGemStopList[index];
+                    Person PersonCheck = Settings.SkillGemStopList[Index];
                     if (PersonCheck.Character == GameController.Player.GetComponent<Player>().PlayerName)
                     {
-                        i = index;
+                        I = Index;
                     }
                 }
 
@@ -80,39 +80,39 @@ namespace Random_Features
                 ImGui.NextColumn();
                 ImGui.Text("Maximum Level");
                 ImGui.NextColumn();
-                if (Settings.SkillGemStopList[i].Rules.Count != 0)
+                if (Settings.SkillGemStopList[I].Rules.Count != 0)
                     ImGui.Separator();
-                for (int j = 0; j < Settings.SkillGemStopList[i].Rules.Count; j++)
+                for (int J = 0; J < Settings.SkillGemStopList[I].Rules.Count; J++)
                 {
-                    if (ImGui.Button($"X##REMOVERULE{i}{j}"))
+                    if (ImGui.Button($"X##REMOVERULE{I}{J}"))
                     {
-                        RulesToRemove.Add(j);
+                        RulesToRemove.Add(J);
                     }
 
                     ImGui.NextColumn();
                     ImGui.PushItemWidth(ImGui.GetContentRegionAvailableWidth());
-                    Settings.SkillGemStopList[i].Rules[j].GemName =
-                            PoeHUD.Hud.UI.ImGuiExtension.InputText($"##GN{i}{j}", Settings.SkillGemStopList[i].Rules[j].GemName, 35,
+                    Settings.SkillGemStopList[I].Rules[J].GemName =
+                            PoeHUD.Hud.UI.ImGuiExtension.InputText($"##GN{I}{J}", Settings.SkillGemStopList[I].Rules[J].GemName, 35,
                                     InputTextFlags.Default);
                     ImGui.PopItemWidth();
                     //ImGui.SameLine();
                     ImGui.NextColumn();
                     ImGui.PushItemWidth(ImGui.GetContentRegionAvailableWidth());
-                    Settings.SkillGemStopList[i].Rules[j].MaxLevel =
-                            PoeHUD.Hud.UI.ImGuiExtension.IntSlider($"##ML{i}{j}", Settings.SkillGemStopList[i].Rules[j].MaxLevel, 1, 20);
+                    Settings.SkillGemStopList[I].Rules[J].MaxLevel =
+                            PoeHUD.Hud.UI.ImGuiExtension.IntSlider($"##ML{I}{J}", Settings.SkillGemStopList[I].Rules[J].MaxLevel, 1, 20);
                     ImGui.NextColumn();
                     ImGui.PopItemWidth();
                 }
 
-                foreach (int i1 in RulesToRemove)
+                foreach (int I1 in RulesToRemove)
                 {
-                    Settings.SkillGemStopList[i].Rules.Remove(Settings.SkillGemStopList[i].Rules[i1]);
+                    Settings.SkillGemStopList[I].Rules.Remove(Settings.SkillGemStopList[I].Rules[I1]);
                 }
 
                 ImGui.Separator();
                 ImGui.Columns(1, "", false);
-                if (ImGui.Button($"Add New##AN{i}"))
-                    Settings.SkillGemStopList[i]
+                if (ImGui.Button($"Add New##AN{I}"))
+                    Settings.SkillGemStopList[I]
                             .Rules.Add(new GemLevelRule
                              {
                                      GemName = "Cast when Damage Taken Support",
@@ -133,8 +133,8 @@ namespace Random_Features
                 return;
             }
 
-            if (GemClickTimer.ElapsedMilliseconds < 150) return;
-            GemClickTimer.Restart();
+            if (_GemClickTimer.ElapsedMilliseconds < 150) return;
+            _GemClickTimer.Restart();
 
 
             bool WeExistInRuleSet = false;
@@ -165,44 +165,44 @@ namespace Random_Features
                                                      .GetChildAtIndex(0);
             if (SkillGemLevelUps == null || !SkillGemLevelUps.IsVisible) return;
             var MosuePos = Mouse.GetCursorPositionVector();
-            foreach (Element element in SkillGemLevelUps.Children)
+            foreach (Element Element in SkillGemLevelUps.Children)
             {
-                RectangleF skillGemButton = element.GetChildAtIndex(1).GetClientRect();
-                string skillGemText = element.GetChildAtIndex(3).AsObject<EntityLabel>().Text;
-                if (element.GetChildAtIndex(2).IsVisibleLocal) continue;
+                RectangleF SkillGemButton = Element.GetChildAtIndex(1).GetClientRect();
+                string SkillGemText = Element.GetChildAtIndex(3).AsObject<EntityLabel>().Text;
+                if (Element.GetChildAtIndex(2).IsVisibleLocal) continue;
 
-                if (element.GetChildAtIndex(0).Tooltip.ChildCount == 0 && skillGemText?.ToLower() == "click to level up")
+                if (Element.GetChildAtIndex(0).Tooltip.ChildCount == 0 && SkillGemText?.ToLower() == "click to level up")
                 {
 
-                    var ToolTipHover = skillGemButton;
+                    var ToolTipHover = SkillGemButton;
                     ToolTipHover.X += ToolTipHover.Width;
                     Mouse.SetCurosPosToCenterOfRec(ToolTipHover, GameController.Window.GetWindowRectangle());
                     var WhileStart = DateTime.Now;
-                    while (element.GetChildAtIndex(0).Tooltip.ChildCount == 0 && WhileStart.AddSeconds(3) > DateTime.Now)
+                    while (Element.GetChildAtIndex(0).Tooltip.ChildCount == 0 && WhileStart.AddSeconds(3) > DateTime.Now)
                     {
                         Thread.Sleep(25);
                         Mouse.SetCurosPosToCenterOfRec(ToolTipHover, GameController.Window.GetWindowRectangle());
                     }
                 }
-                if (element.GetChildAtIndex(0).Tooltip.ChildCount != 0)
+                if (Element.GetChildAtIndex(0).Tooltip.ChildCount != 0)
                 {
-                    SkillGemTooltipWrapper SkillGemToolTipInfo = new SkillGemTooltipWrapper(element.GetChildAtIndex(0).Tooltip);
-                    if (skillGemText?.ToLower() == "click to level up")
+                    SkillGemTooltipWrapper SkillGemToolTipInfo = new SkillGemTooltipWrapper(Element.GetChildAtIndex(0).Tooltip);
+                    if (SkillGemText?.ToLower() == "click to level up")
                     {
                         if (PassedGemRule(RuleSet, SkillGemToolTipInfo))
                         {
-                            Mouse.SetCurosPosToCenterOfRec(skillGemButton, GameController.Window.GetWindowRectangle());
+                            Mouse.SetCurosPosToCenterOfRec(SkillGemButton, GameController.Window.GetWindowRectangle());
                             Mouse.LeftClick(5, 10);
                             //Mouse.SetCurosPosToCenterOfRec(GameController.Window.GetWindowRectangle(), GameController.Window.GetWindowRectangle());
-                            GemClickTimer.Restart();
+                            _GemClickTimer.Restart();
                             break;
                         }
                         else
                         {
-                            Mouse.SetCurosPosToCenterOfRec(skillGemButton, GameController.Window.GetWindowRectangle());
+                            Mouse.SetCurosPosToCenterOfRec(SkillGemButton, GameController.Window.GetWindowRectangle());
                             Mouse.RightClick(5, 10);
                             //Mouse.SetCurosPosToCenterOfRec(GameController.Window.GetWindowRectangle(), GameController.Window.GetWindowRectangle());
-                            GemClickTimer.Restart();
+                            _GemClickTimer.Restart();
                             break;
                         }
                     }
@@ -213,12 +213,12 @@ namespace Random_Features
             //Mouse.SetCursorPos(MosuePos);
         }
 
-        public bool PassedGemRule(List<GemLevelRule> rules, SkillGemTooltipWrapper gem)
+        public bool PassedGemRule(List<GemLevelRule> Rules, SkillGemTooltipWrapper Gem)
         {
-            foreach (GemLevelRule rule in rules)
+            foreach (GemLevelRule Rule in Rules)
             {
-                if (!string.Equals(gem.Name, rule.GemName, StringComparison.CurrentCultureIgnoreCase)) continue;
-                if (gem.Level >= rule.MaxLevel) return false;
+                if (!string.Equals(Gem.Name, Rule.GemName, StringComparison.CurrentCultureIgnoreCase)) continue;
+                if (Gem.Level >= Rule.MaxLevel) return false;
             }
 
             return true;
@@ -230,7 +230,7 @@ namespace Random_Features
                 {
                     LevelUpGems();
                 }
-                catch (Exception e)
+                catch (Exception E)
                 {
                     //Console.WriteLine(e);
                 }
@@ -243,8 +243,8 @@ namespace Random_Features
                 Name = SkillGemTooltip.GetChildAtIndex(0).GetChildAtIndex(3).AsObject<EntityLabel>().Text;
                 string LevelText = SkillGemTooltip.GetChildAtIndex(1).GetChildAtIndex(1).AsObject<EntityLabel>().Text;
                 Regex LevelStringExtraction = new Regex("\\{(.*?)\\}", RegexOptions.IgnoreCase);
-                Match match = LevelStringExtraction.Match(LevelText);
-                if (match.Success) Level = int.Parse(match.Groups[1].Value);
+                Match Match = LevelStringExtraction.Match(LevelText);
+                if (Match.Success) Level = int.Parse(Match.Groups[1].Value);
             }
 
             public string Name { get; set; }

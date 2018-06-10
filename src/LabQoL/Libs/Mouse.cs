@@ -32,30 +32,30 @@ namespace Random_Features.Libs
         private const int ClickDelay    = 1;
 
         [DllImport("user32.dll")]
-        public static extern bool SetCursorPos(int x, int y);
+        public static extern bool SetCursorPos(int X, int Y);
 
         [DllImport("user32.dll")]
-        private static extern void mouse_event(int dwFlags, int dx, int dy, int cButtons, int dwExtraInfo);
+        private static extern void mouse_event(int DwFlags, int Dx, int Dy, int CButtons, int DwExtraInfo);
 
 
         /// <summary>
         ///     Sets the cursor position relative to the game window.
         /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <param name="gameWindow"></param>
+        /// <param name="X"></param>
+        /// <param name="Y"></param>
+        /// <param name="GameWindow"></param>
         /// <returns></returns>
-        public static bool SetCursorPos(int x, int y, RectangleF gameWindow) => SetCursorPos(x + (int) gameWindow.X, y + (int) gameWindow.Y);
+        public static bool SetCursorPos(int X, int Y, RectangleF GameWindow) => SetCursorPos(X + (int) GameWindow.X, Y + (int) GameWindow.Y);
 
         /// <summary>
         ///     Sets the cursor position to the center of a given rectangle relative to the game window
         /// </summary>
-        /// <param name="position"></param>
-        /// <param name="gameWindow"></param>
+        /// <param name="Position"></param>
+        /// <param name="GameWindow"></param>
         /// <returns></returns>
-        public static bool SetCurosPosToCenterOfRec(RectangleF position, RectangleF gameWindow)
+        public static bool SetCurosPosToCenterOfRec(RectangleF Position, RectangleF GameWindow)
         {
-            return SetCursorPos((int)(gameWindow.X + position.Center.X), (int)(gameWindow.Y + position.Center.Y));
+            return SetCursorPos((int)(GameWindow.X + Position.Center.X), (int)(GameWindow.Y + Position.Center.Y));
         }
 
         /// <summary>
@@ -63,19 +63,19 @@ namespace Random_Features.Libs
         /// </summary>
         /// <see>See MSDN documentation for further information.</see>
         [DllImport("user32.dll")]
-        public static extern bool GetCursorPos(out Point lpPoint);
+        public static extern bool GetCursorPos(out Point LpPoint);
 
         public static SharpDX.Point GetCursorPosition()
         {
-            GetCursorPos(out Point lpPoint);
-            return lpPoint;
+            GetCursorPos(out Point LpPoint);
+            return LpPoint;
         }
 
-        public static void LeftClick(int extraDelay, int startDelay = 0)
+        public static void LeftClick(int ExtraDelay, int StartDelay = 0)
         {
-            if (startDelay > 0)
+            if (StartDelay > 0)
             {
-                Thread.Sleep(startDelay);
+                Thread.Sleep(StartDelay);
             }
             LeftMouseDown();
             Thread.Sleep(ClickDelay / 2);
@@ -83,11 +83,11 @@ namespace Random_Features.Libs
             Thread.Sleep(ClickDelay);
         }
 
-        public static void RightClick(int extraDelay, int startDelay = 0)
+        public static void RightClick(int ExtraDelay, int StartDelay = 0)
         {
-            if (startDelay > 0)
+            if (StartDelay > 0)
             {
-                Thread.Sleep(startDelay);
+                Thread.Sleep(StartDelay);
             }
             RightMouseDown();
             Thread.Sleep(ClickDelay / 2);
@@ -103,23 +103,23 @@ namespace Random_Features.Libs
 
         public static void RightMouseUp() { mouse_event(MouseeventfRightup, 0, 0, 0, 0); }
 
-        public static void SetCursorPosAndLeftClick(Vector2 coords, int extraDelay)
+        public static void SetCursorPosAndLeftClick(Vector2 Coords, int ExtraDelay)
         {
-            int posX = (int) coords.X;
-            int posY = (int) coords.Y;
-            SetCursorPos(posX, posY);
-            Thread.Sleep(MovementDelay + extraDelay);
+            int PosX = (int) Coords.X;
+            int PosY = (int) Coords.Y;
+            SetCursorPos(PosX, PosY);
+            Thread.Sleep(MovementDelay + ExtraDelay);
             mouse_event(MouseeventfLeftdown, 0, 0, 0, 0);
             Thread.Sleep(ClickDelay);
             mouse_event(MouseeventfLeftup, 0, 0, 0, 0);
         }
 
-        public static void VerticalScroll(bool forward, int clicks)
+        public static void VerticalScroll(bool Forward, int Clicks)
         {
-            if (forward)
-                mouse_event(MouseEventWheel, 0, 0, clicks * 120, 0);
+            if (Forward)
+                mouse_event(MouseEventWheel, 0, 0, Clicks * 120, 0);
             else
-                mouse_event(MouseEventWheel, 0, 0, -(clicks * 120), 0);
+                mouse_event(MouseEventWheel, 0, 0, -(Clicks * 120), 0);
         }
         ////////////////////////////////////////////////////////////
 
@@ -130,48 +130,48 @@ namespace Random_Features.Libs
             public int X;
             public int Y;
 
-            public static implicit operator SharpDX.Point(Point point) => new SharpDX.Point(point.X, point.Y);
+            public static implicit operator SharpDX.Point(Point Point) => new SharpDX.Point(Point.X, Point.Y);
         }
 
         #region MyFix
 
-        private static void SetCursorPosition(float x, float y) { SetCursorPos((int) x, (int) y); }
+        private static void SetCursorPosition(float X, float Y) { SetCursorPos((int) X, (int) Y); }
 
         public static Vector2 GetCursorPositionVector()
         {
-            SharpDX.Point currentMousePoint = GetCursorPosition();
-            return new Vector2(currentMousePoint.X, currentMousePoint.Y);
+            SharpDX.Point CurrentMousePoint = GetCursorPosition();
+            return new Vector2(CurrentMousePoint.X, CurrentMousePoint.Y);
         }
 
-        public static void SetCursorPosition(Vector2 end)
+        public static void SetCursorPosition(Vector2 End)
         {
-            Vector2 cursor       = GetCursorPositionVector();
-            Vector2 stepVector2  = new Vector2();
-            float   step         = (float) Math.Sqrt(Vector2.Distance(cursor, end)) * 1.618f;
-            if (step > 275) step = 240;
-            stepVector2.X        = (end.X - cursor.X) / step;
-            stepVector2.Y        = (end.Y - cursor.Y) / step;
-            float fX             = cursor.X;
-            float fY             = cursor.Y;
-            for (int j = 0; j < step; j++)
+            Vector2 Cursor       = GetCursorPositionVector();
+            Vector2 StepVector2  = new Vector2();
+            float   Step         = (float) Math.Sqrt(Vector2.Distance(Cursor, End)) * 1.618f;
+            if (Step > 275) Step = 240;
+            StepVector2.X        = (End.X - Cursor.X) / Step;
+            StepVector2.Y        = (End.Y - Cursor.Y) / Step;
+            float FX             = Cursor.X;
+            float FY             = Cursor.Y;
+            for (int J = 0; J < Step; J++)
             {
-                fX += +stepVector2.X;
-                fY += stepVector2.Y;
-                SetCursorPosition(fX, fY);
+                FX += +StepVector2.X;
+                FY += StepVector2.Y;
+                SetCursorPosition(FX, FY);
                 Thread.Sleep(2);
             }
         }
 
-        public static void SetCursorPosAndLeftClickHuman(Vector2 coords, int extraDelay)
+        public static void SetCursorPosAndLeftClickHuman(Vector2 Coords, int ExtraDelay)
         {
-            SetCursorPosition(coords);
-            Thread.Sleep(MovementDelay + extraDelay);
+            SetCursorPosition(Coords);
+            Thread.Sleep(MovementDelay + ExtraDelay);
             LeftMouseDown();
-            Thread.Sleep(MovementDelay + extraDelay);
+            Thread.Sleep(MovementDelay + ExtraDelay);
             LeftMouseUp();
         }
 
-        public static void SetCursorPos(Vector2 vec) { SetCursorPos((int) vec.X, (int) vec.Y); }
+        public static void SetCursorPos(Vector2 Vec) { SetCursorPos((int) Vec.X, (int) Vec.Y); }
 
         #endregion
     }

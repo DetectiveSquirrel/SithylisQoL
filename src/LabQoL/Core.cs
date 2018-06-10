@@ -17,40 +17,40 @@ namespace Random_Features
 {
     public partial class RandomFeatures : BaseSettingsPlugin<RandomFeaturesSettings>
     {
-        private const string AREA_MOD_WARNINGS = "Area Mod Warnings";
-        private const string AREA_TRANSITIONS = "Area Transitions";
-        private const string TRIALS = "Trials";
-        private const string WHERES_MY_CURSOR = "Wheres My Cursor?";
-        private const string FUCK_ROMAN_NUMERAS = "Fuck Roman Numerals";
-        private const string RANDOM_FEATURES = "Random Features";
-        private const string SKILL_GEM_LEVELING = "Skill Gem Leveling";
+        private const string Area_Mod_Warnings = "Area Mod Warnings";
+        private const string Area_Transitions = "Area Transitions";
+        private const string Trials = "Trials";
+        private const string Wheres_My_Cursor = "Wheres My Cursor?";
+        private const string Fuck_Roman_Numeras = "Fuck Roman Numerals";
+        private const string Random_Features = "Random Features";
+        private const string Skill_Gem_Leveling = "Skill Gem Leveling";
 
         //https://stackoverflow.com/questions/826777/how-to-have-an-auto-incrementing-version-number-visual-studio
-        public Version version = Assembly.GetExecutingAssembly().GetName().Version;
+        public Version Version = Assembly.GetExecutingAssembly().GetName().Version;
         public string PluginVersion;
-        public DateTime buildDate;
+        public DateTime BuildDate;
         public static int Selected;
 
         public static string[] SettingName =
         {
-                RANDOM_FEATURES,
-                FUCK_ROMAN_NUMERAS,
-                WHERES_MY_CURSOR,
-                TRIALS,
-                AREA_TRANSITIONS,
-                AREA_MOD_WARNINGS,
-                SKILL_GEM_LEVELING
+                Random_Features,
+                Fuck_Roman_Numeras,
+                Wheres_My_Cursor,
+                Trials,
+                Area_Transitions,
+                Area_Mod_Warnings,
+                Skill_Gem_Leveling
         };
 
-        public static int idPop;
-        private HashSet<EntityWrapper> _entityCollection;
+        public static int IdPop;
+        private HashSet<EntityWrapper> _EntityCollection;
 
         public string CustomImagePath;
 
         public string PoeHudImageLocation;
 
         public RandomFeatures() {
-            PluginName = RANDOM_FEATURES;
+            PluginName = Random_Features;
         }
 
         private void AreaChange() { new Coroutine(ClearStoredEntities(), nameof(Random_Features), "Clear Stored Area Entities").Run(); }
@@ -58,20 +58,20 @@ namespace Random_Features
 
         public override void Initialise()
         {
-            buildDate = new DateTime(2000, 1, 1).AddDays(version.Build).AddSeconds(version.Revision * 2);
-            PluginVersion = $"{version}";
-            _entityCollection = new HashSet<EntityWrapper>();
+            BuildDate = new DateTime(2000, 1, 1).AddDays(Version.Build).AddSeconds(Version.Revision * 2);
+            PluginVersion = $"{Version}";
+            _EntityCollection = new HashSet<EntityWrapper>();
             CustomImagePath = PluginDirectory + @"\images\";
             PoeHudImageLocation = PluginDirectory + @"\..\..\textures\";
-            GameController.Area.OnAreaChange += area => AreaChange();
+            GameController.Area.OnAreaChange += Area => AreaChange();
             AreaModWarningsInit();
         }
 
-        public string ReadElementText(Element element) { return element.AsObject<EntityLabel>().Text; }
+        public string ReadElementText(Element Element) { return Element.AsObject<EntityLabel>().Text; }
 
-        public override void EntityAdded(EntityWrapper entity) { _entityCollection.Add(entity); }
+        public override void EntityAdded(EntityWrapper Entity) { _EntityCollection.Add(Entity); }
 
-        public override void EntityRemoved(EntityWrapper entity) { _entityCollection.Remove(entity); }
+        public override void EntityRemoved(EntityWrapper Entity) { _EntityCollection.Remove(Entity); }
 
         public override void Render()
         {
@@ -116,34 +116,34 @@ namespace Random_Features
         public override void DrawSettingsMenu()
         {
             ImGui.BulletText($"v{PluginVersion}");
-            ImGui.BulletText($"Last Updated: {buildDate}");
-            idPop = 1;
+            ImGui.BulletText($"Last Updated: {BuildDate}");
+            IdPop = 1;
             ImGui.PushStyleVar(StyleVar.ChildRounding, 5.0f);
-            ImGuiExtension.ImGuiExtension_ColorTabs("LeftSettings", 50, SettingName, ref Selected, ref idPop);
-            ImGuiNative.igGetContentRegionAvail(out var newcontentRegionArea);
-            if (ImGui.BeginChild("RightSettings", new Vector2(newcontentRegionArea.X, newcontentRegionArea.Y), true, WindowFlags.Default))
+            ImGuiExtension.ImGuiExtension_ColorTabs("LeftSettings", 50, SettingName, ref Selected, ref IdPop);
+            ImGuiNative.igGetContentRegionAvail(out var NewcontentRegionArea);
+            if (ImGui.BeginChild("RightSettings", new Vector2(NewcontentRegionArea.X, NewcontentRegionArea.Y), true, WindowFlags.Default))
                 switch (SettingName[Selected])
                 {
-                    case RANDOM_FEATURES:
-                        RandomFeaturesMenu(idPop, out var newInt);
-                        idPop = newInt;
+                    case Random_Features:
+                        RandomFeaturesMenu(IdPop, out var NewInt);
+                        IdPop = NewInt;
                         break;
-                    case FUCK_ROMAN_NUMERAS:
+                    case Fuck_Roman_Numeras:
                         FuckRomanNumeralsMenu();
                         break;
-                    case WHERES_MY_CURSOR:
+                    case Wheres_My_Cursor:
                         WheresMyCursorMenu();
                         break;
-                    case TRIALS:
+                    case Trials:
                         TrialMenu();
                         break;
-                    case AREA_TRANSITIONS:
+                    case Area_Transitions:
                         AreaTranitionsMenu();
                         break;
-                    case AREA_MOD_WARNINGS:
+                    case Area_Mod_Warnings:
                         AreaModWarningsMenu();
                         break;
-                    case SKILL_GEM_LEVELING:
+                    case Skill_Gem_Leveling:
                         LevelSkillGemsMenu();
                         break;
                 }
@@ -154,6 +154,6 @@ namespace Random_Features
 
     internal static class ExtensionMethod
     {
-        public static bool InRange(this int current, int range1, int range2) => current >= range1 && current <= range2;
+        public static bool InRange(this int Current, int Range1, int Range2) => Current >= Range1 && Current <= Range2;
     }
 }

@@ -15,151 +15,151 @@ namespace Random_Features.Libs
 {
     public class ImGuiExtension
     {
-        public static ImGuiVector4 CenterWindow(int width, int height)
+        public static ImGuiVector4 CenterWindow(int Width, int Height)
         {
-            var centerPos = BasePlugin.API.GameController.Window.GetWindowRectangle().Center;
-            return new ImGuiVector4(width + centerPos.X - width / 2, height + centerPos.Y - height / 2, width, height);
+            var CenterPos = BasePlugin.API.GameController.Window.GetWindowRectangle().Center;
+            return new ImGuiVector4(Width + CenterPos.X - Width / 2, Height + CenterPos.Y - Height / 2, Width, Height);
         }
 
-        public static bool BeginWindow(string title, ref bool isOpened, int x, int y, int width, int height, bool autoResize = false)
+        public static bool BeginWindow(string Title, ref bool IsOpened, int X, int Y, int Width, int Height, bool AutoResize = false)
         {
-            ImGui.SetNextWindowPos(new ImGuiVector2(width + x, height + y), Condition.Appearing, new ImGuiVector2(1, 1));
-            ImGui.SetNextWindowSize(new ImGuiVector2(width, height), Condition.Appearing);
-            return ImGui.BeginWindow(title, ref isOpened, autoResize ? WindowFlags.AlwaysAutoResize : WindowFlags.Default);
+            ImGui.SetNextWindowPos(new ImGuiVector2(Width + X, Height + Y), Condition.Appearing, new ImGuiVector2(1, 1));
+            ImGui.SetNextWindowSize(new ImGuiVector2(Width, Height), Condition.Appearing);
+            return ImGui.BeginWindow(Title, ref IsOpened, AutoResize ? WindowFlags.AlwaysAutoResize : WindowFlags.Default);
         }
 
-        public static bool BeginWindow(string title, ref bool isOpened, float x, float y, float width, float height, bool autoResize = false)
+        public static bool BeginWindow(string Title, ref bool IsOpened, float X, float Y, float Width, float Height, bool AutoResize = false)
         {
-            ImGui.SetNextWindowPos(new ImGuiVector2(width + x, height + y), Condition.Appearing, new ImGuiVector2(1, 1));
-            ImGui.SetNextWindowSize(new ImGuiVector2(width, height), Condition.Appearing);
-            return ImGui.BeginWindow(title, ref isOpened, autoResize ? WindowFlags.AlwaysAutoResize : WindowFlags.Default);
+            ImGui.SetNextWindowPos(new ImGuiVector2(Width + X, Height + Y), Condition.Appearing, new ImGuiVector2(1, 1));
+            ImGui.SetNextWindowSize(new ImGuiVector2(Width, Height), Condition.Appearing);
+            return ImGui.BeginWindow(Title, ref IsOpened, AutoResize ? WindowFlags.AlwaysAutoResize : WindowFlags.Default);
         }
 
-        public static bool BeginWindowCenter(string title, ref bool isOpened, int width, int height, bool autoResize = false)
+        public static bool BeginWindowCenter(string Title, ref bool IsOpened, int Width, int Height, bool AutoResize = false)
         {
-            var size = CenterWindow(width, height);
-            ImGui.SetNextWindowPos(new ImGuiVector2(size.X, size.Y), Condition.Appearing, new ImGuiVector2(1, 1));
-            ImGui.SetNextWindowSize(new ImGuiVector2(size.Z, size.W), Condition.Appearing);
-            return ImGui.BeginWindow(title, ref isOpened, autoResize ? WindowFlags.AlwaysAutoResize : WindowFlags.Default);
+            var Size = CenterWindow(Width, Height);
+            ImGui.SetNextWindowPos(new ImGuiVector2(Size.X, Size.Y), Condition.Appearing, new ImGuiVector2(1, 1));
+            ImGui.SetNextWindowSize(new ImGuiVector2(Size.Z, Size.W), Condition.Appearing);
+            return ImGui.BeginWindow(Title, ref IsOpened, AutoResize ? WindowFlags.AlwaysAutoResize : WindowFlags.Default);
         }
 
         // Int Sliders
-        public static int IntSlider(string labelString, int value, int minValue, int maxValue)
+        public static int IntSlider(string LabelString, int Value, int MinValue, int MaxValue)
         {
-            var refValue = value;
-            ImGui.SliderInt(labelString, ref refValue, minValue, maxValue, "%.00f");
-            return refValue;
+            var RefValue = Value;
+            ImGui.SliderInt(LabelString, ref RefValue, MinValue, MaxValue, "%.00f");
+            return RefValue;
         }
 
-        public static int IntSlider(string labelString, string sliderString, int value, int minValue, int maxValue)
+        public static int IntSlider(string LabelString, string SliderString, int Value, int MinValue, int MaxValue)
         {
-            var refValue = value;
-            ImGui.SliderInt(labelString, ref refValue, minValue, maxValue, $"{sliderString}: {value}");
-            return refValue;
+            var RefValue = Value;
+            ImGui.SliderInt(LabelString, ref RefValue, MinValue, MaxValue, $"{SliderString}: {Value}");
+            return RefValue;
         }
 
-        public static int IntSlider(string labelString, RangeNode<int> setting)
+        public static int IntSlider(string LabelString, RangeNode<int> Setting)
         {
-            var refValue = setting.Value;
-            ImGui.SliderInt(labelString, ref refValue, setting.Min, setting.Max, "%.00f");
-            return refValue;
+            var RefValue = Setting.Value;
+            ImGui.SliderInt(LabelString, ref RefValue, Setting.Min, Setting.Max, "%.00f");
+            return RefValue;
         }
 
-        public static int IntSlider(string labelString, string sliderString, RangeNode<int> setting)
+        public static int IntSlider(string LabelString, string SliderString, RangeNode<int> Setting)
         {
-            var refValue = setting.Value;
-            ImGui.SliderInt(labelString, ref refValue, setting.Min, setting.Max, $"{sliderString}: {setting.Value}");
-            return refValue;
+            var RefValue = Setting.Value;
+            ImGui.SliderInt(LabelString, ref RefValue, Setting.Min, Setting.Max, $"{SliderString}: {Setting.Value}");
+            return RefValue;
         }
 
         // float Sliders
-        public static float FloatSlider(string labelString, float value, float minValue, float maxValue)
+        public static float FloatSlider(string LabelString, float Value, float MinValue, float MaxValue)
         {
-            var refValue = value;
-            ImGui.SliderFloat(labelString, ref refValue, minValue, maxValue, "%.00f", 1f);
-            return refValue;
+            var RefValue = Value;
+            ImGui.SliderFloat(LabelString, ref RefValue, MinValue, MaxValue, "%.00f", 1f);
+            return RefValue;
         }
 
-        public static float FloatSlider(string labelString, float value, float minValue, float maxValue, float power)
+        public static float FloatSlider(string LabelString, float Value, float MinValue, float MaxValue, float Power)
         {
-            var refValue = value;
-            ImGui.SliderFloat(labelString, ref refValue, minValue, maxValue, "%.00f", power);
-            return refValue;
+            var RefValue = Value;
+            ImGui.SliderFloat(LabelString, ref RefValue, MinValue, MaxValue, "%.00f", Power);
+            return RefValue;
         }
 
-        public static float FloatSlider(string labelString, string sliderString, float value, float minValue, float maxValue)
+        public static float FloatSlider(string LabelString, string SliderString, float Value, float MinValue, float MaxValue)
         {
-            var refValue = value;
-            ImGui.SliderFloat(labelString, ref refValue, minValue, maxValue, $"{sliderString}: {value}", 1f);
-            return refValue;
+            var RefValue = Value;
+            ImGui.SliderFloat(LabelString, ref RefValue, MinValue, MaxValue, $"{SliderString}: {Value}", 1f);
+            return RefValue;
         }
 
-        public static float FloatSlider(string labelString, string sliderString, float value, float minValue, float maxValue, float power)
+        public static float FloatSlider(string LabelString, string SliderString, float Value, float MinValue, float MaxValue, float Power)
         {
-            var refValue = value;
-            ImGui.SliderFloat(labelString, ref refValue, minValue, maxValue, $"{sliderString}: {value}", power);
-            return refValue;
+            var RefValue = Value;
+            ImGui.SliderFloat(LabelString, ref RefValue, MinValue, MaxValue, $"{SliderString}: {Value}", Power);
+            return RefValue;
         }
 
-        public static float FloatSlider(string labelString, RangeNode<float> setting)
+        public static float FloatSlider(string LabelString, RangeNode<float> Setting)
         {
-            var refValue = setting.Value;
-            ImGui.SliderFloat(labelString, ref refValue, setting.Min, setting.Max, "%.00f", 1f);
-            return refValue;
+            var RefValue = Setting.Value;
+            ImGui.SliderFloat(LabelString, ref RefValue, Setting.Min, Setting.Max, "%.00f", 1f);
+            return RefValue;
         }
 
-        public static float FloatSlider(string labelString, RangeNode<float> setting, float power)
+        public static float FloatSlider(string LabelString, RangeNode<float> Setting, float Power)
         {
-            var refValue = setting.Value;
-            ImGui.SliderFloat(labelString, ref refValue, setting.Min, setting.Max, "%.00f", power);
-            return refValue;
+            var RefValue = Setting.Value;
+            ImGui.SliderFloat(LabelString, ref RefValue, Setting.Min, Setting.Max, "%.00f", Power);
+            return RefValue;
         }
 
-        public static float FloatSlider(string labelString, string sliderString, RangeNode<float> setting)
+        public static float FloatSlider(string LabelString, string SliderString, RangeNode<float> Setting)
         {
-            var refValue = setting.Value;
-            ImGui.SliderFloat(labelString, ref refValue, setting.Min, setting.Max, $"{sliderString}: {setting.Value}", 1f);
-            return refValue;
+            var RefValue = Setting.Value;
+            ImGui.SliderFloat(LabelString, ref RefValue, Setting.Min, Setting.Max, $"{SliderString}: {Setting.Value}", 1f);
+            return RefValue;
         }
 
-        public static float FloatSlider(string labelString, string sliderString, RangeNode<float> setting, float power)
+        public static float FloatSlider(string LabelString, string SliderString, RangeNode<float> Setting, float Power)
         {
-            var refValue = setting.Value;
-            ImGui.SliderFloat(labelString, ref refValue, setting.Min, setting.Max, $"{sliderString}: {setting.Value}", power);
-            return refValue;
+            var RefValue = Setting.Value;
+            ImGui.SliderFloat(LabelString, ref RefValue, Setting.Min, Setting.Max, $"{SliderString}: {Setting.Value}", Power);
+            return RefValue;
         }
 
         // Checkboxes
-        public static bool Checkbox(string labelString, bool boolValue)
+        public static bool Checkbox(string LabelString, bool BoolValue)
         {
-            ImGui.Checkbox(labelString, ref boolValue);
-            return boolValue;
+            ImGui.Checkbox(LabelString, ref BoolValue);
+            return BoolValue;
         }
 
-        public static bool Checkbox(string labelString, bool boolValue, out bool outBool)
+        public static bool Checkbox(string LabelString, bool BoolValue, out bool OutBool)
         {
-            ImGui.Checkbox(labelString, ref boolValue);
-            outBool = boolValue;
-            return boolValue;
+            ImGui.Checkbox(LabelString, ref BoolValue);
+            OutBool = BoolValue;
+            return BoolValue;
         }
 
         // Hotkey Selector
         public static IEnumerable<Keys> KeyCodes() => Enum.GetValues(typeof(Keys)).Cast<Keys>();
 
-        public static Keys HotkeySelector(string buttonName, Keys currentKey)
+        public static Keys HotkeySelector(string ButtonName, Keys CurrentKey)
         {
-            if (ImGui.Button($"{buttonName}: {currentKey} ")) ImGui.OpenPopup(buttonName);
-            if (ImGui.BeginPopupModal(buttonName, (WindowFlags) 35))
+            if (ImGui.Button($"{ButtonName}: {CurrentKey} ")) ImGui.OpenPopup(ButtonName);
+            if (ImGui.BeginPopupModal(ButtonName, (WindowFlags) 35))
             {
-                ImGui.Text($"Press a key to set as {buttonName}");
-                foreach (var key in KeyCodes())
+                ImGui.Text($"Press a key to set as {ButtonName}");
+                foreach (var Key in KeyCodes())
                 {
-                    if (!WinApi.IsKeyDown(key)) continue;
-                    if (key != Keys.Escape && key != Keys.RButton && key != Keys.LButton)
+                    if (!WinApi.IsKeyDown(Key)) continue;
+                    if (Key != Keys.Escape && Key != Keys.RButton && Key != Keys.LButton)
                     {
                         ImGui.CloseCurrentPopup();
                         ImGui.EndPopup();
-                        return key;
+                        return Key;
                     }
 
                     break;
@@ -168,23 +168,23 @@ namespace Random_Features.Libs
                 ImGui.EndPopup();
             }
 
-            return currentKey;
+            return CurrentKey;
         }
 
-        public static Keys HotkeySelector(string buttonName, string popupTitle, Keys currentKey)
+        public static Keys HotkeySelector(string ButtonName, string PopupTitle, Keys CurrentKey)
         {
-            if (ImGui.Button($"{buttonName}: {currentKey} ")) ImGui.OpenPopup(popupTitle);
-            if (ImGui.BeginPopupModal(popupTitle, (WindowFlags) 35))
+            if (ImGui.Button($"{ButtonName}: {CurrentKey} ")) ImGui.OpenPopup(PopupTitle);
+            if (ImGui.BeginPopupModal(PopupTitle, (WindowFlags) 35))
             {
-                ImGui.Text($"Press a key to set as {buttonName}");
-                foreach (var key in KeyCodes())
+                ImGui.Text($"Press a key to set as {ButtonName}");
+                foreach (var Key in KeyCodes())
                 {
-                    if (!WinApi.IsKeyDown(key)) continue;
-                    if (key != Keys.Escape && key != Keys.RButton && key != Keys.LButton)
+                    if (!WinApi.IsKeyDown(Key)) continue;
+                    if (Key != Keys.Escape && Key != Keys.RButton && Key != Keys.LButton)
                     {
                         ImGui.CloseCurrentPopup();
                         ImGui.EndPopup();
-                        return key;
+                        return Key;
                     }
 
                     break;
@@ -193,124 +193,124 @@ namespace Random_Features.Libs
                 ImGui.EndPopup();
             }
 
-            return currentKey;
+            return CurrentKey;
         }
 
         // Color Pickers
-        public static Color ColorPicker(string labelName, Color inputColor)
+        public static Color ColorPicker(string LabelName, Color InputColor)
         {
-            var color = inputColor.ToVector4();
-            var colorToVect4 = new ImGuiVector4(color.X, color.Y, color.Z, color.W);
-            if (ImGui.ColorEdit4(labelName, ref colorToVect4, ColorEditFlags.AlphaBar)) return new Color(colorToVect4.X, colorToVect4.Y, colorToVect4.Z, colorToVect4.W);
-            return inputColor;
+            var Color = InputColor.ToVector4();
+            var ColorToVect4 = new ImGuiVector4(Color.X, Color.Y, Color.Z, Color.W);
+            if (ImGui.ColorEdit4(LabelName, ref ColorToVect4, ColorEditFlags.AlphaBar)) return new Color(ColorToVect4.X, ColorToVect4.Y, ColorToVect4.Z, ColorToVect4.W);
+            return InputColor;
         }
 
         // Combo Box
 
-        public static int ComboBox(string sideLabel, int currentSelectedItem, List<string> objectList, ComboFlags comboFlags = ComboFlags.HeightRegular)
+        public static int ComboBox(string SideLabel, int CurrentSelectedItem, List<string> ObjectList, ComboFlags ComboFlags = ComboFlags.HeightRegular)
         {
-            ImGui.Combo(sideLabel, ref currentSelectedItem, objectList.ToArray());
-            return currentSelectedItem;
+            ImGui.Combo(SideLabel, ref CurrentSelectedItem, ObjectList.ToArray());
+            return CurrentSelectedItem;
         }
 
-        public static string ComboBox(string sideLabel, string currentSelectedItem, List<string> objectList, ComboFlags comboFlags = ComboFlags.HeightRegular)
+        public static string ComboBox(string SideLabel, string CurrentSelectedItem, List<string> ObjectList, ComboFlags ComboFlags = ComboFlags.HeightRegular)
         {
-            if (ImGui.BeginCombo(sideLabel, currentSelectedItem, comboFlags))
+            if (ImGui.BeginCombo(SideLabel, CurrentSelectedItem, ComboFlags))
             {
-                var refObject = currentSelectedItem;
-                for (var n = 0; n < objectList.Count; n++)
+                var RefObject = CurrentSelectedItem;
+                for (var N = 0; N < ObjectList.Count; N++)
                 {
-                    var isSelected = refObject == objectList[n];
-                    if (ImGui.Selectable(objectList[n], isSelected))
+                    var IsSelected = RefObject == ObjectList[N];
+                    if (ImGui.Selectable(ObjectList[N], IsSelected))
                     {
                         ImGui.EndCombo();
-                        return objectList[n];
+                        return ObjectList[N];
                     }
 
-                    if (isSelected) ImGui.SetItemDefaultFocus();
+                    if (IsSelected) ImGui.SetItemDefaultFocus();
                 }
 
                 ImGui.EndCombo();
             }
 
-            return currentSelectedItem;
+            return CurrentSelectedItem;
         }
 
-        public static string ComboBox(string sideLabel, string currentSelectedItem, List<string> objectList, out bool didChange, ComboFlags comboFlags = ComboFlags.HeightRegular)
+        public static string ComboBox(string SideLabel, string CurrentSelectedItem, List<string> ObjectList, out bool DidChange, ComboFlags ComboFlags = ComboFlags.HeightRegular)
         {
-            if (ImGui.BeginCombo(sideLabel, currentSelectedItem, comboFlags))
+            if (ImGui.BeginCombo(SideLabel, CurrentSelectedItem, ComboFlags))
             {
-                var refObject = currentSelectedItem;
-                for (var n = 0; n < objectList.Count; n++)
+                var RefObject = CurrentSelectedItem;
+                for (var N = 0; N < ObjectList.Count; N++)
                 {
-                    var isSelected = refObject == objectList[n];
-                    if (ImGui.Selectable(objectList[n], isSelected))
+                    var IsSelected = RefObject == ObjectList[N];
+                    if (ImGui.Selectable(ObjectList[N], IsSelected))
                     {
-                        didChange = true;
+                        DidChange = true;
                         ImGui.EndCombo();
-                        return objectList[n];
+                        return ObjectList[N];
                     }
 
-                    if (isSelected) ImGui.SetItemDefaultFocus();
+                    if (IsSelected) ImGui.SetItemDefaultFocus();
                 }
 
                 ImGui.EndCombo();
             }
 
-            didChange = false;
-            return currentSelectedItem;
+            DidChange = false;
+            return CurrentSelectedItem;
         }
 
         // Unput Text
-        public static unsafe string InputText(string label, string currentValue, uint maxLength, InputTextFlags flags)
+        public static unsafe string InputText(string Label, string CurrentValue, uint MaxLength, InputTextFlags Flags)
         {
-            var currentStringBytes = Encoding.Default.GetBytes(currentValue);
-            var buffer = new byte[maxLength];
-            Array.Copy(currentStringBytes, buffer, Math.Min(currentStringBytes.Length, maxLength));
+            var CurrentStringBytes = Encoding.Default.GetBytes(CurrentValue);
+            var Buffer = new byte[MaxLength];
+            Array.Copy(CurrentStringBytes, Buffer, Math.Min(CurrentStringBytes.Length, MaxLength));
 
-            int Callback(TextEditCallbackData* data)
+            int Callback(TextEditCallbackData* Data)
             {
-                var pCursorPos = (int*) data->UserData;
-                if (!data->HasSelection()) *pCursorPos = data->CursorPos;
+                var PCursorPos = (int*) Data->UserData;
+                if (!Data->HasSelection()) *PCursorPos = Data->CursorPos;
                 return 0;
             }
 
-            ImGui.InputText(label, buffer, maxLength, flags, Callback);
-            return Encoding.Default.GetString(buffer).TrimEnd('\0');
+            ImGui.InputText(Label, Buffer, MaxLength, Flags, Callback);
+            return Encoding.Default.GetString(Buffer).TrimEnd('\0');
         }
 
         // ImColor_HSV Maker
-        public static ImGuiVector4 ImColor_HSV(float h, float s, float v)
+        public static ImGuiVector4 ImColor_HSV(float H, float S, float V)
         {
-            ImGui.ColorConvertHSVToRGB(h, s, v, out var r, out var g, out var b);
-            return new ImGuiVector4(r, g, b, 255);
+            ImGui.ColorConvertHSVToRGB(H, S, V, out var R, out var G, out var B);
+            return new ImGuiVector4(R, G, B, 255);
         }
 
-        public static ImGuiVector4 ImColor_HSV(float h, float s, float v, float a)
+        public static ImGuiVector4 ImColor_HSV(float H, float S, float V, float A)
         {
-            ImGui.ColorConvertHSVToRGB(h, s, v, out var r, out var g, out var b);
-            return new ImGuiVector4(r, g, b, a);
+            ImGui.ColorConvertHSVToRGB(H, S, V, out var R, out var G, out var B);
+            return new ImGuiVector4(R, G, B, A);
         }
 
         // Color menu tabs
-        public static void ImGuiExtension_ColorTabs(string idString, int height, IReadOnlyList<string> settingList, ref int selectedItem, ref int uniqueIdPop)
+        public static void ImGuiExtension_ColorTabs(string IdString, int Height, IReadOnlyList<string> SettingList, ref int SelectedItem, ref int UniqueIdPop)
         {
-            ImGuiNative.igGetContentRegionAvail(out var newcontentRegionArea);
-            var boxRegion = new ImGuiVector2(newcontentRegionArea.X, height);
-            if (ImGui.BeginChild(idString, boxRegion, true, WindowFlags.HorizontalScrollbar))
+            ImGuiNative.igGetContentRegionAvail(out var NewcontentRegionArea);
+            var BoxRegion = new ImGuiVector2(NewcontentRegionArea.X, Height);
+            if (ImGui.BeginChild(IdString, BoxRegion, true, WindowFlags.HorizontalScrollbar))
             {
-                for (var i = 0; i < settingList.Count; i++)
+                for (var I = 0; I < SettingList.Count; I++)
                 {
-                    ImGui.PushID(uniqueIdPop);
-                    var hue = 1f / settingList.Count * i;
-                    ImGui.PushStyleColor(ColorTarget.Button, ImColor_HSV(hue, 0.6f, 0.6f, 0.8f));
-                    ImGui.PushStyleColor(ColorTarget.ButtonHovered, ImColor_HSV(hue, 0.7f, 0.7f, 0.9f));
-                    ImGui.PushStyleColor(ColorTarget.ButtonActive, ImColor_HSV(hue, 0.8f, 0.8f, 1.0f));
+                    ImGui.PushID(UniqueIdPop);
+                    var Hue = 1f / SettingList.Count * I;
+                    ImGui.PushStyleColor(ColorTarget.Button, ImColor_HSV(Hue, 0.6f, 0.6f, 0.8f));
+                    ImGui.PushStyleColor(ColorTarget.ButtonHovered, ImColor_HSV(Hue, 0.7f, 0.7f, 0.9f));
+                    ImGui.PushStyleColor(ColorTarget.ButtonActive, ImColor_HSV(Hue, 0.8f, 0.8f, 1.0f));
                     ImGui.PushStyleVar(StyleVar.FrameRounding, 3.0f);
                     ImGui.PushStyleVar(StyleVar.FramePadding, 2.0f);
-                    if (i > 0) ImGui.SameLine();
-                    if (ImGui.Button(settingList[i])) selectedItem = i;
-                    uniqueIdPop++;
+                    if (I > 0) ImGui.SameLine();
+                    if (ImGui.Button(SettingList[I])) SelectedItem = I;
+                    UniqueIdPop++;
                     ImGui.PopStyleVar();
                     ImGui.PopStyleColor(3);
                     ImGui.PopID();
@@ -321,16 +321,16 @@ namespace Random_Features.Libs
         }
 
         //Begin Child Frames - Full Width
-        public static bool BeginChild(string id, bool border, WindowFlags flags)
+        public static bool BeginChild(string Id, bool Border, WindowFlags Flags)
         {
-            ImGuiNative.igGetContentRegionAvail(out var newcontentRegionArea);
-            return ImGui.BeginChild(id, new ImGuiVector2(newcontentRegionArea.X, newcontentRegionArea.Y), border, flags);
+            ImGuiNative.igGetContentRegionAvail(out var NewcontentRegionArea);
+            return ImGui.BeginChild(Id, new ImGuiVector2(NewcontentRegionArea.X, NewcontentRegionArea.Y), Border, Flags);
         }
 
         //Spacing
-        public static void Spacing(int amount)
+        public static void Spacing(int Amount)
         {
-            for (var i = 0; i < amount; i++)
+            for (var I = 0; I < Amount; I++)
                 ImGui.Spacing();
         }
 

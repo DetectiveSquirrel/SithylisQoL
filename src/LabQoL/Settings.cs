@@ -138,7 +138,7 @@ namespace Random_Features
             VaultPilesOnMap = true;
             VaultPilesIcon = new RangeNode<int>(25, 1, 200);
             AreaNamesOnMap = true;
-            _Debug = false;
+            Debug = false;
             // Fuck Roman Numerals
             FrnMain = true;
             FrnPercentOfBox = new RangeNode<int>(40, 1, 100);
@@ -154,9 +154,9 @@ namespace Random_Features
             WmcPlayerOffsetYNegitive = true;
             WmcPlayerOffsetY = new RangeNode<int>(0, 0, 200);
             ShowWindow = false;
-            var centerPos = BasePlugin.API.GameController.Window.GetWindowRectangle().Center;
+            var CenterPos = BasePlugin.API.GameController.Window.GetWindowRectangle().Center;
             LastSettingSize = new ImGuiVector2(620, 376);
-            LastSettingPos = new ImGuiVector2(centerPos.X - LastSettingSize.X / 2, centerPos.Y - LastSettingSize.Y / 2);
+            LastSettingPos = new ImGuiVector2(CenterPos.X - LastSettingSize.X / 2, CenterPos.Y - LastSettingSize.Y / 2);
 
             RoyaleThings = true;
 
@@ -180,7 +180,7 @@ namespace Random_Features
             RoyaleExplosiveBarrelsSize = new RangeNode<int>(4, 1, 200);
             RoyaleExplosiveBarrelsColor = Color.Red;
 
-            RoyalBETA = false;
+            RoyalBeta = false;
 
             BeyondThings = true;
             BeyondPortal = true;
@@ -330,7 +330,7 @@ namespace Random_Features
 
 
 
-        public ToggleNode _Debug { get; set; }
+        public ToggleNode Debug { get; set; }
 
 
         public ToggleNode AreaNamesOnMap { get; set; }
@@ -380,7 +380,7 @@ namespace Random_Features
         public RangeNode<int> RoyaleExplosiveBarrelsSize { get; set; }
         public ColorNode RoyaleExplosiveBarrelsColor { get; set; }
 
-        public ToggleNode RoyalBETA { get; set; }
+        public ToggleNode RoyalBeta { get; set; }
 
         public ToggleNode RoyalOverrideColors { get; set; } = true;
         public ToggleNode RoyalLockedMudule { get; set; } = false;
