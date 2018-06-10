@@ -52,58 +52,52 @@ namespace Random_Features
                     }
 
                     Element element = mapElements[row].Children[elementID].Children[2];
+                    elementID++;
                     RectangleF backgroundPos = RomanPosition(element);
                     Vector2 textPos = new Vector2(backgroundPos.Center.X, backgroundPos.Center.Y);
-                    Color color = Color.White;
+                    Color textColor = Color.White;
+                    Color backgroundColor = Color.Black;
+                    float intersectWiggleRoom = 7;
+
 
 
                     string text = "";
 
-                    if (uiHover.Tooltip.GetClientRect().Intersects(backgroundPos))
-                        continue;
-
                     // Whites
-                    switch (i)
+                    if (i == 0 || i == 1 || i == 2 || i == 3 || i == 4)
                     {
-                        case 0:
-                        case 1:
-                        case 2:
-                        case 3:
-                        case 4:
-                            color = Color.White;
-                            text = (i+1).ToString();
-                            break;
-                        case 5:
-                        case 6:
-                        case 7:
-                        case 8:
-                        case 9:
-                            color = Color.Yellow;
-                            text = (i + 1).ToString();
-                            break;
-                        case 10:
-                        case 11:
-                        case 12:
-                        case 13:
-                        case 14:
-                        case 15:
-                            color = Color.Red;
-                            text = (i + 1).ToString();
-                            break;
-                        case 16:
-                            color = Color.Orange;
-                            text = "U";
-                            break;
+                        textColor = Color.White;
+                        text = (i + 1).ToString();
                     }
+                    else if (i == 5 || i == 6 || i == 7 || i == 8 || i == 9)
+                    {
+                        textColor = Color.Yellow;
+                        text = (i + 1).ToString();
+                    }
+                    else if (i == 10 || i == 11 || i == 12 || i == 13 || i == 14 || i == 15)
+                    {
+                        textColor = Color.Red;
+                        text = (i + 1).ToString();
+                    }
+                    else if (i == 16)
+                    {
+                        textColor = Color.Orange;
+                        text = "U";
+                    }
+                    backgroundPos.Inflate(-intersectWiggleRoom, -intersectWiggleRoom);
+                    if (uiHover.Tooltip.GetClientRect().Intersects(backgroundPos))
+                    {
+                        continue;
+                    }
+                    backgroundPos.Inflate(+intersectWiggleRoom, +intersectWiggleRoom);
 
                     // Generate a nice font size depending on what our settings are
                     int FontStartSize = Settings.FrnFontSize;
                     double Percent = (double) Settings.FrnPercentOfBox / 100;
                     int TextSize = (int) (FontStartSize * Percent);
 
-                    Graphics.DrawBox(backgroundPos, Color.Black);
-                    Graphics.DrawText(text, TextSize, textPos, color, FontDrawFlags.VerticalCenter | FontDrawFlags.Center);
-                    elementID++;
+                    Graphics.DrawBox(backgroundPos, backgroundColor);
+                    Graphics.DrawText(text, TextSize, textPos, textColor, FontDrawFlags.VerticalCenter | FontDrawFlags.Center);
                 }
             }
             catch
