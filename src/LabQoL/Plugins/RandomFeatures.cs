@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using ImGuiNET;
 using PoeHUD.Framework.Helpers;
 using PoeHUD.Hud;
@@ -599,8 +600,9 @@ namespace Random_Features
         private void MonsterResistnaceOnHover()
         {
             if (!Settings.MonsterHoverStats) return;
-            foreach (EntityWrapper entity in _entityCollection)
+            foreach (EntityWrapper entity in _entityCollection.Values.ToList())
             {
+                if (entity is null) continue;
                 if (entity.IsValid)
                     if (entity.HasComponent<Monster>())
                         if (entity.IsAlive)
@@ -642,7 +644,7 @@ namespace Random_Features
         {
             try
             {
-                return GameController.Game.IngameState.UIRoot.Children[1]?.Children[10]?.Children[8];
+                return GameController.Game.IngameState.UIRoot.Children[1]?.Children[11]?.Children[8];
             }
             catch (Exception)
             {
@@ -786,8 +788,9 @@ namespace Random_Features
 
         private void DrawTextLabelEquals(ColorBGRA color, string text, string path)
         {
-            foreach (var entity in _entityCollection)
+            foreach (var entity in _entityCollection.Values.ToList())
             {
+                if (entity is null) continue;
                 if (entity.Path.ToLower().Equals(path.ToLower()))
                 {
                     var camera = GameController.Game.IngameState.Camera;
@@ -812,8 +815,9 @@ namespace Random_Features
 
         private void DrawTextLabelSpecter(ColorBGRA color, string text, string path, int zOffset = 0)
         {
-            foreach (var entity in _entityCollection)
+            foreach (var entity in _entityCollection.Values.ToList())
             {
+                if (entity is null) continue;
                 if (entity.Path.ToLower().Contains(path.ToLower()) && !entity.IsAlive)
                 {
                     var camera = GameController.Game.IngameState.Camera;
@@ -1323,15 +1327,17 @@ namespace Random_Features
         {
             if (GameController.Game.IngameState.IngameUi.Map.LargeMap.IsVisible)
             {
-                foreach (var entity in _entityCollection)
+                foreach (var entity in _entityCollection.Values.ToList())
                 {
+                    if (entity is null) continue;
                     DrawToLargeMiniMap(entity);
                 }
             }
             else if (GameController.Game.IngameState.IngameUi.Map.SmallMinimap.IsVisible)
             {
-                foreach (var entity in _entityCollection)
+                foreach (var entity in _entityCollection.Values.ToList())
                 {
+                    if (entity is null) continue;
                     DrawToSmallMiniMap(entity);
                 }
             }
@@ -1393,8 +1399,9 @@ namespace Random_Features
 
         private void RenderTextLabel(ColorBGRA color, string text, string path)
         {
-            foreach (var entity in _entityCollection)
+            foreach (var entity in _entityCollection.Values.ToList())
             {
+                if (entity is null) continue;
                 if (entity.Path.ToLower().Contains(path.ToLower()))
                 {
                     var camera = GameController.Game.IngameState.Camera;
@@ -1419,8 +1426,9 @@ namespace Random_Features
 
         private void RenderTextLabel(ColorBGRA color, string text, string path, int zOffset)
         {
-            foreach (var entity in _entityCollection)
+            foreach (var entity in _entityCollection.Values.ToList())
             {
+                if (entity is null) continue;
                 if (entity.Path.ToLower().Contains(path.ToLower()))
                 {
                     var camera = GameController.Game.IngameState.Camera;
@@ -1464,8 +1472,9 @@ namespace Random_Features
 
         public void DrawImageToWorld(ImageToWorldData information)
         {
-            foreach (var entity in _entityCollection)
+            foreach (var entity in _entityCollection.Values.ToList())
             {
+                if (entity is null) continue;
                 foreach (var wantedPath in information.Path)
                 {
                     if (entity.Path.Contains(wantedPath))
@@ -1495,8 +1504,9 @@ namespace Random_Features
 
         public void DrawImageToWorld_Chest(ImageToWorldData information)
         {
-            foreach (var entity in _entityCollection)
+            foreach (var entity in _entityCollection.Values.ToList())
             {
+                if (entity is null) continue;
                 foreach (var wantedPath in information.Path)
                 {
                     if (!entity.GetComponent<Chest>().IsOpened && entity.Path.Contains(wantedPath))
@@ -1526,8 +1536,9 @@ namespace Random_Features
 
         public void DrawImageToWorld_Shrine(ImageToWorldData information)
         {
-            foreach (var entity in _entityCollection)
+            foreach (var entity in _entityCollection.Values.ToList())
             {
+                if (entity is null) continue;
                 foreach (var wantedPath in information.Path)
                 {
                     if (entity.GetComponent<Shrine>().IsAvailable && entity.Path.Contains(wantedPath))
