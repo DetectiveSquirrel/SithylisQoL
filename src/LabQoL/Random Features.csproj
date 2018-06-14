@@ -42,10 +42,6 @@
       <HintPath>..\..\..\..\PoEHUD\src\packages\SharpDX.4.0.1\lib\net45\SharpDX.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="SharpDX.Desktop, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\PoEHUD\src\packages\SharpDX.Desktop.4.0.1\lib\net45\SharpDX.Desktop.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="SharpDX.Direct3D9, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
       <HintPath>..\..\..\..\PoEHUD\src\packages\SharpDX.Direct3D9.4.0.1\lib\net45\SharpDX.Direct3D9.dll</HintPath>
       <Private>True</Private>
