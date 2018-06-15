@@ -61,7 +61,9 @@ namespace Random_Features
                 return;
             if (LocalPlayer.Area.IsHideout || LocalPlayer.Area.IsTown && Settings.AreaTransitionHideInTownOrHideout)
                 return;
-            foreach (var entity in GameController.Entities)
+            foreach (var entity in GameController.Entities.ToList())
+            {
+                if (entity is null) continue;
                 try
                 {
                     if (entity.HasComponent<AreaTransition>())
@@ -70,11 +72,11 @@ namespace Random_Features
                         if (entity.GetComponent<AreaTransition>().TransitionType == AreaTransition.AreaTransitionType.Local && Settings.AreaTransitionHideLocalTranition) return;
                         var TextInfo = new MinimapTextInfo
                         {
-                                Text = entity.GetComponent<AreaTransition>().TransitionType == AreaTransition.AreaTransitionType.Local ? "Local Transition" : entity.GetComponent<AreaTransition>().WorldArea.Name,
-                                FontSize = Settings.AreaTransitionSizeSmall,
-                                FontColor = Settings.AreaTransitionColor,
-                                FontBackgroundColor = Settings.AreaTransitionColorBackground,
-                                TextWrapLength = Settings.AreaTransitionMaxLength
+                            Text = entity.GetComponent<AreaTransition>().TransitionType == AreaTransition.AreaTransitionType.Local ? "Local Transition" : entity.GetComponent<AreaTransition>().WorldArea.Name,
+                            FontSize = Settings.AreaTransitionSizeSmall,
+                            FontColor = Settings.AreaTransitionColor,
+                            FontBackgroundColor = Settings.AreaTransitionColorBackground,
+                            TextWrapLength = Settings.AreaTransitionMaxLength
                         };
                         if (TextInfo.Text.Contains("NULL")) return;
 
@@ -85,6 +87,7 @@ namespace Random_Features
                             else if (CompletedTrial(TextInfo.Text) == 2)
                                 TextInfo.Text = $"(✕) {TextInfo.Text}";
                         }
+
                         if (storedAreaEntities.Any(x => x.GridPos == positionedComp.GridPos))
                         {
                             var findIndex = storedAreaEntities.FindIndex(x => x.GridPos == positionedComp.GridPos);
@@ -101,6 +104,7 @@ namespace Random_Features
                 catch
                 {
                 }
+            }
 
             foreach (var storedAreaEntity in storedAreaEntities)
             {

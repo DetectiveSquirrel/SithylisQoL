@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using ImGuiNET;
 using PoeHUD.Controllers;
 using PoeHUD.Framework;
@@ -43,7 +44,7 @@ namespace Random_Features
         };
 
         public static int idPop;
-        private HashSet<EntityWrapper> _entityCollection;
+        private ConcurrentDictionary<long, EntityWrapper> _entityCollection;
 
         public string CustomImagePath;
 
@@ -60,7 +61,7 @@ namespace Random_Features
         {
             buildDate = new DateTime(2000, 1, 1).AddDays(version.Build).AddSeconds(version.Revision * 2);
             PluginVersion = $"{version}";
-            _entityCollection = new HashSet<EntityWrapper>();
+            _entityCollection = new ConcurrentDictionary<long, EntityWrapper>();
             CustomImagePath = PluginDirectory + @"\images\";
             PoeHudImageLocation = PluginDirectory + @"\..\..\textures\";
             GameController.Area.OnAreaChange += area => AreaChange();
@@ -69,9 +70,9 @@ namespace Random_Features
 
         public string ReadElementText(Element element) { return element.AsObject<EntityLabel>().Text; }
 
-        public override void EntityAdded(EntityWrapper entity) { _entityCollection.Add(entity); }
+        public override void EntityAdded(EntityWrapper entity) { _entityCollection[entity.Id] = entity; }
 
-        public override void EntityRemoved(EntityWrapper entity) { _entityCollection.Remove(entity); }
+        public override void EntityRemoved(EntityWrapper entity) { _entityCollection.TryRemove(entity.Id, out _); }
 
         public override void Render()
         {
