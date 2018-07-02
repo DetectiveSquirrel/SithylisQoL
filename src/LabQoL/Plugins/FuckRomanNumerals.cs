@@ -37,7 +37,7 @@ namespace Random_Features
             {
                 if (!IsMapTabOpen()) return;
 
-                List<Element> mapElements = GameController.Game.IngameState.ServerData.StashPanel.VisibleStash.InventoryUiElement.Parent.Children;
+                List<Element> mapElements = GameController.Game.IngameState.ServerData.StashPanel.VisibleStash.InventoryUiElement.Children;
                 Element uiHover = GameController.Game.IngameState.UIHover;
 
 
