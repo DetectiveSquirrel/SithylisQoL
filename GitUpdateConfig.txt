@@ -11,3 +11,4 @@ LICENSE
 config.ini
 .config
 .pdb
+AreaWarningMods.txt
