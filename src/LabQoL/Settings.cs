@@ -297,7 +297,7 @@ namespace Random_Features
         public ToggleNode AreaTransitionHideLocalTranition { get; set; }
         public ToggleNode AreaTransitionHideInTownOrHideout { get; set; }
         public RangeNode<int> AreaTransitionSize { get; set; }
-        public RangeNode<int> AreaTransitionLargeMapYOffset{ get; set; }
+        public RangeNode<int> AreaTransitionLargeMapYOffset { get; set; }
         public RangeNode<int> AreaTransitionSizeSmall { get; set; }
         public RangeNode<int> AreaTransitionMaxLength { get; set; }
         public ColorNode AreaTransitionColor { get; set; }
@@ -357,7 +357,7 @@ namespace Random_Features
         public ImGuiVector2 LastSettingPos { get; set; }
         public ImGuiVector2 LastSettingSize { get; set; }
 
-        
+
         public ToggleNode RoyaleThings { get; set; }
 
         public ToggleNode RoyaleTroveChests { get; set; }
@@ -403,5 +403,45 @@ namespace Random_Features
         public ToggleNode LevelSkillGems { get; set; } = false;
         public HotkeyNode LevelSkillGemsHotkey { get; set; } = Keys.D6;
         public List<RandomFeatures.Person> SkillGemStopList { get; set; } = new List<RandomFeatures.Person>();
+
+
+        // DELVE
+
+        // Delve Pathways
+        public ToggleNode DelvePathWays = true;
+        public RangeNode<int> DelvePathWaysNodeSize = new RangeNode<int>(7, 1, 200);
+        public ColorBGRA DelvePathWaysNodeColor = new ColorBGRA(255, 140, 0, 255);
+
+        // Delve Chests
+        public ToggleNode DelveChests = true;
+        
+        public ToggleNode DelveMiningSuppliesDynamiteChest { get; set; } = true;
+        public RangeNode<int> DelveMiningSuppliesDynamiteChestSize { get; set; } = new RangeNode<int>(15, 1, 200);
+        public ColorNode DelveMiningSuppliesDynamiteChestColor { get; set; } = new ColorBGRA(0, 0, 0, 255);
+        
+        public ToggleNode DelveMiningSuppliesFlaresChest { get; set; } = true;
+        public RangeNode<int> DelveMiningSuppliesFlaresChestSize { get; set; } = new RangeNode<int>(15, 1, 200);
+        public ColorNode DelveMiningSuppliesFlaresChestColor { get; set; } = new ColorBGRA(0, 0, 0, 255);
+        
+        public ToggleNode DelveAzuriteVeinChest { get; set; } = true;
+        public RangeNode<int> DelveAzuriteVeinChestSize { get; set; } = new RangeNode<int>(15, 1, 200);
+        public ColorNode DelveAzuriteVeinChestColor { get; set; } = new ColorBGRA(0, 115, 255, 255);
+        
+        public ToggleNode DelveCurrencyChest { get; set; } = true;
+        public RangeNode<int> DelveCurrencyChestSize { get; set; } = new RangeNode<int>(15, 1, 200);
+        public ColorNode DelveCurrencyChestColor { get; set; } = new ColorBGRA(0, 0, 0, 255);
+
+        public ToggleNode DelveResonatorChest { get; set; } = true;
+        public RangeNode<int> DelveResonatorChestSize { get; set; } = new RangeNode<int>(15, 1, 200);
+        public ColorNode DelveResonatorChestColor { get; set; } = new ColorBGRA(0, 0, 0, 255);
+
+        public ToggleNode DelveFossilChest { get; set; } = true;
+        public RangeNode<int> DelveFossilChestSize { get; set; } = new RangeNode<int>(15, 1, 200);
+        public ColorNode DelveFossilChestColor { get; set; } = new ColorBGRA(0, 0, 0, 255);
+
+        // Catch all remaining Delve chests
+        public ToggleNode DelvePathwayChest { get; set; } = true;
+        public RangeNode<int> DelvePathwayChestSize { get; set; } = new RangeNode<int>(15, 1, 200);
+        public ColorNode DelvePathwayChestColor { get; set; } = new ColorBGRA(0, 131, 0, 255);
     }
 }

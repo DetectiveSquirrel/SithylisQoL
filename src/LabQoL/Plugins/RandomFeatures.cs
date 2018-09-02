@@ -4,6 +4,7 @@ using System.Linq;
 using ImGuiNET;
 using PoeHUD.Framework.Helpers;
 using PoeHUD.Hud;
+using PoeHUD.Hud.Settings;
 using PoeHUD.Models;
 using PoeHUD.Models.Enums;
 using PoeHUD.Poe;
@@ -532,6 +533,94 @@ namespace Random_Features
                     ImGui.PopID();
                     idPop++;
                     ImGui.TreePop();
+                }
+                ImGui.TreePop();
+            }
+
+            if (ImGui.TreeNode("Delve DooDads"))
+            {
+                if (ImGui.TreeNode("Delve Path's"))
+                {
+                    ImGui.PushID(idPop);
+                    Settings.DelvePathWays.Value = ImGuiExtension.Checkbox(Settings.DelvePathWays.Value ? "Show" : "Hidden", Settings.DelvePathWays);
+                    ImGui.PopID();
+                    idPop++;
+
+                    ImGui.Spacing();
+                    ImGui.PushID(idPop);
+                    Settings.DelvePathWaysNodeSize.Value = ImGuiExtension.IntSlider("Size", Settings.DelvePathWaysNodeSize);
+                    ImGui.PopID();
+                    idPop++;
+                    ImGui.PushID(idPop);
+                    Settings.DelvePathWaysNodeColor = ImGuiExtension.ColorPicker("Color", Settings.DelvePathWaysNodeColor);
+                    ImGui.PopID();
+                    idPop++;
+                    ImGui.TreePop();
+                }
+                if (ImGui.TreeNode("Delve Chests"))
+                {
+                    ImGui.PushID(idPop);
+                    Settings.DelveChests.Value = ImGuiExtension.Checkbox(Settings.DelvePathWays.Value ? "Show" : "Hidden", Settings.DelveChests);
+                    ImGui.PopID();
+                    idPop++;
+                    ImGui.Spacing();
+                    ImGui.Spacing();
+                    Settings.DelvePathwayChest.Value = ImGuiExtension.Checkbox($"Hidden Chests on the way##{idPop}", Settings.DelvePathwayChest);
+                    idPop++;
+                    Settings.DelvePathwayChestSize.Value = ImGuiExtension.IntSlider($"Size##{idPop}", Settings.DelvePathwayChestSize);
+                    idPop++;
+                    Settings.DelvePathwayChestColor.Value = ImGuiExtension.ColorPicker($"Color##{idPop}", Settings.DelvePathwayChestColor);
+                    idPop++;
+                    ImGui.Spacing();
+                    ImGui.Spacing();
+                    Settings.DelveMiningSuppliesDynamiteChest.Value = ImGuiExtension.Checkbox($"Dynamite Supplies##{idPop}", Settings.DelveMiningSuppliesDynamiteChest);
+                    idPop++;
+                    Settings.DelveMiningSuppliesDynamiteChestSize.Value = ImGuiExtension.IntSlider($"Size##{idPop}", Settings.DelveMiningSuppliesDynamiteChestSize);
+                    idPop++;
+                    Settings.DelveMiningSuppliesDynamiteChestColor.Value = ImGuiExtension.ColorPicker($"Color##{idPop}", Settings.DelveMiningSuppliesDynamiteChestColor);
+                    idPop++;
+                    ImGui.Spacing();
+                    ImGui.Spacing();
+                    Settings.DelveMiningSuppliesFlaresChest.Value = ImGuiExtension.Checkbox($"Flare Supplies##{idPop}", Settings.DelveMiningSuppliesFlaresChest);
+                    idPop++;
+                    Settings.DelveMiningSuppliesFlaresChestSize.Value = ImGuiExtension.IntSlider($"Size##{idPop}", Settings.DelveMiningSuppliesFlaresChestSize);
+                    idPop++;
+                    Settings.DelveMiningSuppliesFlaresChestColor.Value = ImGuiExtension.ColorPicker($"Color##{idPop}", Settings.DelveMiningSuppliesFlaresChestColor);
+                    idPop++;
+                    ImGui.Spacing();
+                    ImGui.Spacing();
+                    Settings.DelveCurrencyChest.Value = ImGuiExtension.Checkbox($"Currency Chests##{idPop}", Settings.DelveCurrencyChest);
+                    idPop++;
+                    Settings.DelveCurrencyChestSize.Value = ImGuiExtension.IntSlider($"Size##{idPop}", Settings.DelveCurrencyChestSize);
+                    idPop++;
+                    Settings.DelveCurrencyChestColor.Value = ImGuiExtension.ColorPicker($"Color##{idPop}", Settings.DelveCurrencyChestColor);
+                    idPop++;
+                    ImGui.Spacing();
+                    ImGui.Spacing();
+                    Settings.DelveAzuriteVeinChest.Value = ImGuiExtension.Checkbox($"Azurite Veins##{idPop}", Settings.DelveAzuriteVeinChest);
+                    idPop++;
+                    Settings.DelveAzuriteVeinChestSize.Value = ImGuiExtension.IntSlider($"Size##{idPop}", Settings.DelveAzuriteVeinChestSize);
+                    idPop++;
+                    Settings.DelveAzuriteVeinChestColor.Value = ImGuiExtension.ColorPicker($"Color##{idPop}", Settings.DelveAzuriteVeinChestColor);
+                    idPop++;
+                    ImGui.Spacing();
+                    ImGui.Spacing();
+                    Settings.DelveResonatorChest.Value = ImGuiExtension.Checkbox($"Resonator Chests##{idPop}", Settings.DelveResonatorChest);
+                    idPop++;
+                    Settings.DelveResonatorChestSize.Value = ImGuiExtension.IntSlider($"Size##{idPop}", Settings.DelveResonatorChestSize);
+                    idPop++;
+                    Settings.DelveResonatorChestColor.Value = ImGuiExtension.ColorPicker($"Color##{idPop}", Settings.DelveResonatorChestColor);
+                    idPop++;
+                    ImGui.Spacing();
+                    ImGui.Spacing();
+                    Settings.DelveFossilChest.Value = ImGuiExtension.Checkbox($"Fossil Chests##{idPop}", Settings.DelveFossilChest);
+                    idPop++;
+                    Settings.DelveFossilChestSize.Value = ImGuiExtension.IntSlider($"Size##{idPop}", Settings.DelveFossilChestSize);
+                    idPop++;
+                    Settings.DelveFossilChestColor.Value = ImGuiExtension.ColorPicker($"Color##{idPop}", Settings.DelveFossilChestColor);
+                    idPop++;
+                    ImGui.Spacing();
+                    ImGui.Spacing();
                 }
                 ImGui.TreePop();
             }
@@ -1230,6 +1319,68 @@ namespace Random_Features
                 {
                     return new MapIcon(e, new HudTexture(CustomImagePath + "abyss-node-small.png", Settings.AbyssLargeNodeColor), () => true,
                             Settings.AbyssLargeNodeSize);
+                }
+            }
+
+            if (Settings.DelvePathWays)
+            {
+                if (e.Path.Contains("Metadata/Terrain/Leagues/Delve/Objects/DelveLight"))
+                {
+                    return new MapIcon(e, new HudTexture(CustomImagePath + "abyss-crack.png", Settings.DelvePathWaysNodeColor), () => true,
+                            Settings.DelvePathWaysNodeSize);
+                }
+            }
+            if (Settings.DelveChests)
+            {
+                if (!e.GetComponent<Chest>().IsOpened)
+                {
+                    if (e.Path.Contains("Metadata/Chests/DelveChests/DelveMiningSuppliesDynamite"))
+                    {
+                        return new MapIcon(e, new HudTexture(CustomImagePath + "//Delve//Bombs.png", Settings.DelveMiningSuppliesDynamiteChestColor),
+                            () => Settings.DelveMiningSuppliesDynamiteChest, Settings.DelveMiningSuppliesDynamiteChestSize);
+                    }
+
+                    if (e.Path.Contains("Metadata/Chests/DelveChests/DelveMiningSuppliesFlares"))
+                    {
+                        return new MapIcon(e, new HudTexture(CustomImagePath + "//Delve//Flare.png", Settings.DelveMiningSuppliesFlaresChestColor),
+                            () => Settings.DelveMiningSuppliesFlaresChest, Settings.DelveMiningSuppliesFlaresChestSize);
+                    }
+
+                    if (e.Path.Contains("Metadata/Chests/DelveChests/OffPathCurrency"))
+                    {
+                        return new MapIcon(e, new HudTexture(CustomImagePath + "//Delve//Currency.png", Settings.DelveCurrencyChestColor),
+                            () => Settings.DelveCurrencyChest, Settings.DelveCurrencyChestSize);
+                    }
+                    
+                    if (e.Path.Contains("Metadata/Chests/DelveChests/DelveAzuriteVein"))
+                    {
+                        return new MapIcon(e, new HudTexture(PoeHudImageLocation + "strongbox.png", Settings.DelveAzuriteVeinChestColor),
+                            () => Settings.DelveAzuriteVeinChest, Settings.DelveAzuriteVeinChestSize);
+                    }
+                    
+                    if (e.Path.Contains("Metadata/Chests/DelveChests/Resonator"))
+                    {
+                        return new MapIcon(e, new HudTexture(CustomImagePath + "//Delve//Upgrade2x2A.png", Settings.DelveResonatorChestColor),
+                            () => Settings.DelveResonatorChest, Settings.DelveResonatorChestSize);
+                    }
+                    
+                    if (e.Path.EndsWith("FossilChest") && e.Path.StartsWith("Metadata/Chests/DelveChests"))
+                    {
+                        return new MapIcon(e, new HudTexture(CustomImagePath + "//Delve//AbberantFossil.png", Settings.DelveFossilChestColor),
+                            () => Settings.DelveFossilChest, Settings.DelveFossilChestSize);
+                    }
+
+                    // catch missing delve chests
+                    if (Settings.DelvePathwayChest)
+                    {
+                        if (e.Path.Contains("Metadata/Chests/DelveChests"))
+                        {
+                            return new MapIcon(e,
+                                new HudTexture(PoeHudImageLocation + "strongbox.png", Settings.DelvePathwayChestColor),
+                                () => true,
+                                Settings.DelvePathwayChestSize);
+                        }
+                    }
                 }
             }
 
