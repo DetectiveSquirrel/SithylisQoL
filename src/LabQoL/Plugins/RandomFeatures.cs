@@ -1332,7 +1332,7 @@ namespace Random_Features
 
             if (Settings.DelvePathWays)
             {
-                if (e.Path.Contains("Metadata/Terrain/Leagues/Delve/Objects/DelveLight"))
+                if (e.Path.EndsWith("Metadata/Terrain/Leagues/Delve/Objects/DelveLight"))
                 {
                     return new MapIcon(e, new HudTexture(CustomImagePath + "abyss-crack.png", Settings.DelvePathWaysNodeColor), () => true,
                             Settings.DelvePathWaysNodeSize);
@@ -1389,8 +1389,8 @@ namespace Random_Features
                         return new MapIcon(e, new HudTexture(CustomImagePath + "//Delve//Currency.png", Settings.DelveCurrencyChestColor),
                             () => Settings.DelveCurrencyChest, Settings.DelveCurrencyChestSize);
                     }
-                    
-                    if (e.Path.Contains("Metadata/Chests/DelveChests/DelveAzuriteVein"))
+
+                    if (e.Path.Contains("Metadata/Chests/DelveChests") && e.Path.Contains("DelveAzuriteVein") && !e.Path.Contains("Encounter"))
                     {
                         return new MapIcon(e, new HudTexture(PoeHudImageLocation + "strongbox.png", Settings.DelveAzuriteVeinChestColor),
                             () => Settings.DelveAzuriteVeinChest, Settings.DelveAzuriteVeinChestSize);
@@ -1437,7 +1437,7 @@ namespace Random_Features
                     // catch missing delve chests
                     if (Settings.DelvePathwayChest)
                     {
-                        if (e.Path.Contains("Metadata/Chests/DelveChests"))
+                        if (e.Path.Contains("Metadata/Chests/DelveChests") && !e.Path.Contains("Encounter"))
                         {
                             return new MapIcon(e,
                                 new HudTexture(PoeHudImageLocation + "strongbox.png", Settings.DelvePathwayChestColor),
