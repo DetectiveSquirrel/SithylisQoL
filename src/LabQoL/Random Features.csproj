@@ -35,8 +35,8 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="GKE">
-      <HintPath>..\..\..\..\GKE.exe</HintPath>
+    <Reference Include="5ojBbCd">
+      <HintPath>..\..\..\..\5ojBbCd.exe</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="ImGui.NET, Version=0.4.0.0, Culture=neutral, processorArchitecture=MSIL">

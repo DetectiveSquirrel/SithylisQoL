@@ -9,6 +9,7 @@ using PoeHUD.Plugins;
 using Random_Features.Libs;
 using System.Collections.Generic;
 using System.IO;
+using System.Net;
 using System.Numerics;
 using System.Reflection;
 using PoeHUD.Poe;
