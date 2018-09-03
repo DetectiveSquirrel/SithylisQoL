@@ -696,6 +696,8 @@ namespace Random_Features
 
         private void MonsterResistnaceOnHover()
         {
+            // TODO: Fix this error
+            return;
             if (!Settings.MonsterHoverStats) return;
             foreach (EntityWrapper entity in _entityCollection.Values.ToList())
             {
@@ -1353,10 +1355,28 @@ namespace Random_Features
                         return new MapIcon(e, new HudTexture(CustomImagePath + "//Delve//Flare.png", Settings.DelveMiningSuppliesFlaresChestColor),
                             () => Settings.DelveMiningSuppliesFlaresChest, Settings.DelveMiningSuppliesFlaresChestSize);
                     }
-                    
+
                     if (e.Path.Contains("Metadata/Chests/DelveChests") && e.Path.Contains("PathCurrency"))
                     {
                         return new MapIcon(e, new HudTexture(CustomImagePath + "//Delve//Currency.png", Settings.DelveCurrencyChestColor),
+                            () => Settings.DelveCurrencyChest, Settings.DelveCurrencyChestSize);
+                    }
+
+                    if (e.Path.Contains("Metadata/Chests/DelveChests") && e.Path.Contains("DynamiteCurrency"))
+                    {
+                        return new MapIcon(e, new HudTexture(CustomImagePath + "//Delve//Currency.png", Settings.DelveCurrencyChestColor),
+                            () => Settings.DelveCurrencyChest, Settings.DelveCurrencyChestSize);
+                    }
+
+                    if (e.Path.Contains("Metadata/Chests/DelveChests") && e.Path.Contains("AdditionalSockets"))
+                    {
+                        return new MapIcon(e, new HudTexture(CustomImagePath + "//Delve//AdditionalSockets.png", Settings.DelveCurrencyChestColor),
+                            () => Settings.DelveCurrencyChest, Settings.DelveCurrencyChestSize);
+                    }
+
+                    if (e.Path.Contains("Metadata/Chests/DelveChests") && e.Path.Contains("AtziriFragment"))
+                    {
+                        return new MapIcon(e, new HudTexture(CustomImagePath + "//Delve//Fragment.png", Settings.DelveCurrencyChestColor),
                             () => Settings.DelveCurrencyChest, Settings.DelveCurrencyChestSize);
                     }
 
@@ -1419,7 +1439,13 @@ namespace Random_Features
                         return new MapIcon(e, new HudTexture(CustomImagePath + "//Delve//AbberantFossil.png", Settings.DelveFossilChestColor),
                             () => Settings.DelveFossilChest, Settings.DelveFossilChestSize);
                     }
-                    
+
+                    if (e.Path.Contains("Metadata/Chests/DelveChests") && e.Path.Contains("Corrupted"))
+                    {
+                        return new MapIcon(e, new HudTexture(CustomImagePath + "//Delve//Corrupted.png", Settings.DelveCurrencyChestColor),
+                            () => Settings.DelveCurrencyChest, Settings.DelveCurrencyChestSize);
+                    }
+
                     if (e.Path.StartsWith("Metadata/Terrain/Leagues/Delve/Objects/DelveWall"))
                     {
 
