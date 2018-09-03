@@ -160,7 +160,7 @@ namespace Random_Features
             }
 
             Element SkillGemLevelUps = GameController.Game.IngameState.UIRoot.GetChildAtIndex(1)
-                                                     .GetChildAtIndex(3)
+                                                     .GetChildAtIndex(4)
                                                      .GetChildAtIndex(1)
                                                      .GetChildAtIndex(0);
             if (SkillGemLevelUps == null || !SkillGemLevelUps.IsVisible) return;
