@@ -39,6 +39,10 @@
       <HintPath>..\..\..\..\ImGui.NET.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="PoeHUD">
+      <HintPath>..\..\..\PoeHUD.exe</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="SharpDX, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
       <HintPath>..\..\..\..\SharpDX.dll</HintPath>
       <Private>False</Private>
@@ -69,10 +73,6 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Xml" />
-    <Reference Include="UZ6d">
-      <HintPath>..\..\..\..\UZ6d.exe</HintPath>
-      <Private>False</Private>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core.cs" />

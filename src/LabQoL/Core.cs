@@ -63,6 +63,8 @@ namespace Random_Features
             buildDate = new DateTime(2000, 1, 1).AddDays(version.Build).AddSeconds(version.Revision * 2);
             PluginVersion = $"{version}";
             _entityCollection = new ConcurrentDictionary<long, EntityWrapper>();
+
+            storedAreaEntities = new List<StoredEntity>();
             CustomImagePath = PluginDirectory + @"\images\";
             PoeHudImageLocation = PluginDirectory + @"\..\..\textures\";
             GameController.Area.OnAreaChange += area => AreaChange();

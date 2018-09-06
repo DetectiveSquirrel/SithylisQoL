@@ -16,6 +16,12 @@ namespace Random_Features
     {
         public static List<StoredEntity> storedAreaEntities = new List<StoredEntity>();
 
+        public override void OnPluginDestroyForHotReload()
+        {
+            base.OnPluginDestroyForHotReload();
+            storedAreaEntities = new List<StoredEntity>();
+        }
+
         public void AreaTranitionsMenu()
         {
             Settings.AreaTransition.Value = ImGuiExtension.Checkbox("Shows Area Transition Names", Settings.AreaTransition.Value);

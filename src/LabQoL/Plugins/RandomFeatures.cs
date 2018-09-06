@@ -1380,6 +1380,12 @@ namespace Random_Features
                             () => Settings.DelveCurrencyChest, Settings.DelveCurrencyChestSize);
                     }
 
+                    if (e.Path.Contains("Metadata/Chests/DelveChests") && e.Path.Contains("PaleCourtFragment"))
+                    {
+                        return new MapIcon(e, new HudTexture(CustomImagePath + "//Delve//PaleCourtComplete.png", Settings.DelveCurrencyChestColor),
+                            () => Settings.DelveCurrencyChest, Settings.DelveCurrencyChestSize);
+                    }
+
                     if (e.Path.Contains("Metadata/Chests/DelveChests") && e.Path.Contains("Essence"))
                     {
                         return new MapIcon(e, new HudTexture(CustomImagePath + "//Delve//Essence.png", Settings.DelveCurrencyChestColor),
@@ -1419,7 +1425,7 @@ namespace Random_Features
                     if (e.Path.Contains("Metadata/Chests/DelveChests") && e.Path.Contains("Resonator"))
                     {
                         return new MapIcon(e, new HudTexture(CustomImagePath + "//Delve//Upgrade2x2A.png", Settings.DelveResonatorChestColor),
-                            () => Settings.DelveResonatorChest, Settings.DelveResonatorChestSize);
+                            () => Settings.DelveResonatorChest, Settings.DelveResonatorChestSize * 0.7f);
                     }
 
                     if (e.Path.Contains("Metadata/Chests/DelveChests/DelveChestArmourMovementSpeed"))
@@ -1443,6 +1449,12 @@ namespace Random_Features
                     if (e.Path.Contains("Metadata/Chests/DelveChests") && e.Path.Contains("Corrupted"))
                     {
                         return new MapIcon(e, new HudTexture(CustomImagePath + "//Delve//Corrupted.png", Settings.DelveCurrencyChestColor),
+                            () => Settings.DelveCurrencyChest, Settings.DelveCurrencyChestSize);
+                    }
+
+                    if (e.Path.Contains("Metadata/Chests/DelveChests") && e.Path.Contains("Map"))
+                    {
+                        return new MapIcon(e, new HudTexture(CustomImagePath + "//Delve//Map.png", Settings.DelveCurrencyChestColor),
                             () => Settings.DelveCurrencyChest, Settings.DelveCurrencyChestSize);
                     }
 
