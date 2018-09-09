@@ -1440,11 +1440,160 @@ namespace Random_Features
                             () => Settings.DelveCurrencyChest, Settings.DelveCurrencyChestSize * 1.3f);
                     }
 
-                    if (e.Path.EndsWith("FossilChest") && e.Path.StartsWith("Metadata/Chests/DelveChests"))
+                    // Begin Fossil Chests
+                    // All Fossils Listed
+
+                    if (e.Path.Contains("Metadata/Chests/DelveChests/AbberantFossilChest"))
                     {
-                        return new MapIcon(e, new HudTexture(CustomImagePath + "//Delve//AbberantFossil.png", Settings.DelveFossilChestColor),
+                        return new MapIcon(e, new HudTexture(CustomImagePath + "//Delve////Fossils//AbberantFossil.png", Settings.DelveFossilChestColor),
                             () => Settings.DelveFossilChest, Settings.DelveFossilChestSize);
                     }
+
+                    if (e.Path.Contains("Metadata/Chests/DelveChests/DenseFossilChest"))
+                    {
+                        return new MapIcon(e, new HudTexture(CustomImagePath + "//Delve////Fossils//DenseFossil.png", Settings.DelveFossilChestColor),
+                            () => Settings.DelveFossilChest, Settings.DelveFossilChestSize);
+                    }
+
+                    if (e.Path.Contains("Metadata/Chests/DelveChests/FrigidFossilChest"))
+                    {
+                        return new MapIcon(e, new HudTexture(CustomImagePath + "//Delve////Fossils//FrigidFossil.png", Settings.DelveFossilChestColor),
+                            () => Settings.DelveFossilChest, Settings.DelveFossilChestSize);
+                    }
+
+                    if (e.Path.Contains("Metadata/Chests/DelveChests/ScorchedFossilChest"))
+                    {
+                        return new MapIcon(e, new HudTexture(CustomImagePath + "//Delve////Fossils//ScorchedFossil.png", Settings.DelveFossilChestColor),
+                            () => Settings.DelveFossilChest, Settings.DelveFossilChestSize);
+                    }
+
+                    if (e.Path.Contains("Metadata/Chests/DelveChests/SerratedFossilChest"))
+                    {
+                        return new MapIcon(e, new HudTexture(CustomImagePath + "//Delve////Fossils//SerratedFossil.png", Settings.DelveFossilChestColor),
+                            () => Settings.DelveFossilChest, Settings.DelveFossilChestSize);
+                    }
+
+                    if (e.Path.Contains("Metadata/Chests/DelveChests/MetallicFossilChest"))
+                    {
+                        return new MapIcon(e, new HudTexture(CustomImagePath + "//Delve////Fossils//MetallicFossil.png", Settings.DelveFossilChestColor),
+                            () => Settings.DelveFossilChest, Settings.DelveFossilChestSize);
+                    }
+
+                    if (e.Path.Contains("Metadata/Chests/DelveChests/BoundFossilChest"))
+                    {
+                        return new MapIcon(e, new HudTexture(CustomImagePath + "//Delve////Fossils//BoundFossil.png", Settings.DelveFossilChestColor),
+                            () => Settings.DelveFossilChest, Settings.DelveFossilChestSize);
+                    }
+
+                    if (e.Path.Contains("Metadata/Chests/DelveChests/PerfectFossilChest"))
+                    {
+                        return new MapIcon(e, new HudTexture(CustomImagePath + "//Delve////Fossils//PerfectFossil.png", Settings.DelveFossilChestColor),
+                            () => Settings.DelveFossilChest, Settings.DelveFossilChestSize);
+                    }
+
+                    if (e.Path.Contains("Metadata/Chests/DelveChests/JaggedFossilChest"))
+                    {
+                        return new MapIcon(e, new HudTexture(CustomImagePath + "//Delve////Fossils//JaggedFossil.png", Settings.DelveFossilChestColor),
+                            () => Settings.DelveFossilChest, Settings.DelveFossilChestSize);
+                    }
+
+                    if (e.Path.Contains("Metadata/Chests/DelveChests/PristineFossilChest"))
+                    {
+                        return new MapIcon(e, new HudTexture(CustomImagePath + "//Delve////Fossils//PristineFossil.png", Settings.DelveFossilChestColor),
+                            () => Settings.DelveFossilChest, Settings.DelveFossilChestSize);
+                    }
+
+                    if (e.Path.Contains("Metadata/Chests/DelveChests/EncrustedFossilChest"))
+                    {
+                        return new MapIcon(e, new HudTexture(CustomImagePath + "//Delve////Fossils//EncrustedFossil.png", Settings.DelveFossilChestColor),
+                            () => Settings.DelveFossilChest, Settings.DelveFossilChestSize);
+                    }
+
+                    if (e.Path.Contains("Metadata/Chests/DelveChests/CorrodedFossilChest"))
+                    {
+                        return new MapIcon(e, new HudTexture(CustomImagePath + "//Delve////Fossils//CorrodedFossil.png", Settings.DelveFossilChestColor),
+                            () => Settings.DelveFossilChest, Settings.DelveFossilChestSize);
+                    }
+
+                    if (e.Path.Contains("Metadata/Chests/DelveChests/EnchantedFossilChest"))
+                    {
+                        return new MapIcon(e, new HudTexture(CustomImagePath + "//Delve////Fossils//EnchantedFossil.png", Settings.DelveFossilChestColor),
+                            () => Settings.DelveFossilChest, Settings.DelveFossilChestSize);
+                    }
+
+                    if (e.Path.Contains("Metadata/Chests/DelveChests/PrismaticFossilChest"))
+                    {
+                        return new MapIcon(e, new HudTexture(CustomImagePath + "//Delve////Fossils//PrismaticFossil.png", Settings.DelveFossilChestColor),
+                            () => Settings.DelveFossilChest, Settings.DelveFossilChestSize);
+                    }
+
+                    if (e.Path.Contains("Metadata/Chests/DelveChests/AethericFossilChest"))
+                    {
+                        return new MapIcon(e, new HudTexture(CustomImagePath + "//Delve////Fossils//AethericFossil.png", Settings.DelveFossilChestColor),
+                            () => Settings.DelveFossilChest, Settings.DelveFossilChestSize);
+                    }
+
+                    if (e.Path.Contains("Metadata/Chests/DelveChests/LucentFossilChest"))
+                    {
+                        return new MapIcon(e, new HudTexture(CustomImagePath + "//Delve////Fossils//LucentFossil.png", Settings.DelveFossilChestColor),
+                            () => Settings.DelveFossilChest, Settings.DelveFossilChestSize);
+                    }
+
+                    if (e.Path.Contains("Metadata/Chests/DelveChests/SanctifiedFossilChest"))
+                    {
+                        return new MapIcon(e, new HudTexture(CustomImagePath + "//Delve////Fossils//SanctifiedFossil.png", Settings.DelveFossilChestColor),
+                            () => Settings.DelveFossilChest, Settings.DelveFossilChestSize);
+                    }
+
+                    if (e.Path.Contains("Metadata/Chests/DelveChests/GildedFossilChest"))
+                    {
+                        return new MapIcon(e, new HudTexture(CustomImagePath + "//Delve////Fossils//GildedFossil.png", Settings.DelveFossilChestColor),
+                            () => Settings.DelveFossilChest, Settings.DelveFossilChestSize);
+                    }
+
+                    if (e.Path.Contains("Metadata/Chests/DelveChests/TangledFossilChest"))
+                    {
+                        return new MapIcon(e, new HudTexture(CustomImagePath + "//Delve////Fossils//TangledFossil.png", Settings.DelveFossilChestColor),
+                            () => Settings.DelveFossilChest, Settings.DelveFossilChestSize);
+                    }
+
+                    if (e.Path.Contains("Metadata/Chests/DelveChests/BloodstainedFossilChest"))
+                    {
+                        return new MapIcon(e, new HudTexture(CustomImagePath + "//Delve////Fossils//BloodstainedFossil.png", Settings.DelveFossilChestColor),
+                            () => Settings.DelveFossilChest, Settings.DelveFossilChestSize);
+                    }
+
+                    if (e.Path.Contains("Metadata/Chests/DelveChests/GlyphicFossilChest"))
+                    {
+                        return new MapIcon(e, new HudTexture(CustomImagePath + "//Delve////Fossils//GlyphicFossil.png", Settings.DelveFossilChestColor),
+                            () => Settings.DelveFossilChest, Settings.DelveFossilChestSize);
+                    }
+
+                    if (e.Path.Contains("Metadata/Chests/DelveChests/HollowFossilChest"))
+                    {
+                        return new MapIcon(e, new HudTexture(CustomImagePath + "//Delve////Fossils//HollowFossil.png", Settings.DelveFossilChestColor),
+                            () => Settings.DelveFossilChest, Settings.DelveFossilChestSize);
+                    }
+
+                    if (e.Path.Contains("Metadata/Chests/DelveChests/ShudderingFossilChest"))
+                    {
+                        return new MapIcon(e, new HudTexture(CustomImagePath + "//Delve////Fossils//ShudderingFossil.png", Settings.DelveFossilChestColor),
+                            () => Settings.DelveFossilChest, Settings.DelveFossilChestSize);
+                    }
+
+                    if (e.Path.Contains("Metadata/Chests/DelveChests/FracturedFossilChest"))
+                    {
+                        return new MapIcon(e, new HudTexture(CustomImagePath + "//Delve////Fossils//FracturedFossil.png", Settings.DelveFossilChestColor),
+                            () => Settings.DelveFossilChest, Settings.DelveFossilChestSize);
+                    }
+
+                    if (e.Path.Contains("Metadata/Chests/DelveChests/FacetedFossilChest"))
+                    {
+                        return new MapIcon(e, new HudTexture(CustomImagePath + "//Delve////Fossils//FacetedFossil.png", Settings.DelveFossilChestColor),
+                            () => Settings.DelveFossilChest, Settings.DelveFossilChestSize);
+                    }
+
+                    // End of Fossils
 
                     if (e.Path.Contains("Metadata/Chests/DelveChests") && e.Path.Contains("Corrupted"))
                     {
