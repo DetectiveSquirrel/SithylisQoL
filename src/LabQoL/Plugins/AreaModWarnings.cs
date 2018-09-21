@@ -84,75 +84,75 @@ namespace Random_Features
 
         public void DrawBadMods()
         {
-            var AreaMods = GameController.Game.IngameState.Data.MapStats;
-            var BadMods_Present = new List<string>();
-            foreach (var areaMod in AreaMods)
-            {
-                if (IsBadMod(areaMod.Key))
-                {
-                    string modString = "";
-                    modString = GetEnumDescription(areaMod.Key).Replace("Map ", "");
+            //var AreaMods = GameController.Game.IngameState.Data.MapStats;
+            //var BadMods_Present = new List<string>();
+            //foreach (var areaMod in AreaMods)
+            //{
+            //    if (IsBadMod(areaMod.Key))
+            //    {
+            //        string modString = "";
+            //        modString = GetEnumDescription(areaMod.Key).Replace("Map ", "");
 
-                    if (modString.Contains("+%"))
-                    {
-                        modString = modString.Replace("+%", $"+{areaMod.Value}%");
-                    }
-                    else if (modString.Contains(" X%"))
-                    {
-                        modString = modString.Replace(" X%", $" {areaMod.Value}%");
-                    }
-                    else if (modString.Contains(" X"))
-                    {
-                        modString = modString.Replace(" X", $" {areaMod.Value}");
-                    }
-                    else if (modString.Contains(" +"))
-                    {
-                        modString = modString.Replace(" +", $" +{areaMod.Value}");
-                    }
-                    else if (modString.Contains("%"))
-                    {
-                        modString = modString.Replace("%", $"{areaMod.Value}%");
-                    }
+            //        if (modString.Contains("+%"))
+            //        {
+            //            modString = modString.Replace("+%", $"+{areaMod.Value}%");
+            //        }
+            //        else if (modString.Contains(" X%"))
+            //        {
+            //            modString = modString.Replace(" X%", $" {areaMod.Value}%");
+            //        }
+            //        else if (modString.Contains(" X"))
+            //        {
+            //            modString = modString.Replace(" X", $" {areaMod.Value}");
+            //        }
+            //        else if (modString.Contains(" +"))
+            //        {
+            //            modString = modString.Replace(" +", $" +{areaMod.Value}");
+            //        }
+            //        else if (modString.Contains("%"))
+            //        {
+            //            modString = modString.Replace("%", $"{areaMod.Value}%");
+            //        }
 
-                    modString = modString.Replace("%", "%%");
+            //        modString = modString.Replace("%", "%%");
 
-                    BadMods_Present.Add("(" + areaMod.Value + ") " + modString);
-                }
-            }
+            //        BadMods_Present.Add("(" + areaMod.Value + ") " + modString);
+            //    }
+            //}
 
-            if (BadMods_Present.Count > 0)
-            {
-                var refBool = true;
-                float menuOpacity = ImGui.GetStyle().GetColor(ColorTarget.ChildBg).W;
-                var TextColor = ImGui.GetStyle().GetColor(ColorTarget.Text);
-                var LongestText = ImGui.GetTextSize(BadMods_Present.OrderByDescending(s => s.Length).First());
-                var windowPadding = ImGui.GetStyle().WindowPadding;
-                var ItemSpacing = ImGui.GetStyle().ItemSpacing;
+            //if (BadMods_Present.Count > 0)
+            //{
+            //    var refBool = true;
+            //    float menuOpacity = ImGui.GetStyle().GetColor(ColorTarget.ChildBg).W;
+            //    var TextColor = ImGui.GetStyle().GetColor(ColorTarget.Text);
+            //    var LongestText = ImGui.GetTextSize(BadMods_Present.OrderByDescending(s => s.Length).First());
+            //    var windowPadding = ImGui.GetStyle().WindowPadding;
+            //    var ItemSpacing = ImGui.GetStyle().ItemSpacing;
 
-                if (Settings.AreaModWarningOverrideColors)
-                {
-                    ImGui.PushStyleColor(ColorTarget.WindowBg, ToImVector4(Settings.AreaModWarningBackground.ToVector4()));
-                    menuOpacity = ImGui.GetStyle().GetColor(ColorTarget.WindowBg).W;
-                }
+            //    if (Settings.AreaModWarningOverrideColors)
+            //    {
+            //        ImGui.PushStyleColor(ColorTarget.WindowBg, ToImVector4(Settings.AreaModWarningBackground.ToVector4()));
+            //        menuOpacity = ImGui.GetStyle().GetColor(ColorTarget.WindowBg).W;
+            //    }
 
-                ImGui.BeginWindow("RandomFeatures_BadAreaModWarning", ref refBool, new Vector2(200, 150), menuOpacity, Settings.AreaModWarningLocked ? WindowFlags.NoCollapse | WindowFlags.NoScrollbar | WindowFlags.NoMove | WindowFlags.NoResize | WindowFlags.NoInputs | WindowFlags.NoBringToFrontOnFocus | WindowFlags.NoTitleBar | WindowFlags.NoFocusOnAppearing : WindowFlags.Default | WindowFlags.NoTitleBar | WindowFlags.ResizeFromAnySide);
+            //    ImGui.BeginWindow("RandomFeatures_BadAreaModWarning", ref refBool, new Vector2(200, 150), menuOpacity, Settings.AreaModWarningLocked ? WindowFlags.NoCollapse | WindowFlags.NoScrollbar | WindowFlags.NoMove | WindowFlags.NoResize | WindowFlags.NoInputs | WindowFlags.NoBringToFrontOnFocus | WindowFlags.NoTitleBar | WindowFlags.NoFocusOnAppearing : WindowFlags.Default | WindowFlags.NoTitleBar | WindowFlags.ResizeFromAnySide);
 
-                ImGui.SetWindowSize(new Vector2(
-                        LongestText.X + windowPadding.X * 2,
-                        LongestText.Y * (BadMods_Present.Count + 1) + windowPadding.Y * 2 + (ItemSpacing.Y * BadMods_Present.Count)
-                ));
-                if (Settings.AreaModWarningOverrideColors)
-                {
-                    ImGui.PopStyleColor();
-                }
+            //    ImGui.SetWindowSize(new Vector2(
+            //            LongestText.X + windowPadding.X * 2,
+            //            LongestText.Y * (BadMods_Present.Count + 1) + windowPadding.Y * 2 + (ItemSpacing.Y * BadMods_Present.Count)
+            //    ));
+            //    if (Settings.AreaModWarningOverrideColors)
+            //    {
+            //        ImGui.PopStyleColor();
+            //    }
 
-                ImGui.Text("Mods Found", Settings.AreaModWarningOverrideColors ? ToImVector4(Settings.AreaModWarningTitle.ToVector4()) : TextColor);
-                foreach (var BadMod in BadMods_Present)
-                {
-                    ImGui.Text(BadMod, Settings.AreaModWarningOverrideColors ? ToImVector4(Settings.AreaModWarningBodyText.ToVector4()) : TextColor);
-                }
-                ImGui.EndWindow();
-            }
+            //    ImGui.Text("Mods Found", Settings.AreaModWarningOverrideColors ? ToImVector4(Settings.AreaModWarningTitle.ToVector4()) : TextColor);
+            //    foreach (var BadMod in BadMods_Present)
+            //    {
+            //        ImGui.Text(BadMod, Settings.AreaModWarningOverrideColors ? ToImVector4(Settings.AreaModWarningBodyText.ToVector4()) : TextColor);
+            //    }
+            //    ImGui.EndWindow();
+            //}
         }
 
         public bool IsBadMod(GameStat AreaMod)

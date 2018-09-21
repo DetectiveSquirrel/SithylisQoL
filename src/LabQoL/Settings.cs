@@ -447,5 +447,8 @@ namespace Random_Features
         public ToggleNode DelvePathwayChest { get; set; } = true;
         public RangeNode<int> DelvePathwayChestSize { get; set; } = new RangeNode<int>(15, 1, 200);
         public ColorNode DelvePathwayChestColor { get; set; } = new ColorBGRA(0, 131, 0, 255);
+
+        // Delve Map Grid
+        public ToggleNode DelveGridMap { get; set; } = true;
     }
 }

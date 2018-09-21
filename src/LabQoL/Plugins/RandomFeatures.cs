@@ -539,6 +539,14 @@ namespace Random_Features
 
             if (ImGui.TreeNode("Delve DooDads"))
             {
+                if (ImGui.TreeNode("Delve Map Grid - Shown only when fully zoomed in"))
+                {
+                    ImGui.PushID(idPop);
+                    Settings.DelveGridMap.Value = ImGuiExtension.Checkbox(Settings.DelveGridMap.Value ? "Show" : "Hidden", Settings.DelveGridMap);
+                    ImGui.PopID();
+                    idPop++;
+                    ImGui.TreePop();
+                }
                 if (ImGui.TreeNode("Delve Path's"))
                 {
                     ImGui.PushID(idPop);
@@ -762,6 +770,7 @@ namespace Random_Features
                 RenderShrines();
                 BETA_ROYALE();
                 MonsterResistnaceOnHover();
+                DelveMapNodes();
             }
 
             if (Settings.SecretSwitch)
@@ -882,6 +891,44 @@ namespace Random_Features
                 {
                     RenderTextLabel(Settings.UnendingStormColor.Value, "Shock Nova", "LabyrinthPopUpTotemMonsterLightning");
                 }
+            }
+        }
+
+        private void DelveMapNodes()
+        {
+            if (!Settings.DelveGridMap) return;
+            var delveMap = GameController.Game.IngameState.UIRoot.Children[1].Children[57];
+            if (!delveMap.IsVisible) return;
+            try
+            {
+                var largeGridList = delveMap.Children[0].Children[0].Children[2].Children.ToList();
+                var scale = delveMap.Children[0].Children[0].Children[2].Scale;
+
+                if (scale != 0.635625f) return;
+                //LogMessage($"Count: {largeGrids.Count}", 5);
+                for (var i = 0; i < largeGridList.Count; i++)
+                {
+                    var largeGrid = largeGridList[i];
+
+                    if (!largeGrid.GetClientRect().Intersects(delveMap.GetClientRect())) continue;
+
+                    var smallGridList = largeGrid.Children.ToList();
+                    for (var j = 0; j < smallGridList.Count - 1; j++)
+                    {
+                        var smallGrid = smallGridList[j];
+
+                        //var newRec = new RectangleF(
+                        //    (smallGrid.GetClientRect().X * 5.69f) * scale, (smallGrid.GetClientRect().Y * 5.69f) * scale,
+                        //    (smallGrid.GetClientRect().Width), smallGrid.GetClientRect().Height);
+
+                        if (smallGrid.GetClientRect().Intersects(delveMap.GetClientRect()))
+                            Graphics.DrawFrame(smallGrid.GetClientRect(), 1, Color.DarkGray);
+                    }
+                }
+            }
+            catch
+            {
+
             }
         }
 
@@ -1422,9 +1469,21 @@ namespace Random_Features
                             () => Settings.DelveAzuriteVeinChest, Settings.DelveAzuriteVeinChestSize);
                     }
 
-                    if (e.Path.Contains("Metadata/Chests/DelveChests") && e.Path.Contains("Resonator"))
+                    if (e.Path.Contains("Metadata/Chests/DelveChests") && e.Path.Contains("Resonator3") && e.Path.Contains("Resonator4") && e.Path.Contains("Resonator5"))
                     {
-                        return new MapIcon(e, new HudTexture(CustomImagePath + "//Delve//Upgrade2x2A.png", Settings.DelveResonatorChestColor),
+                        return new MapIcon(e, new HudTexture(CustomImagePath + "//Delve//ResonatorT1.png", Settings.DelveResonatorChestColor),
+                            () => Settings.DelveResonatorChest, Settings.DelveResonatorChestSize * 0.7f);
+                    }
+
+                    if (e.Path.Contains("Metadata/Chests/DelveChests") && e.Path.Contains("Resonator2"))
+                    {
+                        return new MapIcon(e, new HudTexture(CustomImagePath + "//Delve//ResonatorT2.png", Settings.DelveResonatorChestColor),
+                            () => Settings.DelveResonatorChest, Settings.DelveResonatorChestSize * 0.7f);
+                    }
+
+                    if (e.Path.Contains("Metadata/Chests/DelveChests") && e.Path.Contains("Resonator1"))
+                    {
+                        return new MapIcon(e, new HudTexture(CustomImagePath + "//Delve//ResonatorT1.png", Settings.DelveResonatorChestColor),
                             () => Settings.DelveResonatorChest, Settings.DelveResonatorChestSize * 0.7f);
                     }
 
@@ -1440,21 +1499,94 @@ namespace Random_Features
                             () => Settings.DelveCurrencyChest, Settings.DelveCurrencyChestSize * 1.3f);
                     }
 
+                    ///////
+                    /// 
+                    var FossilList = new FossilTiers()
+                    {
+                        T1 = new List<string>()
+                        {
+                            "Faceted",
+                            "Fractured",
+                            "Hollow",
+                            "Glyphic",
+                            "Bloodstained",
+                        },
+
+                        T2 = new List<string>()
+                        {
+                            "Tangled",
+                            "Sanctified",
+                            "Gilded",
+                            "Lucent",
+                            "Corroded",
+                            "Prismatic",
+                            "Aetheric",
+                            "Enchanted",
+                            "Pristine",
+                            "Perfect",
+                        },
+
+                        T3 = new List<string>()
+                        {
+                            "Encrusted",
+                            "Jagged",
+                            "Metallic",
+                            "Bound",
+                            "Dense",
+                            "Scorched",
+                            "Serrated",
+                            "Frigid",
+                            "Aberrant",
+                        },
+                    };
+
+
                     if (e.Path.EndsWith("FossilChest") && e.Path.StartsWith("Metadata/Chests/DelveChests"))
                     {
+                        foreach (var @string in FossilList.T1)
+                        {
+                            if (e.Path.ToLower().Contains(@string.ToLower()))
+                            {
+                                return new MapIcon(e, new HudTexture(CustomImagePath + "//Delve//AbberantFossilT1.png", Settings.DelveFossilChestColor),
+                                    () => Settings.DelveFossilChest, Settings.DelveFossilChestSize);
+                            }
+                        }
+                        foreach (var @string in FossilList.T2)
+                        {
+                            if (e.Path.ToLower().Contains(@string.ToLower()))
+                            {
+                                return new MapIcon(e, new HudTexture(CustomImagePath + "//Delve//AbberantFossilT2.png", Settings.DelveFossilChestColor),
+                                    () => Settings.DelveFossilChest, Settings.DelveFossilChestSize);
+                            }
+                        }
+                        foreach (var @string in FossilList.T3)
+                        {
+                            if (e.Path.ToLower().Contains(@string.ToLower()))
+                            {
+                                return new MapIcon(e, new HudTexture(CustomImagePath + "//Delve//AbberantFossilT3.png", Settings.DelveFossilChestColor),
+                                    () => Settings.DelveFossilChest, Settings.DelveFossilChestSize);
+                            }
+                        }
+
+
                         return new MapIcon(e, new HudTexture(CustomImagePath + "//Delve//AbberantFossil.png", Settings.DelveFossilChestColor),
                             () => Settings.DelveFossilChest, Settings.DelveFossilChestSize);
+                    }
+
+
+
+
+                    ///////
+
+                    if (e.Path.Contains("Metadata/Chests/DelveChests") && e.Path.Contains("Map"))
+                    {
+                        return new MapIcon(e, new HudTexture(CustomImagePath + "//Delve//Map.png", Settings.DelveCurrencyChestColor),
+                            () => Settings.DelveCurrencyChest, Settings.DelveCurrencyChestSize);
                     }
 
                     if (e.Path.Contains("Metadata/Chests/DelveChests") && e.Path.Contains("Corrupted"))
                     {
                         return new MapIcon(e, new HudTexture(CustomImagePath + "//Delve//Corrupted.png", Settings.DelveCurrencyChestColor),
-                            () => Settings.DelveCurrencyChest, Settings.DelveCurrencyChestSize);
-                    }
-
-                    if (e.Path.Contains("Metadata/Chests/DelveChests") && e.Path.Contains("Map"))
-                    {
-                        return new MapIcon(e, new HudTexture(CustomImagePath + "//Delve//Map.png", Settings.DelveCurrencyChestColor),
                             () => Settings.DelveCurrencyChest, Settings.DelveCurrencyChestSize);
                     }
 
@@ -1835,5 +1967,13 @@ namespace Random_Features
 
             public int YOffset;
         }
+    }
+
+
+    internal class FossilTiers
+    {
+        public List<string> T1 = new List<string>();
+        public List<string> T2 = new List<string>();
+        public List<string> T3 = new List<string>();
     }
 }
