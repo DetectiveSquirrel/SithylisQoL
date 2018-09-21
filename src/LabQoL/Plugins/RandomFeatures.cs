@@ -413,6 +413,7 @@ namespace Random_Features
                 Settings.WickerMan.Value = ImGuiExtension.Checkbox("WickerMan", Settings.WickerMan);
                 Settings.PockedLanternbearer.Value = ImGuiExtension.Checkbox("Pocked Lanternbearer", Settings.PockedLanternbearer);
                 Settings.SolarGuard.Value = ImGuiExtension.Checkbox("Solar Guard", Settings.SolarGuard);
+                Settings.ChieftainMonkey.Value = ImGuiExtension.Checkbox("Chieftain Monkey", Settings.ChieftainMonkey);
                 ImGui.TreePop();
             }
 
@@ -846,6 +847,11 @@ namespace Random_Features
                 if (Settings.SolarGuard)
                 {
                     DrawTextLabelSpecter(Color.Yellow, "Solar Guard", "Metadata/Monsters/HolyFireElemental/HolyFireElementalSolarisBeam", 120);
+                }
+
+                if (Settings.ChieftainMonkey)
+                {
+                    DrawTextLabelSpecter(Color.Yellow, "Chieftain Monkey", "Metadata/Monsters/BloodChieftain/MonkeyChiefBloodEnrage", 120);
                 }
             }
 

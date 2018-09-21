@@ -124,6 +124,7 @@ namespace Random_Features
             WickerMan = true;
             PockedLanternbearer = true;
             SolarGuard = true;
+            ChieftainMonkey = true;
             AbyssCracks = true;
             AbyssSmallNodeSize = new RangeNode<int>(7, 1, 200);
             AbyssSmallNodeColor = new ColorBGRA(255, 140, 0, 255);
@@ -307,6 +308,7 @@ namespace Random_Features
         public ToggleNode WickerMan { get; set; }
         public ToggleNode PockedLanternbearer { get; set; }
         public ToggleNode SolarGuard { get; set; }
+        public ToggleNode ChieftainMonkey { get; set; }
         public ToggleNode VaultPiles { get; set; }
         public ToggleNode VaultPilesOnFloor { get; set; }
         public RangeNode<int> VaultPilesOnFloorSize { get; set; }
