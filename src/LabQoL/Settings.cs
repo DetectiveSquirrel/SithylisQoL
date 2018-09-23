@@ -452,5 +452,6 @@ namespace Random_Features
 
         // Delve Map Grid
         public ToggleNode DelveGridMap { get; set; } = true;
+        public float DelveGridMapScale { get; set; } = 0.635625f;
     }
 }

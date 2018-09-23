@@ -20,6 +20,7 @@ namespace Random_Features
 {
     partial class RandomFeatures
     {
+        public float CurrentDelveMapZoom = 0.635625f;
         public void RandomFeaturesMenu(int idIn, out int idPop)
         {
             idPop = idIn;
@@ -546,6 +547,13 @@ namespace Random_Features
                     Settings.DelveGridMap.Value = ImGuiExtension.Checkbox(Settings.DelveGridMap.Value ? "Show" : "Hidden", Settings.DelveGridMap);
                     ImGui.PopID();
                     idPop++;
+                    ImGui.PushID(idPop);
+                    if (ImGui.Button("Set current Delve Zoom as the zoom you want to show grid\r\nZoom in all the way then press the button"))
+                    {
+                        Settings.DelveGridMapScale = CurrentDelveMapZoom;
+                    }
+                    ImGui.PopID();
+                    idPop++;
                     ImGui.TreePop();
                 }
                 if (ImGui.TreeNode("Delve Path's"))
@@ -909,8 +917,9 @@ namespace Random_Features
             {
                 var largeGridList = delveMap.Children[0].Children[0].Children[2].Children.ToList();
                 var scale = delveMap.Children[0].Children[0].Children[2].Scale;
+                CurrentDelveMapZoom = scale;
 
-                if (scale != 0.635625f) return;
+                if (scale != Settings.DelveGridMapScale) return;
                 //LogMessage($"Count: {largeGrids.Count}", 5);
                 for (var i = 0; i < largeGridList.Count; i++)
                 {
