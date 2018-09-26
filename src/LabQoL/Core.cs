@@ -1,19 +1,20 @@
-﻿using System;
-using System.Collections.Concurrent;
-using ImGuiNET;
-using PoeHUD.Controllers;
+﻿using ImGuiNET;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using PoeHUD.Framework;
 using PoeHUD.Framework.Helpers;
 using PoeHUD.Models;
 using PoeHUD.Plugins;
-using Random_Features.Libs;
-using System.Collections.Generic;
-using System.IO;
-using System.Net;
-using System.Numerics;
-using System.Reflection;
 using PoeHUD.Poe;
 using PoeHUD.Poe.Elements;
+using Random_Features.Libs;
+using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Numerics;
+using System.Reflection;
 
 namespace Random_Features
 {
@@ -56,7 +57,7 @@ namespace Random_Features
         }
 
         private void AreaChange() { new Coroutine(ClearStoredEntities(), nameof(Random_Features), "Clear Stored Area Entities").Run(); }
-
+        
 
         public override void Initialise()
         {
@@ -69,7 +70,24 @@ namespace Random_Features
             PoeHudImageLocation = PluginDirectory + @"\..\..\textures\";
             GameController.Area.OnAreaChange += area => AreaChange();
             AreaModWarningsInit();
+            if (File.Exists($@"{PluginDirectory}\Fossil_Tiers.json"))
+            {
+                var jsonFIle = File.ReadAllText($@"{PluginDirectory}\Fossil_Tiers.json");
+                FossilList = JsonConvert.DeserializeObject<FossilTiers>(jsonFIle, JsonSettings);
+            }
+            else
+            {
+                LogError("Error loading Fossil_Tiers.json, Please re download from Random Features github repository", 10);
+            }
         }
+        public static readonly JsonSerializerSettings JsonSettings = new JsonSerializerSettings
+        {
+            MetadataPropertyHandling = MetadataPropertyHandling.Ignore,
+            DateParseHandling = DateParseHandling.None,
+            Converters = {
+                new IsoDateTimeConverter { DateTimeStyles = DateTimeStyles.AssumeUniversal }
+            },
+        };
 
         public string ReadElementText(Element element) { return element.AsObject<EntityLabel>().Text; }
 

@@ -1,0 +1,32 @@
+{
+  "t1": [
+    "Faceted",
+    "Fractured",
+    "Hollow",
+    "Glyphic",
+    "Bloodstained",
+    "Tangled",
+    "Sanctified",
+    "Gilded",
+    "Lucent",
+    "Encrusted"
+  ],
+  "t2": [
+    "Corroded",
+    "Prismatic",
+    "Aetheric",
+    "Enchanted",
+    "Pristine",
+    "Perfect",
+    "Jagged",
+    "Dense",
+    "Serrated"
+  ],
+  "t3": [
+    "Metallic",
+    "Bound",
+    "Scorched",
+    "Frigid",
+    "Aberrant"
+  ]
+}

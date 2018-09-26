@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using ImGuiNET;
+using Newtonsoft.Json;
 using PoeHUD.Controllers;
 using PoeHUD.Framework.Helpers;
 using PoeHUD.Hud;
@@ -664,6 +665,8 @@ namespace Random_Features
             Settings._Debug = ImGuiExtension.Checkbox("Debug", Settings._Debug);
         }
         private ImVector4 ToImVector4(Vector4 vector) => new ImVector4(vector.X, vector.Y, vector.Z, vector.W);
+
+        public FossilTiers FossilList = new FossilTiers();
 
         public void BETA_ROYALE()
         {
@@ -1570,49 +1573,7 @@ namespace Random_Features
                         return new MapIcon(e, new HudTexture(CustomImagePath + "//Delve//UniqueManaFlask.png", Settings.DelveCurrencyChestColor),
                             () => Settings.DelveCurrencyChest, Settings.DelveCurrencyChestSize * 1.3f);
                     }
-
-                    ///////
-                    /// 
-                    var FossilList = new FossilTiers()
-                    {
-                        T1 = new List<string>()
-                        {
-                            "Faceted",
-                            "Fractured",
-                            "Hollow",
-                            "Glyphic",
-                            "Bloodstained",
-                            "Tangled",
-                            "Sanctified",
-                            "Gilded",
-                            "Lucent",
-                            "Encrusted",
-                        },
-
-                        T2 = new List<string>()
-                        {
-                            "Corroded",
-                            "Prismatic",
-                            "Aetheric",
-                            "Enchanted",
-                            "Pristine",
-                            "Perfect",
-                            "Jagged",
-                            "Dense",
-                            "Serrated",
-                        },
-
-                        T3 = new List<string>()
-                        {
-                            "Metallic",
-                            "Bound",
-                            "Scorched",
-                            "Frigid",
-                            "Aberrant",
-                        },
-                    };
-
-
+                    
                     if (e.Path.EndsWith("FossilChest") && e.Path.StartsWith("Metadata/Chests/DelveChests"))
                     {
                         foreach (var @string in FossilList.T1)
@@ -2051,10 +2012,15 @@ namespace Random_Features
     }
 
 
-    internal class FossilTiers
+    public class FossilTiers
     {
-        public List<string> T1 = new List<string>();
-        public List<string> T2 = new List<string>();
-        public List<string> T3 = new List<string>();
+        [JsonProperty("t1")]
+        public string[] T1 { get; set; }
+
+        [JsonProperty("t2")]
+        public string[] T2 { get; set; }
+
+        [JsonProperty("t3")]
+        public string[] T3 { get; set; }
     }
 }
