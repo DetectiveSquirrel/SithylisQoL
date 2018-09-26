@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using ImGuiNET;
+using PoeHUD.Controllers;
 using PoeHUD.Framework.Helpers;
 using PoeHUD.Hud;
 using PoeHUD.Hud.Settings;
@@ -9,6 +10,7 @@ using PoeHUD.Models;
 using PoeHUD.Models.Enums;
 using PoeHUD.Poe;
 using PoeHUD.Poe.Components;
+using PoeHUD.Poe.RemoteMemoryObjects;
 using Random_Features.Libs;
 using SharpDX;
 using SharpDX.Direct3D9;
@@ -54,6 +56,8 @@ namespace Random_Features
 
             if (ImGui.TreeNode("Labyrinth"))
             {
+                Settings.ShowInLabOnly.Value = ImGuiExtension.Checkbox("Show Lab Stuff in Lab Only", Settings.ShowInLabOnly);
+
                 if (ImGui.TreeNode("Chests"))
                 {
                     Settings.LabyrinthChestSize.Value = ImGuiExtension.IntSlider("Labyrinth Chest Size", Settings.LabyrinthChestSize);
@@ -780,8 +784,57 @@ namespace Random_Features
                 BETA_ROYALE();
                 MonsterResistnaceOnHover();
                 DelveMapNodes();
+                SpectreLabels();
+
+                if (Settings.ShowInLabOnly)
+                {
+                    if (GameController.Game.IngameState.Data.CurrentWorldArea.IsLabyrinthArea)
+                        LabyrinthLabels();
+                }
+                else
+                {
+                    LabyrinthLabels();
+                }
+
             }
 
+        }
+
+        private void SpectreLabels()
+        {
+            if (Settings.Specters)
+            {
+                if (Settings.TukohamasVanguard)
+                {
+                    DrawTextLabelSpecter(Color.Yellow, "Tukohama's" + Environment.NewLine + "Vanguard", "Metadata/Monsters/KaomWarrior/KaomWarrior7",
+                            120);
+                }
+
+                if (Settings.WickerMan)
+                {
+                    DrawTextLabelSpecter(Color.Yellow, "WickerMan", "Metadata/Monsters/WickerMan/WickerMan", 120);
+                }
+
+                if (Settings.PockedLanternbearer)
+                {
+                    DrawTextLabelSpecter(Color.Yellow, "Pocked " + Environment.NewLine + "Lanternbearer", "Metadata/Monsters/Miner/MinerLantern",
+                            120);
+                }
+
+                if (Settings.SolarGuard)
+                {
+                    DrawTextLabelSpecter(Color.Yellow, "Solar Guard", "Metadata/Monsters/HolyFireElemental/HolyFireElementalSolarisBeam", 120);
+                }
+
+                if (Settings.ChieftainMonkey)
+                {
+                    DrawTextLabelSpecter(Color.Yellow, "Chieftain Monkey", "Metadata/Monsters/BloodChieftain/MonkeyChiefBloodEnrage", 120);
+                }
+            }
+        }
+
+        private void LabyrinthLabels()
+        {
             if (Settings.SecretSwitch)
             {
                 RenderTextLabel(Settings.SecretSwitchColor.Value, "Switch", "HiddenDoor_Switch");
@@ -830,37 +883,7 @@ namespace Random_Features
             if (Settings.SecretPassage)
             {
                 DrawTextLabelEquals(Settings.SecretPassageColor.Value, "Secret" + Environment.NewLine + "Passage",
-                        "Metadata/Terrain/Labyrinth/Objects/SecretPassage");
-            }
-
-            if (Settings.Specters)
-            {
-                if (Settings.TukohamasVanguard)
-                {
-                    DrawTextLabelSpecter(Color.Yellow, "Tukohama's" + Environment.NewLine + "Vanguard", "Metadata/Monsters/KaomWarrior/KaomWarrior7",
-                            120);
-                }
-
-                if (Settings.WickerMan)
-                {
-                    DrawTextLabelSpecter(Color.Yellow, "WickerMan", "Metadata/Monsters/WickerMan/WickerMan", 120);
-                }
-
-                if (Settings.PockedLanternbearer)
-                {
-                    DrawTextLabelSpecter(Color.Yellow, "Pocked " + Environment.NewLine + "Lanternbearer", "Metadata/Monsters/Miner/MinerLantern",
-                            120);
-                }
-
-                if (Settings.SolarGuard)
-                {
-                    DrawTextLabelSpecter(Color.Yellow, "Solar Guard", "Metadata/Monsters/HolyFireElemental/HolyFireElementalSolarisBeam", 120);
-                }
-
-                if (Settings.ChieftainMonkey)
-                {
-                    DrawTextLabelSpecter(Color.Yellow, "Chieftain Monkey", "Metadata/Monsters/BloodChieftain/MonkeyChiefBloodEnrage", 120);
-                }
+                    "Metadata/Terrain/Labyrinth/Objects/SecretPassage");
             }
 
             if (Settings.Sentinels)
@@ -873,7 +896,7 @@ namespace Random_Features
                 if (Settings.EndlessDrought)
                 {
                     RenderTextLabel(Settings.EndlessDroughtColor.Value, $"Flask Charge{Environment.NewLine}Removal",
-                            "LabyrinthPopUpTotemFlaskChargeNova");
+                        "LabyrinthPopUpTotemFlaskChargeNova");
                 }
 
                 if (Settings.EndlessHazard)
@@ -1043,6 +1066,35 @@ namespace Random_Features
             return conectedLines;
         }
 
+        public class LargeMapData
+        {
+            public Camera @Camera { get; set; }
+            public PoeHUD.Poe.Elements.Map @MapWindow { get; set; }
+            public RectangleF @MapRec { get; set; }
+            public Vector2 @PlayerPos { get; set; }
+            public float @PlayerPosZ { get; set; }
+            public Vector2 @ScreenCenter { get; set; }
+            public float @Diag { get; set; }
+            public float @K { get; set; }
+            public float @Scale { get; set; }
+
+
+            public LargeMapData(GameController GC)
+            {
+                @Camera = GC.Game.IngameState.Camera;
+                @MapWindow = GC.Game.IngameState.IngameUi.Map;
+                @MapRec = @MapWindow.GetClientRect();
+                @PlayerPos = GC.Player.GetComponent<Positioned>().GridPos;
+                @PlayerPosZ = GC.Player.GetComponent<Render>().Z;
+                @ScreenCenter = new Vector2(@MapRec.Width / 2, @MapRec.Height / 2).Translate(0, -20)
+                                   + new Vector2(@MapRec.X, @MapRec.Y)
+                                   + new Vector2(@MapWindow.LargeMapShiftX, @MapWindow.LargeMapShiftY);
+                @Diag = (float)Math.Sqrt(@Camera.Width * @Camera.Width + @Camera.Height * @Camera.Height);
+                @K = @Camera.Width < 1024f ? 1120f : 1024f;
+                @Scale = @K / @Camera.Height * @Camera.Width * 3f / 4f / @MapWindow.LargeMapZoom;
+            }
+        }
+
         private void DrawToLargeMiniMap(EntityWrapper entity)
         {
             var icon = GetMapIcon(entity);
@@ -1051,21 +1103,13 @@ namespace Random_Features
                 return;
             }
 
-            var camera = GameController.Game.IngameState.Camera;
-            var mapWindow = GameController.Game.IngameState.IngameUi.Map;
-            var mapRect = mapWindow.GetClientRect();
-            var playerPos = GameController.Player.GetComponent<Positioned>().GridPos;
-            var posZ = GameController.Player.GetComponent<Render>().Z;
-            var screenCenter = new Vector2(mapRect.Width / 2, mapRect.Height / 2).Translate(0, -20)
-                             + new Vector2(mapRect.X, mapRect.Y)
-                             + new Vector2(mapWindow.LargeMapShiftX, mapWindow.LargeMapShiftY);
-            var diag = (float) Math.Sqrt(camera.Width * camera.Width + camera.Height * camera.Height);
-            var k = camera.Width < 1024f ? 1120f : 1024f;
-            var scale = k / camera.Height * camera.Width * 3f / 4f / mapWindow.LargeMapZoom;
             var iconZ = icon.EntityWrapper.GetComponent<Render>().Z;
-            var point = screenCenter
-                      + MapIcon.DeltaInWorldToMinimapDelta(icon.WorldPosition - playerPos, diag, scale,
-                                (iconZ - posZ) / (9f / mapWindow.LargeMapZoom));
+            var point = LargeMapInformation.ScreenCenter
+                        + MapIcon.DeltaInWorldToMinimapDelta(icon.WorldPosition - LargeMapInformation.PlayerPos,
+                            LargeMapInformation.Diag, LargeMapInformation.Scale,
+                            (iconZ - LargeMapInformation.PlayerPosZ) /
+                            (9f / LargeMapInformation.MapWindow.LargeMapZoom));
+
             var texture = icon.TextureIcon;
             var size = icon.Size * 2; // icon.SizeOfLargeIcon.GetValueOrDefault(icon.Size * 2);
             texture.DrawPluginImage(Graphics, new RectangleF(point.X - size / 2f, point.Y - size / 2f, size, size));
@@ -1102,30 +1146,43 @@ namespace Random_Features
         {
             if (Settings.RoyaleThings)
             {
-                if (Settings.RoyaleHoardChests && e.Path.Contains("Metadata/Chests/RoyaleChestMidKitUnique") && !e.GetComponent<Chest>().IsOpened)
+                if (!e.GetComponent<Chest>().IsOpened)
                 {
-                    return new MapIcon(e, new HudTexture(PoeHudImageLocation + "strongbox.png", Settings.RoyaleHoardColor),
+                    if (Settings.RoyaleHoardChests && e.Path.Contains("Metadata/Chests/RoyaleChestMidKitUnique"))
+                    {
+                        return new MapIcon(e,
+                            new HudTexture(PoeHudImageLocation + "strongbox.png", Settings.RoyaleHoardColor),
                             () => Settings.RoyaleHoardChests, Settings.RoyaleHoardSize);
-                }
-                if (Settings.RoyaleTroveChests && e.Path.Contains("Metadata/Chests/RoyaleChestCurrency") && !e.GetComponent<Chest>().IsOpened)
-                {
-                    return new MapIcon(e, new HudTexture(PoeHudImageLocation + "strongbox.png", Settings.RoyaleTroveColor),
+                    }
+
+                    if (Settings.RoyaleTroveChests && e.Path.Contains("Metadata/Chests/RoyaleChestCurrency"))
+                    {
+                        return new MapIcon(e,
+                            new HudTexture(PoeHudImageLocation + "strongbox.png", Settings.RoyaleTroveColor),
                             () => Settings.RoyaleTroveChests, Settings.RoyaleTroveSize);
-                }
-                if (Settings.RoyaleCacheChests && e.Path.Contains("Metadata/Chests/RoyaleChestMidKit") && !e.GetComponent<Chest>().IsOpened)
-                {
-                    return new MapIcon(e, new HudTexture(PoeHudImageLocation + "strongbox.png", Settings.RoyaleCacheColor),
+                    }
+
+                    if (Settings.RoyaleCacheChests && e.Path.Contains("Metadata/Chests/RoyaleChestMidKit"))
+                    {
+                        return new MapIcon(e,
+                            new HudTexture(PoeHudImageLocation + "strongbox.png", Settings.RoyaleCacheColor),
                             () => Settings.RoyaleCacheChests, Settings.RoyaleCacheSize);
-                }
-                if (Settings.RoyaleSuppliesChests && e.Path.Contains("Metadata/Chests/RoyaleChestStarterKit") && !e.GetComponent<Chest>().IsOpened)
-                {
-                    return new MapIcon(e, new HudTexture(PoeHudImageLocation + "strongbox.png", Settings.RoyaleSuppliesColor),
+                    }
+
+                    if (Settings.RoyaleSuppliesChests && e.Path.Contains("Metadata/Chests/RoyaleChestStarterKit"))
+                    {
+                        return new MapIcon(e,
+                            new HudTexture(PoeHudImageLocation + "strongbox.png", Settings.RoyaleSuppliesColor),
                             () => Settings.RoyaleSuppliesChests, Settings.RoyaleSuppliesSize);
-                }
-                if (Settings.RoyaleExplosiveBarrelsChests && e.Path.Contains("Metadata/Chests/AtlasBarrelExplosive1") && !e.GetComponent<Chest>().IsOpened)
-                {
-                    return new MapIcon(e, new HudTexture(PoeHudImageLocation + "chest.png", Settings.RoyaleExplosiveBarrelsColor),
+                    }
+
+                    if (Settings.RoyaleExplosiveBarrelsChests &&
+                        e.Path.Contains("Metadata/Chests/AtlasBarrelExplosive1"))
+                    {
+                        return new MapIcon(e,
+                            new HudTexture(PoeHudImageLocation + "chest.png", Settings.RoyaleExplosiveBarrelsColor),
                             () => Settings.RoyaleExplosiveBarrelsChests, Settings.RoyaleExplosiveBarrelsSize);
+                    }
                 }
             }
 
@@ -1498,7 +1555,7 @@ namespace Random_Features
 
                     if (e.Path.Contains("Metadata/Chests/DelveChests") && e.Path.Contains("Resonator1"))
                     {
-                        return new MapIcon(e, new HudTexture(CustomImagePath + "//Delve//ResonatorT1.png", Settings.DelveResonatorChestColor),
+                        return new MapIcon(e, new HudTexture(CustomImagePath + "//Delve//ResonatorT3.png", Settings.DelveResonatorChestColor),
                             () => Settings.DelveResonatorChest, Settings.DelveResonatorChestSize * 0.7f);
                     }
 
@@ -1525,31 +1582,31 @@ namespace Random_Features
                             "Hollow",
                             "Glyphic",
                             "Bloodstained",
-                        },
-
-                        T2 = new List<string>()
-                        {
                             "Tangled",
                             "Sanctified",
                             "Gilded",
                             "Lucent",
+                            "Encrusted",
+                        },
+
+                        T2 = new List<string>()
+                        {
                             "Corroded",
                             "Prismatic",
                             "Aetheric",
                             "Enchanted",
                             "Pristine",
                             "Perfect",
+                            "Jagged",
+                            "Dense",
+                            "Serrated",
                         },
 
                         T3 = new List<string>()
                         {
-                            "Encrusted",
-                            "Jagged",
                             "Metallic",
                             "Bound",
-                            "Dense",
                             "Scorched",
-                            "Serrated",
                             "Frigid",
                             "Aberrant",
                         },
@@ -1588,9 +1645,13 @@ namespace Random_Features
                             () => Settings.DelveFossilChest, Settings.DelveFossilChestSize);
                     }
 
+                    if (e.Path.Contains("Metadata/Chests/DelveChests") && e.Path.Contains("Resonator"))
+                    {
+                        return new MapIcon(e, new HudTexture(CustomImagePath + "//Delve//ResonatorT1.png", Settings.DelveResonatorChestColor),
+                            () => Settings.DelveResonatorChest, Settings.DelveResonatorChestSize * 0.7f);
+                    }
 
-
-
+                    
                     ///////
 
                     if (e.Path.Contains("Metadata/Chests/DelveChests") && e.Path.Contains("Map"))
@@ -1722,11 +1783,16 @@ namespace Random_Features
             };
             DrawImageToWorld(wantedEntity);
         }
+        
+        public LargeMapData LargeMapInformation { get; set; }
 
         private void RenderMapImages()
         {
+            var Area = GameController.Game.IngameState.Data.CurrentArea;
+            if (Area.IsTown || Area.RawName.Contains("Hideout")) return;
             if (GameController.Game.IngameState.IngameUi.Map.LargeMap.IsVisible)
             {
+                LargeMapInformation = new LargeMapData(GameController);
                 foreach (var entity in _entityCollection.Values.ToList())
                 {
                     if (entity is null) continue;
