@@ -1639,6 +1639,12 @@ namespace Random_Features
                             () => Settings.DelveCurrencyChest, Settings.DelveCurrencyChestSize);
                     }
 
+                    if (e.Path.Contains("Metadata/Chests/DelveChests") && e.Path.Contains("GemHighLevel"))
+                    {
+                        return new MapIcon(e, new HudTexture(CustomImagePath + "//Delve//HighLevelGem.png", Settings.DelveCurrencyChestColor),
+                            () => Settings.DelveCurrencyChest, Settings.DelveCurrencyChestSize);
+                    }
+
                     if (e.Path.StartsWith("Metadata/Terrain/Leagues/Delve/Objects/DelveWall"))
                     {
 
