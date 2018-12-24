@@ -105,7 +105,7 @@ namespace Random_Features
             FuckRomanNumerals();
             WheresMyCursor();
             AreaTranitions();
-            //AreaModWarnings();
+            AreaModWarnings();
             LevelUpGems();
 
             //Element tradingWindow = GetPlayerTradingWindow();

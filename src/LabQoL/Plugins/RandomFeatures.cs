@@ -553,7 +553,7 @@ namespace Random_Features
                     ImGui.PopID();
                     idPop++;
                     ImGui.PushID(idPop);
-                    if (ImGui.Button("Set current Delve Zoom as the zoom you want to show grid\r\nZoom in all the way then press the button"))
+                    if (ImGui.Button("Set current Delve Zoom as the zoom you want to show grid"))
                     {
                         Settings.DelveGridMapScale = CurrentDelveMapZoom;
                     }
@@ -1466,6 +1466,11 @@ namespace Random_Features
             {
                 if (!e.GetComponent<Chest>().IsOpened)
                 {
+                    if (e.Path.StartsWith("Metadata/Chests/DelveChests/DelveChestGenericLeague") || e.Path.StartsWith("Metadata/Chests/DelveChests/DelveChestGenericAdditionalUnique"))
+                    {
+                        return new MapIcon(e, new HudTexture(CustomImagePath + "//Delve//LeagueChest.png", Settings.DelveCurrencyChestColor),
+                            () => Settings.DelveCurrencyChest, Settings.DelveCurrencyChestSize);
+                    }
                     if (e.Path.Contains("Metadata/Chests/DelveChests/DelveMiningSuppliesDynamite"))
                     {
                         return new MapIcon(e, new HudTexture(CustomImagePath + "//Delve//Bombs.png", Settings.DelveMiningSuppliesDynamiteChestColor),
@@ -1580,7 +1585,7 @@ namespace Random_Features
                             () => Settings.DelveCurrencyChest, Settings.DelveCurrencyChestSize);
                     }
                     
-                    if (e.Path.EndsWith("FossilChest") && e.Path.StartsWith("Metadata/Chests/DelveChests"))
+                    if (e.Path.Contains("FossilChest") && e.Path.StartsWith("Metadata/Chests/DelveChests"))
                     {
                         foreach (var @string in FossilList.T1)
                         {
