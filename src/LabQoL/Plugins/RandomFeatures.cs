@@ -1466,7 +1466,7 @@ namespace Random_Features
             {
                 if (!e.GetComponent<Chest>().IsOpened)
                 {
-                    if (e.Path.StartsWith("Metadata/Chests/DelveChests/DelveChestGenericLeague") || e.Path.StartsWith("Metadata/Chests/DelveChests/DelveChestGenericAdditionalUnique"))
+                    if (e.Path.StartsWith("Metadata/Chests/DelveChests/DelveChestGenericLeague") || e.Path.Contains("Unique") && e.Path.StartsWith("Metadata/Chests/DelveChests"))
                     {
                         return new MapIcon(e, new HudTexture(CustomImagePath + "//Delve//LeagueChest.png", Settings.DelveCurrencyChestColor),
                             () => Settings.DelveCurrencyChest, Settings.DelveCurrencyChestSize);
@@ -1650,6 +1650,12 @@ namespace Random_Features
                             () => Settings.DelveCurrencyChest, Settings.DelveCurrencyChestSize);
                     }
 
+                    if (e.Path.Contains("Metadata/Chests/DelveChests") && e.Path.Contains("Trinkets"))
+                    {
+                        return new MapIcon(e, new HudTexture(CustomImagePath + "//Delve//chest_jewelers.png", Color.Yellow),
+                            () => Settings.DelveCurrencyChest, Settings.DelveCurrencyChestSize);
+                    }
+
                     if (e.Path.StartsWith("Metadata/Terrain/Leagues/Delve/Objects/DelveWall"))
                     {
 
@@ -1702,6 +1708,20 @@ namespace Random_Features
                         else
                         {
                             return new MapIcon(e, new HudTexture(CustomImagePath + "gate.png"),
+                                () => Settings.ClosedIncursionDoor, Settings.ClosedIncursionDoorOnMapSize);
+                        }
+                    }
+                    if (e.Path.Contains("Metadata/Terrain/Leagues/Incursion/Objects/TempleInternalDoor"))
+                    {
+
+                        if (Settings.ClosedIncursionDoorOnMapColor != Color.White)
+                        {
+                            return new MapIcon(e, new HudTexture(CustomImagePath + "hidden_door.png", Settings.ClosedIncursionDoorOnMapColor),
+                                () => Settings.ClosedIncursionDoor, Settings.ClosedIncursionDoorOnMapSize);
+                        }
+                        else
+                        {
+                            return new MapIcon(e, new HudTexture(CustomImagePath + "hidden_door.png"),
                                 () => Settings.ClosedIncursionDoor, Settings.ClosedIncursionDoorOnMapSize);
                         }
                     }
