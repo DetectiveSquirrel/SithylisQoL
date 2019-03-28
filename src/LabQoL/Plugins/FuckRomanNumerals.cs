@@ -28,7 +28,7 @@ namespace Random_Features
 
         public bool IsMapTabOpen()
         {
-            return GameController.Game.IngameState.ServerData.StashPanel.IsVisible && GameController.Game.IngameState.ServerData.StashPanel.VisibleStash.InvType == InventoryType.MapStash;
+            return GameController.Game.IngameState.IngameUi.StashElement.IsVisible && GameController.Game.IngameState.IngameUi.StashElement.VisibleStash.InvType == InventoryType.MapStash;
             //return false;
         }
 
@@ -38,7 +38,7 @@ namespace Random_Features
             {
                 if (!IsMapTabOpen()) return;
 
-                List<Element> mapElements = GameController.Game.IngameState.ServerData.StashPanel.VisibleStash.InventoryUiElement.Children;
+                List<Element> mapElements = GameController.Game.IngameState.IngameUi.StashElement.VisibleStash.InventoryUiElement.Children;
                 //List<Element> mapElements = new List<Element>();
                 Element uiHover = GameController.Game.IngameState.UIHover;
 

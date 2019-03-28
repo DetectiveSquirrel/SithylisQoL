@@ -713,55 +713,55 @@ namespace Random_Features
         }
 
 
-        private string TryGetStat(GameStat stat, EntityWrapper entity)
-        {
-            return entity.GetComponent<Stats>().StatDictionary.TryGetValue(stat, out int statInt) ? statInt.ToString() : "?";
-        }
+        //private string TryGetStat(GameStat stat, EntityWrapper entity)
+        //{
+        //    return entity.GetComponent<Stats>().StatDictionary.TryGetValue(stat, out int statInt) ? statInt.ToString() : "?";
+        //}
 
         private void MonsterResistnaceOnHover()
         {
             // TODO: Fix this error
-            return;
-            if (!Settings.MonsterHoverStats) return;
-            foreach (EntityWrapper entity in _entityCollection.Values.ToList())
-            {
-                if (entity is null) continue;
-                if (entity.IsValid)
-                    if (entity.HasComponent<Monster>())
-                        if (entity.IsAlive)
-                            if (IsTargeted(entity))
-                            {
-                                var FireRes = TryGetStat(GameStat.FireDamageResistancePct, entity);
-                                var ColdRes = TryGetStat(GameStat.ColdDamageResistancePct, entity);
-                                var LightRes = TryGetStat(GameStat.LightningDamageResistancePct, entity);
-                                var ChaosRes = TryGetStat(GameStat.ChaosDamageResistancePct, entity);
-                                Element MonsterBox = MonsterTopName();
-                                if (MonsterBox.Children[0].Width > 0)
-                                {
-                                    RectangleF pos = MonsterBox.Children[0].GetClientRect();
-                                    int TextSize = (int) pos.Height;
-                                    int nextTextSpace = 0;
-                                    string NextText = $"{FireRes}";
-                                    string @string = NextText;
-                                    Graphics.DrawText(NextText, TextSize, new Vector2(pos.X + 10 + pos.Width + nextTextSpace, pos.Y), new Color(255, 85, 85, 255));
-                                    nextTextSpace += Graphics.MeasureText(NextText, TextSize).Width;
-                                    NextText = $" {ColdRes}";
-                                    @string += NextText;
-                                    Graphics.DrawText(NextText, TextSize, new Vector2(pos.X + 10 + pos.Width + nextTextSpace, pos.Y), new Color(77, 77, 255, 255));
-                                    nextTextSpace += Graphics.MeasureText(NextText, TextSize).Width;
-                                    NextText = $" {LightRes}";
-                                    @string += NextText;
-                                    Graphics.DrawText(NextText, TextSize, new Vector2(pos.X + 10 + pos.Width + nextTextSpace, pos.Y), new Color(253, 245, 75, 255));
-                                    nextTextSpace += Graphics.MeasureText(NextText, TextSize).Width;
-                                    NextText = $" {ChaosRes}";
-                                    @string += NextText;
-                                    Graphics.DrawText(NextText, TextSize, new Vector2(pos.X + 10 + pos.Width + nextTextSpace, pos.Y), new Color(255, 91, 179, 255));
-                                    Graphics.DrawBox(
-                                            new RectangleF(pos.X + 10 + pos.Width, pos.Y, Graphics.MeasureText(@string, TextSize).Width, pos.Height),
-                                            Color.Black);
-                                }
-                            }
-            }
+            //return;
+            //if (!Settings.MonsterHoverStats) return;
+            //foreach (EntityWrapper entity in _entityCollection.Values.ToList())
+            //{
+            //    if (entity is null) continue;
+            //    if (entity.IsValid)
+            //        if (entity.HasComponent<Monster>())
+            //            if (entity.IsAlive)
+            //                if (IsTargeted(entity))
+            //                {
+            //                    var FireRes = TryGetStat(GameStat.FireDamageResistancePct, entity);
+            //                    var ColdRes = TryGetStat(GameStat.ColdDamageResistancePct, entity);
+            //                    var LightRes = TryGetStat(GameStat.LightningDamageResistancePct, entity);
+            //                    var ChaosRes = TryGetStat(GameStat.ChaosDamageResistancePct, entity);
+            //                    Element MonsterBox = MonsterTopName();
+            //                    if (MonsterBox.Children[0].Width > 0)
+            //                    {
+            //                        RectangleF pos = MonsterBox.Children[0].GetClientRect();
+            //                        int TextSize = (int) pos.Height;
+            //                        int nextTextSpace = 0;
+            //                        string NextText = $"{FireRes}";
+            //                        string @string = NextText;
+            //                        Graphics.DrawText(NextText, TextSize, new Vector2(pos.X + 10 + pos.Width + nextTextSpace, pos.Y), new Color(255, 85, 85, 255));
+            //                        nextTextSpace += Graphics.MeasureText(NextText, TextSize).Width;
+            //                        NextText = $" {ColdRes}";
+            //                        @string += NextText;
+            //                        Graphics.DrawText(NextText, TextSize, new Vector2(pos.X + 10 + pos.Width + nextTextSpace, pos.Y), new Color(77, 77, 255, 255));
+            //                        nextTextSpace += Graphics.MeasureText(NextText, TextSize).Width;
+            //                        NextText = $" {LightRes}";
+            //                        @string += NextText;
+            //                        Graphics.DrawText(NextText, TextSize, new Vector2(pos.X + 10 + pos.Width + nextTextSpace, pos.Y), new Color(253, 245, 75, 255));
+            //                        nextTextSpace += Graphics.MeasureText(NextText, TextSize).Width;
+            //                        NextText = $" {ChaosRes}";
+            //                        @string += NextText;
+            //                        Graphics.DrawText(NextText, TextSize, new Vector2(pos.X + 10 + pos.Width + nextTextSpace, pos.Y), new Color(255, 91, 179, 255));
+            //                        Graphics.DrawBox(
+            //                                new RectangleF(pos.X + 10 + pos.Width, pos.Y, Graphics.MeasureText(@string, TextSize).Width, pos.Height),
+            //                                Color.Black);
+            //                    }
+            //                }
+            //}
         }
         public Element MonsterTopName()
         {

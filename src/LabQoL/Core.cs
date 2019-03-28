@@ -57,7 +57,6 @@ namespace Random_Features
         }
 
         private void AreaChange() { new Coroutine(ClearStoredEntities(), nameof(Random_Features), "Clear Stored Area Entities").Run(); }
-        
 
         public override void Initialise()
         {
