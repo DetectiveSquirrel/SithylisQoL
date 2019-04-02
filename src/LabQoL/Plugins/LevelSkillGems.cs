@@ -177,36 +177,34 @@ namespace Random_Features
                     var ToolTipHover = skillGemButton;
                     ToolTipHover.X += ToolTipHover.Width;
                     Mouse.SetCurosPosToCenterOfRec(ToolTipHover, GameController.Window.GetWindowRectangle());
-                    var WhileStart = DateTime.Now;
-                    while (element.GetChildAtIndex(0).Tooltip.ChildCount == 0 && WhileStart.AddSeconds(3) > DateTime.Now)
-                    {
-                        Thread.Sleep(25);
-                        Mouse.SetCurosPosToCenterOfRec(ToolTipHover, GameController.Window.GetWindowRectangle());
-                    }
+                    //var WhileStart = DateTime.Now;
+                    //while (element.GetChildAtIndex(0).Tooltip.ChildCount == 0 && WhileStart.AddSeconds(3) > DateTime.Now)
+                    //{
+                    //    Thread.Sleep(25);
+                    //    Mouse.SetCurosPosToCenterOfRec(ToolTipHover, GameController.Window.GetWindowRectangle());
+                    //}
                 }
-                if (element.GetChildAtIndex(0).Tooltip.ChildCount != 0)
-                {
-                    SkillGemTooltipWrapper SkillGemToolTipInfo = new SkillGemTooltipWrapper(element.GetChildAtIndex(0).Tooltip);
+                //if (element.GetChildAtIndex(0).Tooltip.ChildCount != 0)
+                //{
+                    //SkillGemTooltipWrapper SkillGemToolTipInfo = new SkillGemTooltipWrapper(element.GetChildAtIndex(0).Tooltip);
                     if (skillGemText?.ToLower() == "click to level up")
                     {
-                        if (PassedGemRule(RuleSet, SkillGemToolTipInfo))
-                        {
+                        //if (PassedGemRule(RuleSet, SkillGemToolTipInfo))
+                        //{
                             Mouse.SetCurosPosToCenterOfRec(skillGemButton, GameController.Window.GetWindowRectangle());
-                            Mouse.LeftClick(5, 10);
+                            Mouse.LeftClick(5, 150);
                             //Mouse.SetCurosPosToCenterOfRec(GameController.Window.GetWindowRectangle(), GameController.Window.GetWindowRectangle());
                             GemClickTimer.Restart();
-                            break;
-                        }
-                        else
-                        {
-                            Mouse.SetCurosPosToCenterOfRec(skillGemButton, GameController.Window.GetWindowRectangle());
-                            Mouse.RightClick(5, 10);
-                            //Mouse.SetCurosPosToCenterOfRec(GameController.Window.GetWindowRectangle(), GameController.Window.GetWindowRectangle());
-                            GemClickTimer.Restart();
-                            break;
-                        }
+                            //break;
+                        //}
+
+                        //Mouse.SetCurosPosToCenterOfRec(skillGemButton, GameController.Window.GetWindowRectangle());
+                        //Mouse.RightClick(5, 10);
+                        ////Mouse.SetCurosPosToCenterOfRec(GameController.Window.GetWindowRectangle(), GameController.Window.GetWindowRectangle());
+                        //GemClickTimer.Restart();
+                        //break;
                     }
-                }
+                //}
                 Thread.Sleep(25);
             }
 
@@ -215,11 +213,11 @@ namespace Random_Features
 
         public bool PassedGemRule(List<GemLevelRule> rules, SkillGemTooltipWrapper gem)
         {
-            foreach (GemLevelRule rule in rules)
-            {
-                if (!string.Equals(gem.Name, rule.GemName, StringComparison.CurrentCultureIgnoreCase)) continue;
-                if (gem.Level >= rule.MaxLevel) return false;
-            }
+            //foreach (GemLevelRule rule in rules)
+            //{
+            //    if (!string.Equals(gem.Name, rule.GemName, StringComparison.CurrentCultureIgnoreCase)) continue;
+            //    if (gem.Level >= rule.MaxLevel) return false;
+            //}
 
             return true;
         }
