@@ -405,6 +405,7 @@ namespace Random_Features
         public ToggleNode LevelSkillGems { get; set; } = false;
         public HotkeyNode LevelSkillGemsHotkey { get; set; } = Keys.D6;
         public List<RandomFeatures.Person> SkillGemStopList { get; set; } = new List<RandomFeatures.Person>();
+        public ToggleNode LevlSkillGemIsLeftClick { get; set; } = true;
 
         public ToggleNode ShowInLabOnly { get; set; } = true;
 

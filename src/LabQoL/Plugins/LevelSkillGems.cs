@@ -24,6 +24,8 @@ namespace Random_Features
             ImGui.Spacing();
             Settings.LevelSkillGemsHotkey = PoeHUD.Hud.UI.ImGuiExtension.HotkeySelector("Level Up Skill Gems", Settings.LevelSkillGemsHotkey);
             ImGui.Separator();
+            Settings.LevlSkillGemIsLeftClick = PoeHUD.Hud.UI.ImGuiExtension.Checkbox("Left click to level Gems Up, Unticked if Right Click", Settings.LevlSkillGemIsLeftClick);
+            ImGui.Separator();
             ImGui.Spacing();
 
             bool WeExistInRuleSet = false;
@@ -192,7 +194,7 @@ namespace Random_Features
                         //if (PassedGemRule(RuleSet, SkillGemToolTipInfo))
                         //{
                             Mouse.SetCurosPosToCenterOfRec(skillGemButton, GameController.Window.GetWindowRectangle());
-                            Mouse.LeftClick(5, 150);
+                            Mouse.UniMouseClick(Settings.LevlSkillGemIsLeftClick, 5, 25);
                             //Mouse.SetCurosPosToCenterOfRec(GameController.Window.GetWindowRectangle(), GameController.Window.GetWindowRectangle());
                             GemClickTimer.Restart();
                             //break;

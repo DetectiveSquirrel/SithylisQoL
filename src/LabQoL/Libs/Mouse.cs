@@ -15,8 +15,16 @@ using SharpDX;
 
 namespace Random_Features.Libs
 {
+    public enum ClickType
+    {
+        Left,
+        Right
+    }
+
     public class Mouse
     {
+
+
         public const int MouseeventfLeftdown = 0x02;
         public const int MouseeventfLeftup   = 0x04;
 
@@ -69,6 +77,31 @@ namespace Random_Features.Libs
         {
             GetCursorPos(out Point lpPoint);
             return lpPoint;
+        }
+
+        public static void UniMouseClick(bool leftClick, int extraDelay, int startDelay = 0)
+        {
+            var clickType = ClickType.Left;
+
+            switch (leftClick)
+            {
+                case true:
+                    clickType = ClickType.Left;
+                    break;
+                default:
+                    clickType = ClickType.Right;
+                    break;
+            }
+
+            switch (clickType)
+            {
+                case ClickType.Left:
+                    LeftClick(extraDelay, startDelay);
+                    break;
+                case ClickType.Right:
+                    RightClick(extraDelay, startDelay);
+                    break;
+            }
         }
 
         public static void LeftClick(int extraDelay, int startDelay = 0)
