@@ -309,6 +309,7 @@ namespace Random_Features
         public ToggleNode PockedLanternbearer { get; set; }
         public ToggleNode SolarGuard { get; set; }
         public ToggleNode ChieftainMonkey { get; set; }
+        public ToggleNode CannibalFireEater { get; set; } = false;
         public ToggleNode VaultPiles { get; set; }
         public ToggleNode VaultPilesOnFloor { get; set; }
         public RangeNode<int> VaultPilesOnFloorSize { get; set; }
@@ -456,5 +457,8 @@ namespace Random_Features
         // Delve Map Grid
         public ToggleNode DelveGridMap { get; set; } = true;
         public float DelveGridMapScale { get; set; } = 0.635625f;
+
+        public RangeNode<int> FossilTierHighPrice { get; set; } = new RangeNode<int>(8, 1, 100);
+        public RangeNode<int> FossilTierMidPrice { get; set; } = new RangeNode<int>(2, 1, 100);
     }
 }

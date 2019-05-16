@@ -420,6 +420,7 @@ namespace Random_Features
                 Settings.PockedLanternbearer.Value = ImGuiExtension.Checkbox("Pocked Lanternbearer", Settings.PockedLanternbearer);
                 Settings.SolarGuard.Value = ImGuiExtension.Checkbox("Solar Guard", Settings.SolarGuard);
                 Settings.ChieftainMonkey.Value = ImGuiExtension.Checkbox("Chieftain Monkey", Settings.ChieftainMonkey);
+                Settings.CannibalFireEater.Value = ImGuiExtension.Checkbox("Cannibal Fire-eater", Settings.CannibalFireEater);
                 ImGui.TreePop();
             }
 
@@ -833,6 +834,11 @@ namespace Random_Features
                 {
                     DrawTextLabelSpecter(Color.Yellow, "Chieftain Monkey", "Metadata/Monsters/BloodChieftain/MonkeyChiefBloodEnrage", 120);
                 }
+
+                if (Settings.CannibalFireEater)
+                {
+                    DrawTextLabelSpecter(Color.Yellow, "Cannibal Fire-eater", "Metadata/Monsters/Cannibal/CannibalMaleChampion", 120);
+                }
             }
         }
 
@@ -1217,6 +1223,15 @@ namespace Random_Features
                 }
             }
 
+            if (Settings.Roombas && Settings.RoombasOnMap)
+            {
+                if (e.Path.Contains("HydraTurretProjectile"))
+                {
+                    return new MapIcon(e, new HudTexture(CustomImagePath + "roomba.png", Settings.RoombasOnMapColor), () => Settings.RoombasOnMap,
+                            Settings.RoombasOnMapSize);
+                }
+            }
+
             if (Settings.Spinners && Settings.SpinnersOnMap)
             {
                 if (e.Path.Contains("LabyrinthSpinner"))
@@ -1587,32 +1602,22 @@ namespace Random_Features
                     
                     if (e.Path.Contains("FossilChest") && e.Path.StartsWith("Metadata/Chests/DelveChests"))
                     {
-                        foreach (var @string in FossilList.T1)
+                        if (FossilList.T1.Any(@string => e.Path.ToLower().Contains(@string.ToLower())))
                         {
-                            if (e.Path.ToLower().Contains(@string.ToLower()))
-                            {
-                                return new MapIcon(e, new HudTexture(CustomImagePath + "//Delve//AbberantFossilT1.png", Settings.DelveFossilChestColor),
-                                    () => Settings.DelveFossilChest, Settings.DelveFossilChestSize);
-                            }
+                            return new MapIcon(e, new HudTexture(CustomImagePath + "//Delve//AbberantFossilT1.png", Settings.DelveFossilChestColor),
+                                () => Settings.DelveFossilChest, Settings.DelveFossilChestSize);
                         }
-                        foreach (var @string in FossilList.T2)
+                        if (FossilList.T2.Any(@string => e.Path.ToLower().Contains(@string.ToLower())))
                         {
-                            if (e.Path.ToLower().Contains(@string.ToLower()))
-                            {
-                                return new MapIcon(e, new HudTexture(CustomImagePath + "//Delve//AbberantFossilT2.png", Settings.DelveFossilChestColor),
-                                    () => Settings.DelveFossilChest, Settings.DelveFossilChestSize);
-                            }
+                            return new MapIcon(e, new HudTexture(CustomImagePath + "//Delve//AbberantFossilT2.png", Settings.DelveFossilChestColor),
+                                () => Settings.DelveFossilChest, Settings.DelveFossilChestSize);
                         }
-                        foreach (var @string in FossilList.T3)
+                        if (FossilList.T3.Any(@string => e.Path.ToLower().Contains(@string.ToLower())))
                         {
-                            if (e.Path.ToLower().Contains(@string.ToLower()))
-                            {
-                                return new MapIcon(e, new HudTexture(CustomImagePath + "//Delve//AbberantFossilT3.png", Settings.DelveFossilChestColor),
-                                    () => Settings.DelveFossilChest, Settings.DelveFossilChestSize);
-                            }
+                            return new MapIcon(e, new HudTexture(CustomImagePath + "//Delve//AbberantFossilT3.png", Settings.DelveFossilChestColor),
+                                () => Settings.DelveFossilChest, Settings.DelveFossilChestSize);
                         }
-
-
+                        
                         return new MapIcon(e, new HudTexture(CustomImagePath + "//Delve//AbberantFossil.png", Settings.DelveFossilChestColor),
                             () => Settings.DelveFossilChest, Settings.DelveFossilChestSize);
                     }
@@ -2058,12 +2063,12 @@ namespace Random_Features
     public class FossilTiers
     {
         [JsonProperty("t1")]
-        public string[] T1 { get; set; }
+        public List<string> T1 { get; set; }
 
         [JsonProperty("t2")]
-        public string[] T2 { get; set; }
+        public List<string> T2 { get; set; }
 
         [JsonProperty("t3")]
-        public string[] T3 { get; set; }
+        public List<string> T3 { get; set; }
     }
 }

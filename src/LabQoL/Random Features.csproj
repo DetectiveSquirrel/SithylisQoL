@@ -73,6 +73,7 @@
     <Compile Include="Libs\Keyboard.cs" />
     <Compile Include="Plugins\AreaModWarnings.cs" />
     <Compile Include="Plugins\AreaTransitions.cs" />
+    <Compile Include="Plugins\Fossil Tiers.cs" />
     <Compile Include="Plugins\LevelSkillGems.cs" />
     <Compile Include="Plugins\Trials.cs" />
     <Compile Include="Plugins\WheresMyCursor.cs" />
@@ -81,6 +82,7 @@
     <Compile Include="Libs\Mouse.cs" />
     <Compile Include="Plugins\FuckRomanNumerals.cs" />
     <Compile Include="Plugins\RandomFeatures.cs" />
+    <Compile Include="PoeNinjaApi\Fossils.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

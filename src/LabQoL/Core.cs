@@ -27,6 +27,7 @@ namespace Random_Features
         private const string FUCK_ROMAN_NUMERAS = "Fuck Roman Numerals";
         private const string RANDOM_FEATURES = "Random Features";
         private const string SKILL_GEM_LEVELING = "Skill Gem Leveling";
+        private const string FOSSIL_TIER_SETTINGS = "Gen Fossil Tiers";
 
         //https://stackoverflow.com/questions/826777/how-to-have-an-auto-incrementing-version-number-visual-studio
         public Version version = Assembly.GetExecutingAssembly().GetName().Version;
@@ -42,7 +43,8 @@ namespace Random_Features
                 TRIALS,
                 AREA_TRANSITIONS,
                 AREA_MOD_WARNINGS,
-                SKILL_GEM_LEVELING
+                SKILL_GEM_LEVELING,
+                FOSSIL_TIER_SETTINGS
         };
 
         public static int idPop;
@@ -168,6 +170,9 @@ namespace Random_Features
                         break;
                     case SKILL_GEM_LEVELING:
                         LevelSkillGemsMenu();
+                        break;
+                    case FOSSIL_TIER_SETTINGS:
+                        FielTierMenu();
                         break;
                 }
             ImGui.PopStyleVar();
