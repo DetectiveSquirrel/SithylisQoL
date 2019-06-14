@@ -322,6 +322,9 @@ namespace Random_Features
         public ToggleNode ClosedIncursionDoor { get; set; } = true;
         public RangeNode<int> ClosedIncursionDoorOnMapSize { get; set; } = new RangeNode<int>(25, 1, 200);
         public ColorNode ClosedIncursionDoorOnMapColor { get; set; } = new ColorBGRA(255, 255, 255, 255);
+        public ToggleNode OpenIncursionDoor { get; set; } = true;
+        public RangeNode<int> OpenIncursionDoorOnMapSize { get; set; } = new RangeNode<int>(25, 1, 200);
+        public ColorNode OpenIncursionDoorOnMapColor { get; set; } = new ColorBGRA(255, 255, 255, 255);
 
         public ToggleNode IncursionBreachChest { get; set; } = true;
         public RangeNode<int> IncursionBreachChestOnMapSize { get; set; } = new RangeNode<int>(10, 1, 200);
