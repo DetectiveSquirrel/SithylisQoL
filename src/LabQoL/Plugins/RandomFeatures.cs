@@ -960,6 +960,7 @@ namespace Random_Features
         private void DelveMapNodes()
         {
             if (!Settings.DelveGridMap) return;
+            //TO DO: check child
             var delveMap = GameController.Game.IngameState.UIRoot.Children[1].Children[59];
             if (!delveMap.IsVisible) return;
             try
