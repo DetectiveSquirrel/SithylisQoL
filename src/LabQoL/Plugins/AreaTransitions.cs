@@ -6,7 +6,6 @@ using ExileCore;
 using ExileCore.PoEMemory.Components;
 using ExileCore.Shared.Enums;
 using ExileCore.Shared.Helpers;
-using MinimapIcons;
 using Random_Features.Libs;
 using SharpDX;
 

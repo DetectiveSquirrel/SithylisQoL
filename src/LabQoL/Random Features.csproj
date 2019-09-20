@@ -74,6 +74,7 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Libs\MapIcon.cs" />
     <Compile Include="RandomFeatures.cs" />
     <Compile Include="Libs\Keyboard.cs" />
     <Compile Include="Plugins\AreaModWarnings.cs" />
@@ -96,11 +97,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\ExileApiPlugins\MinimapIcons\MinimapIcons.csproj">
-      <Project>{1ae459c5-308a-4a4e-95e3-4a87c57d2087}</Project>
-      <Name>MinimapIcons</Name>
-      <Private>False</Private>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\ExileApi\Core\Core.csproj">
       <Project>{5539d732-34a7-44ab-9e28-116c3429b12a}</Project>
       <Name>Core</Name>

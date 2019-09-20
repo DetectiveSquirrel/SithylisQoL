@@ -9,7 +9,6 @@ using ExileCore.Shared;
 using ExileCore.Shared.Enums;
 using ExileCore.Shared.Helpers;
 using ImGuiNET;
-using MinimapIcons;
 using Newtonsoft.Json;
 using Random_Features.Libs;
 using SharpDX;
@@ -1835,7 +1834,8 @@ namespace Random_Features
                 foreach (var entity in _entityCollection.Values.ToList())
                 {
                     if (entity is null) continue;
-                    DrawToLargeMiniMap(entity);
+                    //need Debug
+                    // DrawToLargeMiniMap(entity);
                 }
             }
             else if (GameController.Game.IngameState.IngameUi.Map.SmallMiniMap.IsVisible)
@@ -1843,7 +1843,8 @@ namespace Random_Features
                 foreach (var entity in _entityCollection.Values.ToList())
                 {
                     if (entity is null) continue;
-                    DrawToSmallMiniMap(entity);
+                    //need Debug
+                    // DDrawToSmallMiniMap(entity);
                 }
             }
         }
@@ -1888,17 +1889,20 @@ namespace Random_Features
             };
             if (Settings.LesserShrines && Settings.LesserShrineOnFloor)
             {
-                DrawImageToWorld_Shrine(lesserShrine);
+                //need Debug
+                //DrawImageToWorld_Shrine(lesserShrine);
             }
 
             if (Settings.NormalShrines && Settings.NormalShrineOnFloor)
             {
-                DrawImageToWorld_Shrine(normalShrine);
+                //need Debug
+                //DrawImageToWorld_Shrine(normalShrine);
             }
 
             if (Settings.Darkshrines && Settings.DarkshrinesOnFloor)
             {
-                DrawImageToWorld_Shrine(darkShrine);
+                //need Debug
+                //DrawImageToWorld_Shrine(darkShrine);
             }
         }
 
@@ -1972,7 +1976,8 @@ namespace Random_Features
                     ImagePath = $"{CustomImagePath}Coin.png",
                     ImageSize = Settings.VaultPilesOnFloorSize
             };
-            DrawImageToWorld_Chest(wantedEntity);
+            //need Debug
+            //DrawImageToWorld_Chest(wantedEntity);
         }
 
         public void DrawImageToWorld(ImageToWorldData information)

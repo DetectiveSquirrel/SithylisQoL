@@ -137,7 +137,7 @@ namespace Random_Features
             VaultPilesOnMap = new ToggleNode(true);
             VaultPilesIcon = new RangeNode<int>(25, 1, 200);
             AreaNamesOnMap = new ToggleNode(true);
-            _Debug = new ToggleNode(true);
+            _Debug = new ToggleNode(false);
             // Fuck Roman Numerals
             FrnMain = new ToggleNode(true);
             FrnPercentOfBox = new RangeNode<int>(40, 1, 100);
