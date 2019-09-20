@@ -4,11 +4,10 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
-using System.Windows.Forms;
+using ExileCore.PoEMemory;
+using ExileCore.PoEMemory.Components;
+using ExileCore.PoEMemory.Elements;
 using ImGuiNET;
-using PoeHUD.Poe;
-using PoeHUD.Poe.Components;
-using PoeHUD.Poe.Elements;
 using Random_Features.Libs;
 using SharpDX;
 
@@ -22,9 +21,9 @@ namespace Random_Features
         {
             Settings.LevelSkillGems.Value = ImGuiExtension.Checkbox("Active Skill Gem Leveling Functions", Settings.LevelSkillGems.Value);
             ImGui.Spacing();
-            Settings.LevelSkillGemsHotkey = PoeHUD.Hud.UI.ImGuiExtension.HotkeySelector("Level Up Skill Gems", Settings.LevelSkillGemsHotkey);
+            Settings.LevelSkillGemsHotkey = ImGuiExtension.HotkeySelector("Level Up Skill Gems", Settings.LevelSkillGemsHotkey);
             ImGui.Separator();
-            Settings.LevlSkillGemIsLeftClick = PoeHUD.Hud.UI.ImGuiExtension.Checkbox("Left click to level Gems Up, Unticked if Right Click", Settings.LevlSkillGemIsLeftClick);
+            Settings.LevlSkillGemIsLeftClick.Value = ImGuiExtension.Checkbox("Left click to level Gems Up, Unticked if Right Click", Settings.LevlSkillGemIsLeftClick);
             ImGui.Separator();
             ImGui.Spacing();
 
@@ -53,10 +52,12 @@ namespace Random_Features
                 });
             }
 
-            if (ImGui.CollapsingHeader($"Gem Leveling Rules For - {PlayerName}", "##GemLevelingRules", true, true))
+            //not sure about "ref" usage
+            bool refBool = true;
+            if (ImGui.CollapsingHeader($"Gem Leveling Rules For - {PlayerName}", ref refBool))
             {
                 ImGui.Text("How Does It Work");
-                PoeHUD.Hud.UI.ImGuiExtension.ToolTip("All gems are leveled up UNLESS the rules below catch the gem\n"
+                ImGuiExtension.ToolTip("All gems are leveled up UNLESS the rules below catch the gem\n"
                                                    + "Example, you dont want CWDT to be leveled past 3\n"
                                                    + "Add \"Cast When Damage Taken Support\" with max level of 3\n"
                                                    + "When the gem is level 3 it will right click to hide that gem and it wont be leveled any further");
@@ -92,16 +93,16 @@ namespace Random_Features
                     }
 
                     ImGui.NextColumn();
-                    ImGui.PushItemWidth(ImGui.GetContentRegionAvailableWidth());
+                    ImGui.PushItemWidth(ImGui.GetWindowContentRegionWidth());
                     Settings.SkillGemStopList[i].Rules[j].GemName =
-                            PoeHUD.Hud.UI.ImGuiExtension.InputText($"##GN{i}{j}", Settings.SkillGemStopList[i].Rules[j].GemName, 35,
-                                    InputTextFlags.Default);
+                            ImGuiExtension.InputText($"##GN{i}{j}", Settings.SkillGemStopList[i].Rules[j].GemName, 35,
+                                    ImGuiInputTextFlags.None);
                     ImGui.PopItemWidth();
                     //ImGui.SameLine();
                     ImGui.NextColumn();
-                    ImGui.PushItemWidth(ImGui.GetContentRegionAvailableWidth());
+                    ImGui.PushItemWidth(ImGui.GetWindowContentRegionWidth());
                     Settings.SkillGemStopList[i].Rules[j].MaxLevel =
-                            PoeHUD.Hud.UI.ImGuiExtension.IntSlider($"##ML{i}{j}", Settings.SkillGemStopList[i].Rules[j].MaxLevel, 1, 20);
+                            ImGuiExtension.IntSlider($"##ML{i}{j}", Settings.SkillGemStopList[i].Rules[j].MaxLevel, 1, 20);
                     ImGui.NextColumn();
                     ImGui.PopItemWidth();
                 }

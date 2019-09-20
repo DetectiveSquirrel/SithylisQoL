@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using ExileCore;
+using ExileCore.Shared.Nodes;
 using ImGuiNET;
-using PoeHUD.Framework;
-using PoeHUD.Hud.Settings;
-using PoeHUD.Plugins;
 using SharpDX;
 using ImGuiVector2 = System.Numerics.Vector2;
 using ImGuiVector4 = System.Numerics.Vector4;
@@ -15,33 +14,37 @@ namespace Random_Features.Libs
 {
     public class ImGuiExtension
     {
+        /*
         public static ImGuiVector4 CenterWindow(int width, int height)
         {
             var centerPos = BasePlugin.API.GameController.Window.GetWindowRectangle().Center;
             return new ImGuiVector4(width + centerPos.X - width / 2, height + centerPos.Y - height / 2, width, height);
         }
+        */
 
         public static bool BeginWindow(string title, ref bool isOpened, int x, int y, int width, int height, bool autoResize = false)
         {
-            ImGui.SetNextWindowPos(new ImGuiVector2(width + x, height + y), Condition.Appearing, new ImGuiVector2(1, 1));
-            ImGui.SetNextWindowSize(new ImGuiVector2(width, height), Condition.Appearing);
-            return ImGui.BeginWindow(title, ref isOpened, autoResize ? WindowFlags.AlwaysAutoResize : WindowFlags.Default);
+            ImGui.SetNextWindowPos(new ImGuiVector2(width + x, height + y), ImGuiCond.Appearing, new ImGuiVector2(1, 1));
+            ImGui.SetNextWindowSize(new ImGuiVector2(width, height), ImGuiCond.Appearing);
+            return ImGui.BeginPopupModal(title, ref isOpened, autoResize ? ImGuiWindowFlags.AlwaysAutoResize : ImGuiWindowFlags.None);
         }
 
         public static bool BeginWindow(string title, ref bool isOpened, float x, float y, float width, float height, bool autoResize = false)
         {
-            ImGui.SetNextWindowPos(new ImGuiVector2(width + x, height + y), Condition.Appearing, new ImGuiVector2(1, 1));
-            ImGui.SetNextWindowSize(new ImGuiVector2(width, height), Condition.Appearing);
-            return ImGui.BeginWindow(title, ref isOpened, autoResize ? WindowFlags.AlwaysAutoResize : WindowFlags.Default);
+            ImGui.SetNextWindowPos(new ImGuiVector2(width + x, height + y), ImGuiCond.Appearing, new ImGuiVector2(1, 1));
+            ImGui.SetNextWindowSize(new ImGuiVector2(width, height), ImGuiCond.Appearing);
+            return ImGui.BeginPopupModal(title, ref isOpened, autoResize ? ImGuiWindowFlags.AlwaysAutoResize : ImGuiWindowFlags.None);
         }
-
+        
+        /*
         public static bool BeginWindowCenter(string title, ref bool isOpened, int width, int height, bool autoResize = false)
         {
             var size = CenterWindow(width, height);
-            ImGui.SetNextWindowPos(new ImGuiVector2(size.X, size.Y), Condition.Appearing, new ImGuiVector2(1, 1));
-            ImGui.SetNextWindowSize(new ImGuiVector2(size.Z, size.W), Condition.Appearing);
-            return ImGui.BeginWindow(title, ref isOpened, autoResize ? WindowFlags.AlwaysAutoResize : WindowFlags.Default);
+            ImGui.SetNextWindowPos(new ImGuiVector2(size.X, size.Y), ImGuiCond.Appearing, new ImGuiVector2(1, 1));
+            ImGui.SetNextWindowSize(new ImGuiVector2(size.Z, size.W), ImGuiCond.Appearing);
+            return ImGui.BeginWindow(title, ref isOpened, autoResize ? ImGuiWindowFlags.AlwaysAutoResize : ImGuiWindowFlags.None);
         }
+        */
 
         // Int Sliders
         public static int IntSlider(string labelString, int value, int minValue, int maxValue)
@@ -149,12 +152,12 @@ namespace Random_Features.Libs
         public static Keys HotkeySelector(string buttonName, Keys currentKey)
         {
             if (ImGui.Button($"{buttonName}: {currentKey} ")) ImGui.OpenPopup(buttonName);
-            if (ImGui.BeginPopupModal(buttonName, (WindowFlags) 35))
+            if (ImGui.BeginPopup(buttonName, (ImGuiWindowFlags) 35))
             {
                 ImGui.Text($"Press a key to set as {buttonName}");
                 foreach (var key in KeyCodes())
                 {
-                    if (!WinApi.IsKeyDown(key)) continue;
+                    if (!Input.IsKeyDown(key)) continue;
                     if (key != Keys.Escape && key != Keys.RButton && key != Keys.LButton)
                     {
                         ImGui.CloseCurrentPopup();
@@ -174,12 +177,12 @@ namespace Random_Features.Libs
         public static Keys HotkeySelector(string buttonName, string popupTitle, Keys currentKey)
         {
             if (ImGui.Button($"{buttonName}: {currentKey} ")) ImGui.OpenPopup(popupTitle);
-            if (ImGui.BeginPopupModal(popupTitle, (WindowFlags) 35))
+            if (ImGui.BeginPopup(popupTitle, (ImGuiWindowFlags) 35))
             {
                 ImGui.Text($"Press a key to set as {buttonName}");
                 foreach (var key in KeyCodes())
                 {
-                    if (!WinApi.IsKeyDown(key)) continue;
+                    if (!Input.IsKeyDown(key)) continue;
                     if (key != Keys.Escape && key != Keys.RButton && key != Keys.LButton)
                     {
                         ImGui.CloseCurrentPopup();
@@ -201,21 +204,21 @@ namespace Random_Features.Libs
         {
             var color = inputColor.ToVector4();
             var colorToVect4 = new ImGuiVector4(color.X, color.Y, color.Z, color.W);
-            if (ImGui.ColorEdit4(labelName, ref colorToVect4, ColorEditFlags.AlphaBar)) return new Color(colorToVect4.X, colorToVect4.Y, colorToVect4.Z, colorToVect4.W);
+            if (ImGui.ColorEdit4(labelName, ref colorToVect4, ImGuiColorEditFlags.AlphaBar)) return new Color(colorToVect4.X, colorToVect4.Y, colorToVect4.Z, colorToVect4.W);
             return inputColor;
         }
 
         // Combo Box
 
-        public static int ComboBox(string sideLabel, int currentSelectedItem, List<string> objectList, ComboFlags comboFlags = ComboFlags.HeightRegular)
+        public static int ComboBox(string sideLabel, int currentSelectedItem, List<string> objectList, ImGuiComboFlags ImGuiComboFlags = ImGuiComboFlags.HeightRegular)
         {
-            ImGui.Combo(sideLabel, ref currentSelectedItem, objectList.ToArray());
+            ImGui.Combo(sideLabel, ref currentSelectedItem, objectList.ToArray(), objectList.Count);
             return currentSelectedItem;
         }
 
-        public static string ComboBox(string sideLabel, string currentSelectedItem, List<string> objectList, ComboFlags comboFlags = ComboFlags.HeightRegular)
+        public static string ComboBox(string sideLabel, string currentSelectedItem, List<string> objectList, ImGuiComboFlags ImGuiComboFlags = ImGuiComboFlags.HeightRegular)
         {
-            if (ImGui.BeginCombo(sideLabel, currentSelectedItem, comboFlags))
+            if (ImGui.BeginCombo(sideLabel, currentSelectedItem, ImGuiComboFlags))
             {
                 var refObject = currentSelectedItem;
                 for (var n = 0; n < objectList.Count; n++)
@@ -236,9 +239,9 @@ namespace Random_Features.Libs
             return currentSelectedItem;
         }
 
-        public static string ComboBox(string sideLabel, string currentSelectedItem, List<string> objectList, out bool didChange, ComboFlags comboFlags = ComboFlags.HeightRegular)
+        public static string ComboBox(string sideLabel, string currentSelectedItem, List<string> objectList, out bool didChange, ImGuiComboFlags ImGuiComboFlags = ImGuiComboFlags.HeightRegular)
         {
-            if (ImGui.BeginCombo(sideLabel, currentSelectedItem, comboFlags))
+            if (ImGui.BeginCombo(sideLabel, currentSelectedItem, ImGuiComboFlags))
             {
                 var refObject = currentSelectedItem;
                 for (var n = 0; n < objectList.Count; n++)
@@ -262,52 +265,48 @@ namespace Random_Features.Libs
         }
 
         // Unput Text
-        public static unsafe string InputText(string label, string currentValue, uint maxLength, InputTextFlags flags)
+        public static string InputText(string label, string currentValue, uint maxLength, ImGuiInputTextFlags flags)
         {
-            var currentStringBytes = Encoding.Default.GetBytes(currentValue);
-            var buffer = new byte[maxLength];
-            Array.Copy(currentStringBytes, buffer, Math.Min(currentStringBytes.Length, maxLength));
-
-            int Callback(TextEditCallbackData* data)
+            byte[] buff = new byte[maxLength];
+            if (!String.IsNullOrEmpty(currentValue))
             {
-                var pCursorPos = (int*) data->UserData;
-                if (!data->HasSelection()) *pCursorPos = data->CursorPos;
-                return 0;
+                byte[] currentValueBytes = Encoding.UTF8.GetBytes(currentValue);
+                Array.Copy(currentValueBytes, buff, currentValueBytes.Length);
             }
-
-            ImGui.InputText(label, buffer, maxLength, flags, Callback);
-            return Encoding.Default.GetString(buffer).TrimEnd('\0');
+            ImGui.InputText(label, buff, maxLength, flags);
+            return Encoding.Default.GetString(buff).TrimEnd('\0');
         }
 
         // ImColor_HSV Maker
         public static ImGuiVector4 ImColor_HSV(float h, float s, float v)
         {
-            ImGui.ColorConvertHSVToRGB(h, s, v, out var r, out var g, out var b);
+            ImGui.ColorConvertHSVtoRGB(h, s, v, out var r, out var g, out var b);
             return new ImGuiVector4(r, g, b, 255);
         }
 
         public static ImGuiVector4 ImColor_HSV(float h, float s, float v, float a)
         {
-            ImGui.ColorConvertHSVToRGB(h, s, v, out var r, out var g, out var b);
+            ImGui.ColorConvertHSVtoRGB(h, s, v, out var r, out var g, out var b);
             return new ImGuiVector4(r, g, b, a);
         }
 
         // Color menu tabs
         public static void ImGuiExtension_ColorTabs(string idString, int height, IReadOnlyList<string> settingList, ref int selectedItem, ref int uniqueIdPop)
         {
-            ImGuiNative.igGetContentRegionAvail(out var newcontentRegionArea);
+            var newcontentRegionArea = new System.Numerics.Vector2();
+            newcontentRegionArea = ImGuiNative.igGetContentRegionAvail();
             var boxRegion = new ImGuiVector2(newcontentRegionArea.X, height);
-            if (ImGui.BeginChild(idString, boxRegion, true, WindowFlags.HorizontalScrollbar))
+            if (ImGui.BeginChild(idString, boxRegion, true, ImGuiWindowFlags.HorizontalScrollbar))
             {
                 for (var i = 0; i < settingList.Count; i++)
                 {
                     ImGui.PushID(uniqueIdPop);
                     var hue = 1f / settingList.Count * i;
-                    ImGui.PushStyleColor(ColorTarget.Button, ImColor_HSV(hue, 0.6f, 0.6f, 0.8f));
-                    ImGui.PushStyleColor(ColorTarget.ButtonHovered, ImColor_HSV(hue, 0.7f, 0.7f, 0.9f));
-                    ImGui.PushStyleColor(ColorTarget.ButtonActive, ImColor_HSV(hue, 0.8f, 0.8f, 1.0f));
-                    ImGui.PushStyleVar(StyleVar.FrameRounding, 3.0f);
-                    ImGui.PushStyleVar(StyleVar.FramePadding, 2.0f);
+                    ImGui.PushStyleColor(ImGuiCol.Button, ImColor_HSV(hue, 0.6f, 0.6f, 0.8f));
+                    ImGui.PushStyleColor(ImGuiCol.ButtonHovered, ImColor_HSV(hue, 0.7f, 0.7f, 0.9f));
+                    ImGui.PushStyleColor(ImGuiCol.ButtonActive, ImColor_HSV(hue, 0.8f, 0.8f, 1.0f));
+                    ImGui.PushStyleVar(ImGuiStyleVar.FrameRounding, 3.0f);
+                    ImGui.PushStyleVar(ImGuiStyleVar.FramePadding, 2.0f);
                     if (i > 0) ImGui.SameLine();
                     if (ImGui.Button(settingList[i])) selectedItem = i;
                     uniqueIdPop++;
@@ -321,9 +320,10 @@ namespace Random_Features.Libs
         }
 
         //Begin Child Frames - Full Width
-        public static bool BeginChild(string id, bool border, WindowFlags flags)
+        public static bool BeginChild(string id, bool border, ImGuiWindowFlags flags)
         {
-            ImGuiNative.igGetContentRegionAvail(out var newcontentRegionArea);
+            var newcontentRegionArea = new System.Numerics.Vector2();
+            newcontentRegionArea = ImGuiNative.igGetContentRegionAvail();
             return ImGui.BeginChild(id, new ImGuiVector2(newcontentRegionArea.X, newcontentRegionArea.Y), border, flags);
         }
 
@@ -338,6 +338,16 @@ namespace Random_Features.Libs
         public static void EndColumn()
         {
             ImGui.Columns(1, null, false);
+        }
+
+        public static void ToolTip(string desc)
+        {
+            ImGui.SameLine();
+            ImGui.TextDisabled("(?)");
+            if (ImGui.IsItemHovered(ImGuiHoveredFlags.None))
+            {
+                ImGui.SetTooltip(desc);
+            }
         }
     }
 }

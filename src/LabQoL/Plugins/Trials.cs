@@ -1,5 +1,5 @@
-﻿using ImGuiNET;
-using PoeHUD.Poe.Components;
+﻿using ExileCore.PoEMemory.Components;
+using ImGuiNET;
 using Random_Features.Libs;
 using ImVector4 = System.Numerics.Vector4;
 
@@ -46,16 +46,16 @@ namespace Random_Features
 
             ImGui.Separator();
             ImGuiExtension.EndColumn();
-            Settings._Debug = ImGuiExtension.Checkbox("Debug", Settings._Debug);
+            Settings._Debug.Value = ImGuiExtension.Checkbox("Debug", Settings._Debug);
         }
 
         public void TrialString(int trialID)
         {
             var trial = GameController.Player.GetComponent<Player>().TrialStates[trialID];
             if (trial.IsCompleted)
-                ImGui.PushStyleColor(ColorTarget.Text, new ImVector4(0.25f, 0.85f, 0.25f, 1f));
+                ImGui.PushStyleColor(ImGuiCol.Text, new ImVector4(0.25f, 0.85f, 0.25f, 1f));
             else
-                ImGui.PushStyleColor(ColorTarget.Text, new ImVector4(0.85f, 0.25f, 0.25f, 1f));
+                ImGui.PushStyleColor(ImGuiCol.Text, new ImVector4(0.85f, 0.25f, 0.25f, 1f));
             if (trial.TrialArea.Area.Act <= 10)
                 ImGui.Text($"{trial.TrialArea.Area.Name} (Act {trial.TrialArea.Area.Act})");
             else

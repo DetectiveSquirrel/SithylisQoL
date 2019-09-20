@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using ExileCore.PoEMemory;
+using ExileCore.Shared.Enums;
 using ImGuiNET;
-using PoeHUD.Hud.UI;
-using PoeHUD.Models.Enums;
-using PoeHUD.Poe;
 using SharpDX;
-using SharpDX.Direct3D9;
 using ImGuiExtension = Random_Features.Libs.ImGuiExtension;
 
 namespace Random_Features
@@ -38,7 +35,7 @@ namespace Random_Features
             {
                 if (!IsMapTabOpen()) return;
 
-                List<Element> mapElements = GameController.Game.IngameState.IngameUi.StashElement.VisibleStash.InventoryUiElement.Children;
+                IList<Element> mapElements = GameController.Game.IngameState.IngameUi.StashElement.VisibleStash.InventoryUIElement.Children;
                 //List<Element> mapElements = new List<Element>();
                 Element uiHover = GameController.Game.IngameState.UIHover;
 
@@ -100,7 +97,7 @@ namespace Random_Features
                     int TextSize = (int) (FontStartSize * Percent);
 
                     Graphics.DrawBox(backgroundPos, backgroundColor);
-                    Graphics.DrawText(text, TextSize, textPos, textColor, FontDrawFlags.VerticalCenter | FontDrawFlags.Center);
+                    Graphics.DrawText(text, textPos, textColor, TextSize, FontAlign.Center);
                 }
             }
             catch

@@ -1,15 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Globalization;
+﻿using System.Collections.Generic;
 using System.IO;
 using ImGuiNET;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-using PoeHUD.Controllers;
-using PoeHUD.Poe.Components;
 using Random_Features.Libs;
 using Random_Features.PoeNinjaApi;
-using ImGuiExtension = PoeHUD.Hud.UI.ImGuiExtension;
 
 namespace Random_Features
 {
@@ -58,12 +52,12 @@ namespace Random_Features
                 }
 
                 // Save data to file
-                Json.SaveSettingFile($@"{PluginDirectory}\Fossil_Tiers.json", tiers);
+                Json.SaveSettingFile($@"{DirectoryFullName}\Fossil_Tiers.json", tiers);
 
                 // Reload data
-                if (File.Exists($@"{PluginDirectory}\Fossil_Tiers.json"))
+                if (File.Exists($@"{DirectoryFullName}\Fossil_Tiers.json"))
                 {
-                    var jsonFIle = File.ReadAllText($@"{PluginDirectory}\Fossil_Tiers.json");
+                    var jsonFIle = File.ReadAllText($@"{DirectoryFullName}\Fossil_Tiers.json");
                     FossilList = JsonConvert.DeserializeObject<FossilTiers>(jsonFIle, JsonSettings);
                 }
                 else

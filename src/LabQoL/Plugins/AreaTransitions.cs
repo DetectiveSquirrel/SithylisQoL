@@ -2,13 +2,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using PoeHUD.Framework;
-using PoeHUD.Framework.Helpers;
-using PoeHUD.Hud;
-using PoeHUD.Poe.Components;
+using ExileCore;
+using ExileCore.PoEMemory.Components;
+using ExileCore.Shared.Enums;
+using ExileCore.Shared.Helpers;
+using MinimapIcons;
 using Random_Features.Libs;
 using SharpDX;
-using SharpDX.Direct3D9;
 
 namespace Random_Features
 {
@@ -33,7 +33,7 @@ namespace Random_Features
             Settings.AreaTransitionSize.Value = ImGuiExtension.IntSlider("Text Size", Settings.AreaTransitionSize);
             Settings.AreaTransitionColor = ImGuiExtension.ColorPicker("Text Color", Settings.AreaTransitionColor);
             Settings.AreaTransitionColorBackground = ImGuiExtension.ColorPicker("Text Color Background", Settings.AreaTransitionColorBackground);
-            Settings._Debug = ImGuiExtension.Checkbox("Debug", Settings._Debug);
+            Settings._Debug.Value = ImGuiExtension.Checkbox("Debug", Settings._Debug);
         }
 
         public int CompletedTrial(string trialString)
@@ -54,18 +54,13 @@ namespace Random_Features
             return returnState;
         }
 
-        private IEnumerator ClearStoredEntities()
-        {
-            storedAreaEntities.Clear();
-            yield return new WaitFunction(() => GameController.Game.IsGameLoading);
-        }
 
         private void AreaTranitions()
         {
             if (!Settings.AreaTransition) return;
             if (GameController.Game.IngameState.IngameUi.AtlasPanel.IsVisible || GameController.Game.IngameState.IngameUi.TreePanel.IsVisible)
                 return;
-            if (LocalPlayer.Area.IsHideout || LocalPlayer.Area.IsTown && Settings.AreaTransitionHideInTownOrHideout)
+            if (GameController.Area.CurrentArea.IsHideout || GameController.Area.CurrentArea.IsTown && Settings.AreaTransitionHideInTownOrHideout)
                 return;
             foreach (var entity in GameController.Entities.ToList())
             {
@@ -75,10 +70,10 @@ namespace Random_Features
                     if (entity.HasComponent<AreaTransition>())
                     {
                         var positionedComp = entity.GetComponent<Positioned>();
-                        if (entity.GetComponent<AreaTransition>().TransitionType == AreaTransition.AreaTransitionType.Local && Settings.AreaTransitionHideLocalTranition) return;
+                        if (entity.GetComponent<AreaTransition>().TransitionType == AreaTransitionType.Local && Settings.AreaTransitionHideLocalTranition) return;
                         var TextInfo = new MinimapTextInfo
                         {
-                            Text = entity.GetComponent<AreaTransition>().TransitionType == AreaTransition.AreaTransitionType.Local ? "Local Transition" : entity.GetComponent<AreaTransition>().WorldArea.Name,
+                            Text = entity.GetComponent<AreaTransition>().TransitionType == AreaTransitionType.Local ? "Local Transition" : entity.GetComponent<AreaTransition>().WorldArea.Name,
                             FontSize = Settings.AreaTransitionSizeSmall,
                             FontColor = Settings.AreaTransitionColor,
                             FontBackgroundColor = Settings.AreaTransitionColorBackground,
@@ -97,13 +92,13 @@ namespace Random_Features
                         if (storedAreaEntities.Any(x => x.GridPos == positionedComp.GridPos))
                         {
                             var findIndex = storedAreaEntities.FindIndex(x => x.GridPos == positionedComp.GridPos);
-                            storedAreaEntities[findIndex] = new StoredEntity(entity.GetComponent<Render>().Z, positionedComp.GridPos, entity.LongId, TextInfo);
+                            storedAreaEntities[findIndex] = new StoredEntity(entity.GetComponent<Render>().Z, positionedComp.GridPos, entity.Id, TextInfo);
                         }
                         else
                         {
                             if (Settings._Debug)
                                 LogMessage($"Random Features [AreaTransitions] Added Area | Area:{TextInfo.Text}", 3);
-                            storedAreaEntities.Add(new StoredEntity(entity.GetComponent<Render>().Z, positionedComp.GridPos, entity.LongId, TextInfo));
+                            storedAreaEntities.Add(new StoredEntity(entity.GetComponent<Render>().Z, positionedComp.GridPos, entity.Id, TextInfo));
                         }
                     }
                 }
@@ -116,7 +111,7 @@ namespace Random_Features
             {
                 if (GameController.Game.IngameState.IngameUi.Map.LargeMap.IsVisible)
                     DrawToLargeMiniMapText(storedAreaEntity, storedAreaEntity.TextureInfo);
-                if (GameController.Game.IngameState.IngameUi.Map.SmallMinimap.IsVisible)
+                if (GameController.Game.IngameState.IngameUi.Map.SmallMiniMap.IsVisible)
                     DrawToSmallMiniMapText(storedAreaEntity, storedAreaEntity.TextureInfo);
             }
         }
@@ -135,12 +130,13 @@ namespace Random_Features
             var iconZ = entity.EntityZ;
             var point = screenCenter + MapIcon.DeltaInWorldToMinimapDelta(entity.GridPos - playerPos, diag, scale, (iconZ - posZ) / (9f / mapWindow.LargeMapZoom));
             point.Y += Settings.AreaTransitionLargeMapYOffset;
-            var size = Graphics.DrawText(WordWrap(info.Text, info.TextWrapLength), info.FontSize, point, info.FontColor, FontDrawFlags.Center);
+            var size = Graphics.DrawText(WordWrap(info.Text, info.TextWrapLength), point, info.FontColor, info.FontSize, FontAlign.Center);
             float maxWidth = 0;
             float maxheight = 0;
-            point.Y += size.Height;
-            maxheight += size.Height;
-            maxWidth = Math.Max(maxWidth, size.Width);
+            //not sure about sizes below, need test
+            point.Y += size.Y;
+            maxheight += size.Y;
+            maxWidth = Math.Max(maxWidth, size.X);
             var background = new RectangleF(point.X - maxWidth / 2 - 3, point.Y - maxheight, maxWidth + 6, maxheight);
             Graphics.DrawBox(background, info.FontBackgroundColor);
         }
@@ -149,23 +145,24 @@ namespace Random_Features
         {
             var camera = GameController.Game.IngameState.Camera;
             var mapWindow = GameController.Game.IngameState.IngameUi.Map;
-            var mapRect = mapWindow.SmallMinimap.GetClientRect();
+            var mapRect = mapWindow.SmallMiniMap.GetClientRect();
             var playerPos = GameController.Player.GetComponent<Positioned>().GridPos;
             var posZ = GameController.Player.GetComponent<Render>().Z;
-            var screenCenter = new Vector2(mapRect.Width / 2, mapRect.Height / 2).Translate(0, -20) + new Vector2(mapRect.X, mapRect.Y) + new Vector2(mapWindow.SmallMinimapX, mapWindow.SmallMinimapY);
+            var screenCenter = new Vector2(mapRect.Width / 2, mapRect.Height / 2 ).Translate(0, -20) + new Vector2(mapRect.X, mapRect.Y) + new Vector2(mapWindow.SmallMinMapX, mapWindow.SmallMinMapY);
             var diag = (float) Math.Sqrt(camera.Width * camera.Width + camera.Height * camera.Height);
             var k = camera.Width < 1024f ? 1120f : 1024f;
-            var scale = k / camera.Height * camera.Width * 3f / 4f / mapWindow.SmallMinimapZoom;
+            var scale = k / camera.Height * camera.Width * 3f / 4f / mapWindow.SmallMinMapZoom;
             var iconZ = entity.EntityZ;
-            var point = screenCenter + MapIcon.DeltaInWorldToMinimapDelta(entity.GridPos - playerPos, diag, scale, (iconZ - posZ) / (9f / mapWindow.SmallMinimapZoom));
+            var point = screenCenter + MapIcon.DeltaInWorldToMinimapDelta(entity.GridPos - playerPos, diag, scale, (iconZ - posZ) / (9f / mapWindow.SmallMinMapZoom));
             point.Y += info.TextOffsetY;
             if (!mapRect.Contains(point)) return;
-            var size = Graphics.DrawText(WordWrap(info.Text, info.TextWrapLength), info.FontSize, point, info.FontColor, FontDrawFlags.Center);
+            var size = Graphics.DrawText(WordWrap(info.Text, info.TextWrapLength), point, info.FontColor, info.FontSize, FontAlign.Center);
             float maxWidth = 0;
             float maxheight = 0;
-            point.Y += size.Height;
-            maxheight += size.Height;
-            maxWidth = Math.Max(maxWidth, size.Width);
+            //not sure about sizes below, need test
+            point.Y += size.Y;
+            maxheight += size.Y;
+            maxWidth = Math.Max(maxWidth, size.X);
             var background = new RectangleF(point.X - maxWidth / 2 - 3, point.Y - maxheight, maxWidth + 6, maxheight);
             Graphics.DrawBox(background, info.FontBackgroundColor);
         }

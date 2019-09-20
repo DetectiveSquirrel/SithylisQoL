@@ -1,14 +1,16 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using System.Threading;
+using ExileCore;
+using ExileCore.Shared;
+using ExileCore.Shared.Enums;
 using ImGuiNET;
-using PoeHUD.Framework;
-using PoeHUD.Framework.Helpers;
-using PoeHUD.Models.Enums;
 using Random_Features.Libs;
 using Vector2 = System.Numerics.Vector2;
 
@@ -38,17 +40,17 @@ namespace Random_Features
             ImGui.SameLine();
             if (ImGui.Button("Open: How To Get Area Mod Strings"))
             {
-                Process.Start(PluginDirectory + "\\How To Get Map Mods.txt");
+                Process.Start(DirectoryFullName + "\\How To Get Map Mods.txt");
             }
             if (ImGui.Button("Open: Area Mod List"))
             {
-                Process.Start(PluginDirectory + "\\Area Mods.txt");
+                Process.Start(DirectoryFullName + "\\Area Mods.txt");
             }
         }
 
         public void AreaModWarningsInit()
         {
-            AreaModFile = $@"{PluginDirectory}\AreaWarningMods.txt";
+            AreaModFile = $@"{DirectoryFullName}\AreaWarningMods.txt";
 
             // Make file if not present
             if (!File.Exists(AreaModFile))
@@ -58,11 +60,14 @@ namespace Random_Features
             }
 
             AreaModWarningList = File.ReadAllLines(AreaModFile).ToList();
-            UpdateAreaModList = new Coroutine(() =>
-            {
-                AreaModWarningList = File.ReadAllLines(AreaModFile).ToList();
-                //LogMessage("Updated Area Mod List", 1);
-            }, new WaitTime(1000), nameof(Random_Features), "Update Area Mod Warning List").Run();
+            UpdateAreaModList = new Coroutine(ReadAreaModFile(), this, "Update Area Mod Warning List");
+            Core.ParallelRunner.Run(UpdateAreaModList);
+
+        }
+        private IEnumerator ReadAreaModFile()
+        {
+            AreaModWarningList = File.ReadAllLines(AreaModFile).ToList();
+            yield return new WaitFunction(() => GameController.Game.IsLoading);
         }
 
         public void AreaModWarnings()
@@ -123,35 +128,54 @@ namespace Random_Features
             if (BadMods_Present.Count > 0)
             {
                 var refBool = true;
-                float menuOpacity = ImGui.GetStyle().GetColor(ColorTarget.ChildBg).W;
-                var TextColor = ImGui.GetStyle().GetColor(ColorTarget.Text);
-                var LongestText = ImGui.GetTextSize(BadMods_Present.OrderByDescending(s => s.Length).First());
+                Vector4 TextColor;
+
+                unsafe
+                {
+                    var styleColorVec4 = ImGui.GetStyleColorVec4(ImGuiCol.Text);
+                    var colorValue = new Vector4(styleColorVec4->X, styleColorVec4->Y, styleColorVec4->Z, styleColorVec4->W);
+                    TextColor = colorValue;
+                }
+
+                var LongestText = ImGui.CalcTextSize(BadMods_Present.OrderByDescending(s => s.Length).First());
                 var windowPadding = ImGui.GetStyle().WindowPadding;
                 var ItemSpacing = ImGui.GetStyle().ItemSpacing;
 
                 if (Settings.AreaModWarningOverrideColors)
                 {
-                    ImGui.PushStyleColor(ColorTarget.WindowBg, ToImVector4(Settings.AreaModWarningBackground.ToVector4()));
-                    menuOpacity = ImGui.GetStyle().GetColor(ColorTarget.WindowBg).W;
+                    ImGui.PushStyleColor(ImGuiCol.WindowBg, ToImVector4(Settings.AreaModWarningBackground.ToVector4()));
                 }
 
-                ImGui.BeginWindow("RandomFeatures_BadAreaModWarning", ref refBool, new Vector2(200, 150), menuOpacity, Settings.AreaModWarningLocked ? WindowFlags.NoCollapse | WindowFlags.NoScrollbar | WindowFlags.NoMove | WindowFlags.NoResize | WindowFlags.NoInputs | WindowFlags.NoBringToFrontOnFocus | WindowFlags.NoTitleBar | WindowFlags.NoFocusOnAppearing : WindowFlags.Default | WindowFlags.NoTitleBar | WindowFlags.ResizeFromAnySide);
+                ImGui.BeginPopupModal("RandomFeatures_BadAreaModWarning", ref refBool,
+                    Settings.AreaModWarningLocked
+                            ? ImGuiWindowFlags.NoCollapse
+                            | ImGuiWindowFlags.NoScrollbar
+                            | ImGuiWindowFlags.NoMove
+                            | ImGuiWindowFlags.NoResize
+                            | ImGuiWindowFlags.NoInputs
+                            | ImGuiWindowFlags.NoBringToFrontOnFocus
+                            | ImGuiWindowFlags.NoTitleBar
+                            | ImGuiWindowFlags.NoFocusOnAppearing
+                            : ImGuiWindowFlags.None | ImGuiWindowFlags.NoTitleBar);
 
                 ImGui.SetWindowSize(new Vector2(
                         LongestText.X + windowPadding.X * 2,
                         LongestText.Y * (BadMods_Present.Count + 1) + windowPadding.Y * 2 + (ItemSpacing.Y * BadMods_Present.Count)
                 ));
+
                 if (Settings.AreaModWarningOverrideColors)
                 {
                     ImGui.PopStyleColor();
                 }
 
-                ImGui.Text("Mods Found", Settings.AreaModWarningOverrideColors ? ToImVector4(Settings.AreaModWarningTitle.ToVector4()) : TextColor);
+                ImGui.TextColored(Settings.AreaModWarningOverrideColors ? ToImVector4(Settings.AreaModWarningTitle.ToVector4()) : TextColor, "Mods Found");
+
                 foreach (var BadMod in BadMods_Present)
                 {
-                    ImGui.Text(BadMod, Settings.AreaModWarningOverrideColors ? ToImVector4(Settings.AreaModWarningBodyText.ToVector4()) : TextColor);
+                    ImGui.TextColored(Settings.AreaModWarningOverrideColors ? ToImVector4(Settings.AreaModWarningBodyText.ToVector4()) : TextColor, BadMod);
                 }
-                ImGui.EndWindow();
+
+                ImGui.EndPopup();
             }
         }
 
