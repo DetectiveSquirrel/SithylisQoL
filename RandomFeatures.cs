@@ -3,6 +3,7 @@ using ExileCore.PoEMemory;
 using ExileCore.PoEMemory.Elements;
 using ExileCore.PoEMemory.MemoryObjects;
 using ExileCore.Shared;
+using ExileCore.Shared.AtlasHelper;
 using ImGuiNET;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
@@ -11,6 +12,7 @@ using System;
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Numerics;
@@ -29,8 +31,6 @@ namespace Random_Features
         private const string RANDOM_FEATURES = "Random Features";
         private const string SKILL_GEM_LEVELING = "Skill Gem Leveling";
         private const string FOSSIL_TIER_SETTINGS = "Gen Fossil Tiers";
-
-        private Coroutine AreaChanged;
 
         //https://stackoverflow.com/questions/826777/how-to-have-an-auto-incrementing-version-number-visual-studio
         public Version version = Assembly.GetExecutingAssembly().GetName().Version;
@@ -51,32 +51,23 @@ namespace Random_Features
         };
 
         public static int idPop;
-        private ConcurrentDictionary<long, Entity> _entityCollection;
-
-        public string CustomImagePath;
-
-        public string PoeHudImageLocation;
-
-        public RandomFeatures() {
-            Name = RANDOM_FEATURES;
-        }
 
         public override bool Initialise()
         {
+            AtlasTextureInit();
+
+            Name = RANDOM_FEATURES;
+
             Settings.centerPos = GameController.Window.GetWindowRectangle().Center;
             Settings.LastSettingSize = new ImGuiVector2(620, 376);
             Settings.LastSettingPos = new ImGuiVector2(Settings.centerPos.X - Settings.LastSettingSize.X / 2, Settings.centerPos.Y - Settings.LastSettingSize.Y / 2);
 
-            AreaChanged = new Coroutine(ClearStoredEntities(), this, "Clear Stored Area Entities");
-
             buildDate = new DateTime(2000, 1, 1).AddDays(version.Build).AddSeconds(version.Revision * 2);
             PluginVersion = $"{version}";
-            _entityCollection = new ConcurrentDictionary<long, Entity>();
 
             storedAreaEntities = new List<StoredEntity>();
-            CustomImagePath = DirectoryFullName + @"\images\";
-            PoeHudImageLocation = CustomImagePath;
-            GameController.Area.OnAreaChange += area => Core.ParallelRunner.Run(AreaChanged);
+            GameController.Area.OnAreaChange += area => storedAreaEntities.Clear();
+
             AreaModWarningsInit();
             if (File.Exists($@"{DirectoryFullName}\Fossil_Tiers.json"))
             {
@@ -91,12 +82,6 @@ namespace Random_Features
             return true;
         }
 
-        private IEnumerator ClearStoredEntities()
-        {
-            storedAreaEntities.Clear();
-            yield return new WaitFunction(() => GameController.Game.IsLoading);
-        }
-
         public static readonly JsonSerializerSettings JsonSettings = new JsonSerializerSettings
         {
             MetadataPropertyHandling = MetadataPropertyHandling.Ignore,
@@ -108,16 +93,13 @@ namespace Random_Features
 
         public string ReadElementText(Element element) { return element.AsObject<EntityLabel>().Text; }
 
-        public override void EntityAdded(Entity entity) { _entityCollection[entity.Id] = entity; }
-
-        public override void EntityRemoved(Entity entity) { _entityCollection.TryRemove(entity.Id, out _); }
-
         public override void Render()
         {
             base.Render();
+
             if (!Settings.Enable) return;
-            if (Settings._Debug)
-                LogMessage($"_entityCollection Size: {_entityCollection.Count}", 1);
+            // if (Settings._Debug)
+                // LogMessage($"_entityCollection Size: {_entityCollection.Count}", 1);
             UnsortedPlugin();
             FuckRomanNumerals();
             WheresMyCursor();
@@ -154,7 +136,7 @@ namespace Random_Features
             }
         }
 
-        public void DrawSettingsMenu()
+        public override void DrawSettings()
         {
             ImGui.BulletText($"v{PluginVersion}");
             ImGui.BulletText($"Last Updated: {buildDate}");

@@ -1,10 +1,31 @@
 ﻿using System;
+using ExileCore.Shared.AtlasHelper;
 using SharpDX;
 
 namespace Random_Features.Libs
 {
     public class MapIcon
     {
+        public AtlasTexture Texture { get; set; }
+        public Color Color { get; set; } = Color.White;
+        public float Size { get; set; } = 13;
+
+        public MapIcon()
+        {
+        }
+
+        public MapIcon(AtlasTexture texture, Color color, float size)
+        {
+            Texture = texture;
+            Color = color;
+            Size = size;
+        }
+        public MapIcon(AtlasTexture texture, float size)
+        {
+            Texture = texture;
+            Size = size;
+        }
+
         public static Vector2 DeltaInWorldToMinimapDelta(Vector2 delta, double diag, float scale, float deltaZ = 0)
         {
             const float CAMERA_ANGLE = 38 * MathUtil.Pi / 180;
