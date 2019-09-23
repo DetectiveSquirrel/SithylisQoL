@@ -1157,7 +1157,7 @@ namespace Random_Features
             mapRect.Contains(ref rect, out var isContain);
             if (isContain)
             {
-                Graphics.DrawImage(icon.Texture, rect);
+                Graphics.DrawImage(icon.Texture, rect, icon.Color);
             }
         }
 

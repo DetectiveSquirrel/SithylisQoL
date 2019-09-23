@@ -97,7 +97,7 @@ namespace Random_Features
         {
             base.Render();
 
-            if (!Settings.Enable) return;
+            if (!Settings.Enable || !GameController.InGame) return;
             // if (Settings._Debug)
                 // LogMessage($"_entityCollection Size: {_entityCollection.Count}", 1);
             UnsortedPlugin();

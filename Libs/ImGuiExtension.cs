@@ -64,7 +64,7 @@ namespace Random_Features.Libs
         public static int IntSlider(string labelString, RangeNode<int> setting)
         {
             var refValue = setting.Value;
-            ImGui.SliderInt(labelString, ref refValue, setting.Min, setting.Max, "%.00f");
+            ImGui.SliderInt(labelString, ref refValue, setting.Min, setting.Max);
             return refValue;
         }
 
