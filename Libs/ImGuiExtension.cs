@@ -151,22 +151,35 @@ namespace Random_Features.Libs
 
         public static Keys HotkeySelector(string buttonName, Keys currentKey)
         {
-            if (ImGui.Button($"{buttonName}: {currentKey} ")) ImGui.OpenPopup(buttonName);
-            if (ImGui.BeginPopup(buttonName, (ImGuiWindowFlags) 35))
+            var open = true;
+            if (ImGui.Button(buttonName))
             {
-                ImGui.Text($"Press a key to set as {buttonName}");
-                foreach (var key in KeyCodes())
-                {
-                    if (!Input.IsKeyDown(key)) continue;
-                    if (key != Keys.Escape && key != Keys.RButton && key != Keys.LButton)
-                    {
-                        ImGui.CloseCurrentPopup();
-                        ImGui.EndPopup();
-                        return key;
-                    }
+                ImGui.OpenPopup(buttonName);
+                open = true;
+            }
 
-                    break;
+            if (ImGui.BeginPopupModal(buttonName, ref open, (ImGuiWindowFlags)35))
+            {
+                if (Input.GetKeyState(Keys.Escape))
+                {
+                    ImGui.CloseCurrentPopup();
+                    ImGui.EndPopup();
                 }
+                else
+                {
+                    foreach (var key in Enum.GetValues(typeof(Keys)))
+                    {
+                        var keyState = Input.GetKeyState((Keys)key);
+                        if (keyState)
+                        {
+                            currentKey = (Keys)key;
+                            ImGui.CloseCurrentPopup();
+                            break;
+                        }
+                    }
+                }
+
+                ImGui.Text($" Press new key to change '{currentKey}' or Esc for exit.");
 
                 ImGui.EndPopup();
             }

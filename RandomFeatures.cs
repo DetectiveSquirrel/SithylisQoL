@@ -62,6 +62,8 @@ namespace Random_Features
             Settings.LastSettingSize = new ImGuiVector2(620, 376);
             Settings.LastSettingPos = new ImGuiVector2(Settings.centerPos.X - Settings.LastSettingSize.X / 2, Settings.centerPos.Y - Settings.LastSettingSize.Y / 2);
 
+            Input.RegisterKey(Settings.LevelSkillGemsHotkey);
+
             buildDate = new DateTime(2000, 1, 1).AddDays(version.Build).AddSeconds(version.Revision * 2);
             PluginVersion = $"{version}";
 

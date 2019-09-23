@@ -21,7 +21,7 @@ namespace Random_Features
         {
             Settings.LevelSkillGems.Value = ImGuiExtension.Checkbox("Active Skill Gem Leveling Functions", Settings.LevelSkillGems.Value);
             ImGui.Spacing();
-            Settings.LevelSkillGemsHotkey = ImGuiExtension.HotkeySelector("Level Up Skill Gems", Settings.LevelSkillGemsHotkey);
+            Settings.LevelSkillGemsHotkey = ImGuiExtension.HotkeySelector("Level Up Skill Gems: " + Settings.LevelSkillGemsHotkey.Value.ToString(), Settings.LevelSkillGemsHotkey);
             ImGui.Separator();
             Settings.LevlSkillGemIsLeftClick.Value = ImGuiExtension.Checkbox("Left click to level Gems Up, Unticked if Right Click", Settings.LevlSkillGemIsLeftClick);
             ImGui.Separator();
