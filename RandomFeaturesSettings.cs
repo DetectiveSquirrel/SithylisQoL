@@ -414,6 +414,10 @@ namespace Random_Features
 
         public ToggleNode ShowInLabOnly { get; set; } = new ToggleNode(true);
 
+        // Blight Pathways
+        public ToggleNode BlightPathWays = new ToggleNode(true);
+        public RangeNode<int> BlightPathWaysNodeSize = new RangeNode<int>(7, 1, 200);
+        public ColorBGRA BlightPathWaysNodeColor = new ColorBGRA(255, 140, 0, 255);
 
         // DELVE
 

@@ -355,23 +355,25 @@ namespace Random_Features
                     if (e.Path.Contains("Metadata/Chests/DelveChests") && e.Path.Contains("Trinkets"))
                         return new MapIcon(_iconChestJewelers, Color.Yellow, Settings.DelveCurrencyChestSize);
 
-                    if (e.Path.StartsWith("Metadata/Terrain/Leagues/Delve/Objects/DelveWall"))
-                    {
-                        switch (e.IsAlive)
-                        {
-                            case false:
-                                return new MapIcon(_iconHiddenDoor, Settings.DelveWallColor, Settings.DelveWallSize);
-                            case true:
-                                return new MapIcon(_iconGate, Settings.DelveWallColor, Settings.DelveWallSize);
-                        }
-                    }
-
                     // catch missing delve chests
                     if (Settings.DelvePathwayChest)
                         if (e.Path.Contains("Metadata/Chests/DelveChests") && !e.Path.Contains("Encounter"))
                             return new MapIcon(_iconStrongbox, Settings.DelvePathwayChestColor, Settings.DelvePathwayChestSize);
                 }
+
+                if (e.Path.StartsWith("Metadata/Terrain/Leagues/Delve/Objects/DelveWall"))
+                    switch (e.IsAlive)
+                    {
+                        case false:
+                            return new MapIcon(_iconHiddenDoor, Settings.DelveWallColor, Settings.DelveWallSize);
+                        case true:
+                            return new MapIcon(_iconGate, Settings.DelveWallColor, Settings.DelveWallSize);
+                    }
             }
+
+            if (Settings.BlightPathWays)
+                if (e.Path.EndsWith("Metadata/Terrain/Leagues/Blight/Objects/BlightPathway"))
+                    return new MapIcon(_iconAbyssCrack, Settings.BlightPathWaysNodeColor, Settings.BlightPathWaysNodeSize);
 
             if (Settings.AbysshoardChestToggleNode)
                 if (e.Path.Contains("Metadata/Chests/AbyssChest") && !e.GetComponent<Chest>().IsOpened)

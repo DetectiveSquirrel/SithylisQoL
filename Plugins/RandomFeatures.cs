@@ -667,6 +667,27 @@ namespace Random_Features
                 }
                 ImGui.TreePop();
             }
+            if (ImGui.TreeNode("Blight DooDads"))
+            {
+                if (ImGui.TreeNode("Blight Path's"))
+                {
+                    ImGui.PushID(idPop);
+                    Settings.BlightPathWays.Value = ImGuiExtension.Checkbox(Settings.BlightPathWays.Value ? "Show" : "Hidden", Settings.BlightPathWays);
+                    ImGui.PopID();
+                    idPop++;
+                    ImGui.Spacing();
+                    ImGui.PushID(idPop);
+                    Settings.BlightPathWaysNodeSize.Value = ImGuiExtension.IntSlider("Size", Settings.BlightPathWaysNodeSize);
+                    ImGui.PopID();
+                    idPop++;
+                    ImGui.PushID(idPop);
+                    Settings.BlightPathWaysNodeColor = ImGuiExtension.ColorPicker("Color", Settings.BlightPathWaysNodeColor);
+                    ImGui.PopID();
+                    idPop++;
+                    ImGui.TreePop();
+                }
+                ImGui.TreePop();
+            }
             if (ImGui.TreeNode("Monster Stats On Hover - This is strange and only shows the resistances once that resistance has been affected with + or -"))
             {
                 Settings.MonsterHoverStats.Value = ImGuiExtension.Checkbox($"Show##{idPop}", Settings.MonsterHoverStats);

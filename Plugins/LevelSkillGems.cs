@@ -93,15 +93,15 @@ namespace Random_Features
                     }
 
                     ImGui.NextColumn();
-                    ImGui.PushItemWidth(ImGui.GetWindowContentRegionWidth());
+                    ImGui.PushItemWidth(ImGui.GetContentRegionAvail().X);
                     Settings.SkillGemStopList[i].Rules[j].GemName =
                             ImGuiExtension.InputText($"##GN{i}{j}", Settings.SkillGemStopList[i].Rules[j].GemName, 35,
                                     ImGuiInputTextFlags.None);
                     ImGui.PopItemWidth();
-                    //ImGui.SameLine();
+                    ImGui.SameLine();
                     ImGui.NextColumn();
-                    ImGui.PushItemWidth(ImGui.GetWindowContentRegionWidth());
-                    Settings.SkillGemStopList[i].Rules[j].MaxLevel =
+                    ImGui.PushItemWidth(ImGui.GetContentRegionAvail().X);
+                    Settings.SkillGemStopList[i].Rules[j].MaxLevel.Value =
                             ImGuiExtension.IntSlider($"##ML{i}{j}", Settings.SkillGemStopList[i].Rules[j].MaxLevel, 1, 20);
                     ImGui.NextColumn();
                     ImGui.PopItemWidth();
@@ -171,12 +171,11 @@ namespace Random_Features
             foreach (Element element in SkillGemLevelUps.Children)
             {
                 RectangleF skillGemButton = element.GetChildAtIndex(1).GetClientRect();
-                string skillGemText = element.GetChildAtIndex(3).AsObject<EntityLabel>().Text;
+                string skillGemText = element.GetChildAtIndex(3).Text;
                 if (element.GetChildAtIndex(2).IsVisibleLocal) continue;
 
                 if (element.GetChildAtIndex(0).Tooltip.ChildCount == 0 && skillGemText?.ToLower() == "click to level up")
                 {
-
                     var ToolTipHover = skillGemButton;
                     ToolTipHover.X += ToolTipHover.Width;
                     Mouse.SetCurosPosToCenterOfRec(ToolTipHover, GameController.Window.GetWindowRectangle());
@@ -192,12 +191,12 @@ namespace Random_Features
                     //SkillGemTooltipWrapper SkillGemToolTipInfo = new SkillGemTooltipWrapper(element.GetChildAtIndex(0).Tooltip);
                     if (skillGemText?.ToLower() == "click to level up")
                     {
-                        //if (PassedGemRule(RuleSet, SkillGemToolTipInfo))
-                        //{
-                            Mouse.SetCurosPosToCenterOfRec(skillGemButton, GameController.Window.GetWindowRectangle());
-                            Mouse.UniMouseClick(Settings.LevlSkillGemIsLeftClick, 5, 25);
-                            //Mouse.SetCurosPosToCenterOfRec(GameController.Window.GetWindowRectangle(), GameController.Window.GetWindowRectangle());
-                            GemClickTimer.Restart();
+                    //if (PassedGemRule(RuleSet, SkillGemToolTipInfo))
+                    //{
+                    Mouse.SetCurosPosToCenterOfRec(skillGemButton, GameController.Window.GetWindowRectangle());
+                    Mouse.UniMouseClick(Settings.LevlSkillGemIsLeftClick, 5, 25);
+                    //Mouse.SetCurosPosToCenterOfRec(GameController.Window.GetWindowRectangle(), GameController.Window.GetWindowRectangle());
+                    GemClickTimer.Restart();
                             //break;
                         //}
 
@@ -257,7 +256,7 @@ namespace Random_Features
         public class GemLevelRule
         {
             public string GemName { get; set; }
-            public int MaxLevel { get; set; }
+            public RangeNode<int> MaxLevel { get; set; }
         }
 
         public class Person

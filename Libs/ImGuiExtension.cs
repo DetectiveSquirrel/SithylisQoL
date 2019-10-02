@@ -35,7 +35,7 @@ namespace Random_Features.Libs
             ImGui.SetNextWindowSize(new ImGuiVector2(width, height), ImGuiCond.Appearing);
             return ImGui.BeginPopupModal(title, ref isOpened, autoResize ? ImGuiWindowFlags.AlwaysAutoResize : ImGuiWindowFlags.None);
         }
-        
+
         /*
         public static bool BeginWindowCenter(string title, ref bool isOpened, int width, int height, bool autoResize = false)
         {
@@ -50,7 +50,13 @@ namespace Random_Features.Libs
         public static int IntSlider(string labelString, int value, int minValue, int maxValue)
         {
             var refValue = value;
-            ImGui.SliderInt(labelString, ref refValue, minValue, maxValue, "%.00f");
+            ImGui.SliderInt(labelString, ref refValue, minValue, maxValue);
+            return refValue;
+        }
+        public static int IntSlider(string labelString, RangeNode<int> setting, int minValue, int maxValue)
+        {
+            var refValue = setting.Value;
+            ImGui.SliderInt(labelString, ref refValue, minValue, maxValue);
             return refValue;
         }
 
