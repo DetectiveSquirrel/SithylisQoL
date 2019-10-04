@@ -7,6 +7,7 @@ using System.Threading;
 using ExileCore.PoEMemory;
 using ExileCore.PoEMemory.Components;
 using ExileCore.PoEMemory.Elements;
+using ExileCore.Shared.Nodes;
 using ImGuiNET;
 using Random_Features.Libs;
 using SharpDX;
@@ -119,7 +120,7 @@ namespace Random_Features
                             .Rules.Add(new GemLevelRule
                              {
                                      GemName = "Cast when Damage Taken Support",
-                                     MaxLevel = 1
+                                     MaxLevel = new RangeNode<int>(1, 1, 20)
                              });
             }
         }
