@@ -977,7 +977,7 @@ namespace Random_Features
         private void DelveMapNodes()
         {
             if (!Settings.DelveGridMap) return;
-            var delveMap = GameController.Game.IngameState.UIRoot.Children[1].Children[63];
+            var delveMap = GameController.Game.IngameState.IngameUi.DelveWindow;
             if (!delveMap.IsVisible) return;
             try
             {
