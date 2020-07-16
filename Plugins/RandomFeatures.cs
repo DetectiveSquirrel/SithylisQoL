@@ -418,6 +418,7 @@ namespace Random_Features
                 Settings.SolarGuard.Value = ImGuiExtension.Checkbox("Solar Guard", Settings.SolarGuard);
                 Settings.ChieftainMonkey.Value = ImGuiExtension.Checkbox("Chieftain Monkey", Settings.ChieftainMonkey);
                 Settings.CannibalFireEater.Value = ImGuiExtension.Checkbox("Cannibal Fire-eater", Settings.CannibalFireEater);
+                Settings.BaraniteThaumaturge.Value = ImGuiExtension.Checkbox("Baranite Thaumaturge", Settings.BaraniteThaumaturge);
                 ImGui.TreePop();
             }
 
@@ -872,6 +873,11 @@ namespace Random_Features
                 if (Settings.CannibalFireEater)
                 {
                     DrawTextLabelSpecter(Color.Yellow, "Cannibal Fire-eater", "Metadata/Monsters/Cannibal/CannibalMaleChampion", 120);
+                }
+
+                if (Settings.BaraniteThaumaturge)
+                {
+                    DrawTextLabelSpecter(Color.Yellow, "Baranite Thaumaturge", "Metadata/Monsters/AtlasExiles/CrusaderInfluenceMonsters/CrusaderMageguardCaster", 120);
                 }
             }
         }

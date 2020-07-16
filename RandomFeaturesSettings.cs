@@ -309,6 +309,7 @@ namespace Random_Features
         public ToggleNode SolarGuard { get; set; }
         public ToggleNode ChieftainMonkey { get; set; }
         public ToggleNode CannibalFireEater { get; set; } = new ToggleNode(false);
+        public ToggleNode BaraniteThaumaturge { get; set; } = new ToggleNode(false);
         public ToggleNode VaultPiles { get; set; }
         public ToggleNode VaultPilesOnFloor { get; set; }
         public RangeNode<int> VaultPilesOnFloorSize { get; set; }
