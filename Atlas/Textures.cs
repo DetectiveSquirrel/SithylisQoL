@@ -255,7 +255,7 @@ namespace Random_Features
                     return new MapIcon(_iconAbyssNodeSmall, Settings.AbyssLargeNodeColor, Settings.AbyssLargeNodeSize);
             }
 
-            if (Settings.DelvePathWays)
+            if (Settings.DelvePathWays && !GameController.Game.IngameState.IngameUi.DelveWindow.IsVisible)
                 if (e.Path.EndsWith("Metadata/Terrain/Leagues/Delve/Objects/DelveLight"))
                     return new MapIcon(_iconAbyssCrack, Settings.DelvePathWaysNodeColor, Settings.DelvePathWaysNodeSize);
 
