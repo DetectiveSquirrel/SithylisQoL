@@ -145,9 +145,9 @@ namespace Random_Features
             idPop = 1;
             ImGui.PushStyleVar(ImGuiStyleVar.ChildRounding, 5.0f);
             ImGuiExtension.ImGuiExtension_ColorTabs("LeftSettings", 50, SettingName, ref Selected, ref idPop);
-            var newcontentRegionArea = new Vector2();
-            newcontentRegionArea = ImGuiNative.igGetContentRegionAvail();
-            if (ImGui.BeginChild("RightSettings", new Vector2(newcontentRegionArea.X, newcontentRegionArea.Y), true, ImGuiWindowFlags.None))
+            var contentRegion = ImGui.GetContentRegionAvail();
+            var boxRegion = new System.Numerics.Vector2(contentRegion.X);
+            if (ImGui.BeginChild("RightSettings", contentRegion, true, ImGuiWindowFlags.None))
                 switch (SettingName[Selected])
                 {
                     case RANDOM_FEATURES:

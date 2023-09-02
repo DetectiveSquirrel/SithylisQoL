@@ -15,7 +15,5 @@ namespace Random_Features.Libs
         public static Vector2 PlayerToScreen => GameState.pTheGame.IngameState.Camera.WorldToScreen(LocalPlayerEntity.Pos.Translate(0, 0, -170));
 
         public static object Entity { get; internal set; }
-
-        public static bool HasBuff(string buffName) => LocalPlayerEntity.GetComponent<Life>().HasBuff(buffName);
     }
 }
